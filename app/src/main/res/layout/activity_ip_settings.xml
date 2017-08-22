@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/background_screen" >
+
+  <!-- Header aligned to top -->
+  <RelativeLayout
+    android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:gravity="center" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:src="@drawable/header"
+        android:contentDescription="@null" 
+        android:scaleType="fitXY"/>
+    
+  </RelativeLayout>
+
+  <!-- Footer aligned to bottom -->
+  <RelativeLayout
+    android:id="@+id/footer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:gravity="center" >
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="fill_parent"
+        android:layout_height="42dp"
+        android:src="@drawable/footer" 
+        android:contentDescription="@null"
+        android:scaleType="fitXY" />
+  </RelativeLayout>
+
+  <!-- Scrollable Content below header and above footer -->
+  <ScrollView
+    android:id="@+id/container"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_screen"
+    android:layout_above="@id/footer"
+    android:layout_below="@id/header" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:orientation="vertical" >
+      
+     <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="center_horizontal"
+         android:layout_marginTop="25dp"
+         android:text="@string/ip_settings"
+         android:textColor="@color/text_color"
+         android:textSize="65sp"
+         android:textStyle="bold" />
+     
+     
+     <RadioGroup 
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         android:layout_marginTop="25dp"
+         android:weightSum="1">
+         
+         <RadioButton
+             android:id="@+id/live"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_weight="0.5"
+             android:checked="true"
+             android:paddingLeft="10dp"
+             android:text="@string/live"
+             android:textColor="@color/text_color"
+             android:textSize="35sp"
+             android:textStyle="bold" />
+         
+         <RadioButton
+             android:id="@+id/test"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_weight="0.5"
+             android:paddingLeft="10dp"
+             android:text="@string/test"
+             android:textColor="@color/text_color"
+             android:textSize="35sp"
+             android:textStyle="bold" />
+         
+     </RadioGroup>
+     
+      <EditText
+          android:id="@+id/et_serverUrl"
+          android:layout_width="match_parent"
+          android:layout_height="80dp"
+          android:layout_marginTop="40dp"
+          android:background="@drawable/edittextstyle"
+          android:gravity="center"
+          android:hint="@string/server_url_hint"
+          android:inputType="number"
+          android:paddingLeft="15dp"
+          android:text=""
+          android:textColor="@color/text_color"
+          android:textSize="32sp" >
+
+     </EditText>
+
+      <EditText
+          android:id="@+id/et_ftp_url"
+          android:layout_width="match_parent"
+          android:layout_height="80dp"
+          android:layout_marginTop="35dp"
+          android:background="@drawable/edittextstyle"
+          android:hint="Enter FTP URL"
+          android:inputType="text"
+          android:gravity="center"
+          android:text="192.168.11.9:99"
+          android:textColor="@color/text_color"
+          android:visibility="visible"
+          android:textSize="32sp" >
+
+     </EditText>
+     
+      <LinearLayout
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="40dp"
+          android:orientation="horizontal"
+          android:weightSum="1" >
+      
+          <Button
+              android:id="@+id/cancel"
+              android:layout_width="fill_parent"
+              android:layout_height="80dp"
+              android:layout_weight="0.5"
+              style="@style/naviblue_custom_style"
+              android:text="@string/cancel"
+              android:textColor="#ffffff"
+              android:textSize="33sp"
+              android:textStyle="bold" />
+          
+            <Button
+                android:id="@+id/save"
+                android:layout_width="fill_parent"
+                android:layout_height="80dp"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="0.5"
+                style="@style/naviblue_custom_style"
+                android:text="@string/save"
+                android:textColor="#ffffff"
+                android:textSize="33sp"
+                android:textStyle="bold" />
+          
+      </LinearLayout>
+      
+     
+    </LinearLayout>
+
+  </ScrollView>
+
+</RelativeLayout>

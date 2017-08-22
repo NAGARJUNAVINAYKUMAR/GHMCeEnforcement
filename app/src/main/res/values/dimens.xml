@@ -1,0 +1,152 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="header_grnt_padding_five">5dp</dimen>
+    <dimen name="header_grnt_padding_ten">5dp</dimen>
+    <dimen name="margin_twenty">20dp</dimen>
+    <dimen name="header_icon_size">100dp</dimen>
+    <dimen name="margin_fifteen">15dp</dimen>
+    
+    <dimen name="colon_wght">0.9dp</dimen>
+    <dimen name="corner_radius">12dp</dimen>
+    
+    
+    <dimen name="margins_five">5dp</dimen>
+    
+    <dimen name="margins_ten">10dp</dimen>
+    <dimen name="margins_fifteen">15dp</dimen>
+    
+    <dimen name="margins_twenty">20dp</dimen>
+    <dimen name="margins_two_five">25dp</dimen>
+    
+    <dimen name="margins_thirty">30dp</dimen>
+    <dimen name="margins_thirty_five">35dp</dimen>
+    
+    <dimen name="margins_forty">40dp</dimen>
+    <dimen name="margins_forty_five">45dp</dimen>
+    
+    <dimen name="margins_fifty">50dp</dimen>
+    <dimen name="margins_fiftyfive">55dp</dimen>
+    
+    <dimen name="margins_sixty">60dp</dimen>
+    <dimen name="margins_sixtyfive">65dp</dimen>
+    
+    <dimen name="margins_seventy">70dp</dimen>
+    <dimen name="margins_seventy_five">75dp</dimen>
+    
+    <dimen name="margins_eighty">80dp</dimen>
+    <dimen name="margins_efive">85dp</dimen>
+    
+    <dimen name="margins_ninety">90dp</dimen>
+    <dimen name="margins_nfive">95dp</dimen>
+    
+    <dimen name="margins_hundred">100dp</dimen>
+    <dimen name="margins_hfive">105dp</dimen>
+    
+    <dimen name="margins_one_ten">110dp</dimen>
+    <dimen name="margins_one_fifteen">115dp</dimen>
+    
+    <dimen name="margins_one_twenty">120dp</dimen>
+    <dimen name="margins_one_twenty_five">125dp</dimen>
+    
+    <dimen name="margins_one_thirty">130dp</dimen>
+    <dimen name="margins_one_thirty_five">135dp</dimen>
+    
+    <dimen name="margins_one_forty">140dp</dimen>
+    <dimen name="margins_one_forty_five">145dp</dimen>
+    
+    <dimen name="margins_one_fifty">150dp</dimen>
+    <dimen name="margins_one_fifty_five">155dp</dimen>
+    
+    <!-- TEXT SIZES -->
+    
+    
+    <dimen name="txt_size_five">5sp</dimen>
+    
+    <dimen name="txt_size_ten">10sp</dimen>
+    <dimen name="txt_size_fifteen">15sp</dimen>
+    
+    <dimen name="txt_size_twenty">20sp</dimen>
+    <dimen name="txt_size_two_five">25sp</dimen>
+    
+    <dimen name="txt_size_thirty">30sp</dimen>
+    <dimen name="txt_size_thirty_five">35sp</dimen>
+    
+    <dimen name="txt_size_forty">40sp</dimen>
+    <dimen name="txt_size_forty_five">45sp</dimen>
+    
+    <dimen name="txt_size_fifty">50sp</dimen>
+    <dimen name="txt_size_fiftyfive">55sp</dimen>
+    
+    <dimen name="txt_size_sixty">60sp</dimen>
+    <dimen name="txt_size_sixtyfive">65sp</dimen>
+    
+    <dimen name="txt_size_seventy">70sp</dimen>
+    <dimen name="txt_size_seventy_five">75sp</dimen>
+    
+    <dimen name="txt_size_eighty">80sp</dimen>
+    <dimen name="txt_size_efive">85sp</dimen>
+    
+    <dimen name="txt_size_ninety">90sp</dimen>
+    <dimen name="txt_size_nfive">95sp</dimen>
+    
+    <dimen name="txt_size_hundred">100sp</dimen>
+    <dimen name="txt_size_hfive">105sp</dimen>
+    
+    <dimen name="txt_size_one_ten">110sp</dimen>
+    <dimen name="txt_size_one_fifteen">115sp</dimen>
+    
+    <dimen name="txt_size_one_twenty">120sp</dimen>
+    <dimen name="txt_size_one_twenty_five">125sp</dimen>
+    
+    <dimen name="txt_size_one_thirty">130sp</dimen>
+    <dimen name="txt_size_one_thirty_five">135sp</dimen>
+    
+    <dimen name="txt_size_one_forty">140sp</dimen>
+    <dimen name="txt_size_one_forty_five">145sp</dimen>
+    
+    <dimen name="txt_size_one_fifty">150sp</dimen>
+    <dimen name="txt_size_one_fifty_five">155sp</dimen>
+    
+    
+    <!-- WELCOME SCREEN -->
+    <dimen name="welcome_txt_size">70sp</dimen>
+    
+    
+    <!-- LOGINE SCREEN -->
+    <dimen name="header_height">110dp</dimen>
+    <dimen name="footer_height">35dp</dimen>
+    
+    <dimen name="login_top">25dp</dimen>
+    
+    <dimen name="login_et_size">80dp</dimen>
+    <dimen name="login_et_padding_size">15sp</dimen>
+    <dimen name="login_txt_size">32sp</dimen>
+    
+    <dimen name="login_margin_top">35dp</dimen>
+    
+    
+    <!-- LOGIN SCREEN -->
+	<dimen name="button_height">80dp</dimen> 
+	<dimen name="button_txt_size">35sp</dimen>
+	<dimen name="submit_margin">20dp</dimen>
+	
+	<dimen name="ip_height">160dp</dimen>
+	<dimen name="ip_width">150dp</dimen>
+	
+	<dimen name="ip_margin_end">10dp</dimen>
+	<dimen name="ip_margin_top">10dp</dimen>
+	<dimen name="ip_settings_txt_size">25sp</dimen>
+	
+	
+	<!-- DASHBOARD SCREEN -->
+	<dimen name="dash_complete_marginleft_right">25dp</dimen>
+	<dimen name="dash_complete_margin_top">20dp</dimen>
+	
+	<dimen name="dashboard_psname_text_size">18sp</dimen>
+	<dimen name="dashboard_psname_width">120dp</dimen>
+	
+
+</resources>

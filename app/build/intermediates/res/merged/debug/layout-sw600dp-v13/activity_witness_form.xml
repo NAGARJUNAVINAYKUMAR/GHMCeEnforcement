@@ -1,0 +1,845 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/background_screen" >
+
+  <!-- Header aligned to top -->
+  <RelativeLayout
+    android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:gravity="center" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/header_height"
+        android:src="@drawable/header"
+        android:contentDescription="@null" 
+        android:scaleType="fitXY"/>
+  </RelativeLayout>
+
+  <!-- Footer aligned to bottom -->
+  <RelativeLayout
+    android:id="@+id/footer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:gravity="center" >
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/footer_height"
+        android:src="@drawable/footer" 
+        android:contentDescription="@null"
+        android:scaleType="fitXY" />
+  </RelativeLayout>
+
+  <!-- Scrollable Content below header and above footer -->
+  <ScrollView
+    android:id="@+id/container"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_screen"
+    android:layout_above="@id/footer"
+    android:layout_below="@id/header" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:orientation="vertical" >
+      
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Panchayathdhars Particulars"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/txt_size_thirty_five"
+            android:textStyle="bold" />
+    
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/frame"
+            android:paddingBottom="20dp"
+            android:orientation="vertical"
+            android:visibility="visible" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="Panchayathdhar 1"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/txt_size_thirty"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/panchayathdhar_1"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:weightSum="1" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.7"
+                    android:paddingEnd="40dp"
+                    android:paddingStart="0dp"
+                    android:text="@string/wt_name"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingRight="15dp"
+                    android:text=":"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/star"
+                    android:textColor="#FF0000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/panch_name1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.353"
+                    android:background="@drawable/edittextstyle"
+                    android:hint="@string/wt_name_hint"
+                    android:inputType="textCapCharacters"
+                    android:paddingEnd="0dp"
+                    android:paddingStart="5dp"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+                <!--
+        <ImageView
+       android:id="@+id/edit_btn_pssprt_num"
+       android:layout_width="40dp"
+       android:layout_height="40dp"
+       android:layout_gravity="center"
+       android:layout_marginStart="10dp"
+       android:contentDescription="@string/desc"
+       android:src="@drawable/edit" />
+                -->
+
+            </LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/panchayathdharfather_1"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:weightSum="1" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.7"
+                    android:paddingEnd="40dp"
+                    android:paddingStart="0dp"
+                    android:text="Father Name"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingRight="15dp"
+                    android:text=":"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/star"
+                    android:textColor="#FF0000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/panch_father1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.35"
+                    android:background="@drawable/edittextstyle"
+                    android:hint="Enter Father Name"
+                    android:inputType="textCapCharacters"
+                    android:paddingEnd="0dp"
+                    android:paddingStart="5dp"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/panchth_address_layout1"
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:weightSum="1" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_weight="0.7"
+                    android:paddingEnd="40dp"
+                    android:paddingStart="0dp"
+                    android:text="@string/address"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:paddingRight="15dp"
+                    android:text=":"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:text="@string/star"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/panchth_address1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="100dp"
+                    android:layout_weight="0.35"
+                    android:background="@drawable/edittextstyle"
+                    android:gravity="top|start"
+                    android:hint="@string/address_hint"
+                    android:inputType="textCapCharacters|textMultiLine"
+                    android:lines="6"
+                    android:maxLines="8"
+                    android:minLines="6"
+                    android:paddingEnd="0dp"
+                    android:paddingStart="5dp"
+                    android:paddingTop="2dp"
+                    android:scrollbars="vertical"
+                    android:text=""
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+            </LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/panchth_phone_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:weightSum="1" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.7"
+                    android:paddingEnd="40dp"
+                    android:paddingStart="0dp"
+                    android:text="@string/phone"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingRight="10dp"
+                    android:text=":"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/star"
+                    android:textColor="#FFffff"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/panchth_phone1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.351"
+                    android:background="@drawable/edittextstyle"
+                    android:hint="@string/phone_hint"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:paddingEnd="0dp"
+                    android:paddingStart="5dp"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/wt_layout_gender"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="152dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingEnd="5dp"
+                    android:paddingStart="0dp"
+                    android:text="@string/gender"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingRight="15dp"
+                    android:text=":"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/star"
+                    android:textColor="#FF0000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <RadioGroup
+                    android:id="@+id/wt_gender_group"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1" >
+
+                    <RadioButton
+                        android:id="@+id/panchth_male1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.1"
+                        android:checked="true"
+                        android:paddingEnd="0dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/male"
+                        android:textColor="@color/text_color"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/panchth_female1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:paddingEnd="0dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/female"
+                        android:textColor="@color/text_color"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/panchth_other1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:paddingEnd="0dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/third_gender"
+                        android:textColor="@color/text_color"
+                        android:visibility="gone"
+                        android:textSize="18sp" />
+                </RadioGroup>
+
+                <!--
+        <ImageView
+       android:id="@+id/edit_btn_gender"
+       android:layout_width="40dp"
+       android:layout_height="40dp"
+       android:layout_gravity="center"
+       android:layout_marginStart="10dp"
+       android:contentDescription="@string/desc"
+       android:src="@drawable/edit" />
+                -->
+
+            </LinearLayout>
+
+            
+
+            
+
+            
+        </LinearLayout>
+        
+        <!--****************** Panchayathdhars 2 ****************-->
+
+        <LinearLayout
+            android:id="@+id/panchaythdhar_layout2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/frame"
+            android:orientation="vertical"
+            android:paddingBottom="20dp"
+            android:visibility="visible" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="Panchayathdhar 2"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/txt_size_thirty"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/panchayathdhar_2"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:weightSum="1" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.7"
+                    android:paddingEnd="40dp"
+                    android:paddingStart="0dp"
+                    android:text="@string/wt_name"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingRight="15dp"
+                    android:text=":"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/star"
+                    android:textColor="#FF0000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/panch_name2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.35"
+                    android:background="@drawable/edittextstyle"
+                    android:hint="@string/wt_name_hint"
+                    android:inputType="textCapCharacters"
+                    android:paddingEnd="0dp"
+                    android:paddingStart="5dp"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/panchayathdharfather_2"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:weightSum="1" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.7"
+                    android:paddingEnd="40dp"
+                    android:paddingStart="0dp"
+                    android:text="Father Name"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingRight="15dp"
+                    android:text=":"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/star"
+                    android:textColor="#FF0000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/panch_father2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.35"
+                    android:background="@drawable/edittextstyle"
+                    android:hint="Enter Father Name"
+                    android:inputType="textCapCharacters"
+                    android:paddingEnd="0dp"
+                    android:paddingStart="5dp"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/panchth_address_layout2"
+                android:layout_width="fill_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:weightSum="1" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_weight="0.7"
+                    android:paddingEnd="40dp"
+                    android:paddingStart="0dp"
+                    android:text="@string/address"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:paddingRight="15dp"
+                    android:text=":"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:text="@string/star"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/panchth_address2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="100dp"
+                    android:layout_weight="0.35"
+                    android:background="@drawable/edittextstyle"
+                    android:gravity="top|start"
+                    android:hint="@string/address_hint"
+                    android:inputType="textCapCharacters|textMultiLine"
+                    android:lines="6"
+                    android:maxLines="8"
+                    android:minLines="6"
+                    android:paddingEnd="0dp"
+                    android:paddingStart="5dp"
+                    android:paddingTop="2dp"
+                    android:scrollbars="vertical"
+                    android:text=""
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            
+
+            <LinearLayout
+                android:id="@+id/panchth_phone_layout2"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:weightSum="1" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.7"
+                    android:paddingEnd="40dp"
+                    android:paddingStart="0dp"
+                    android:text="@string/phone"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingRight="10dp"
+                    android:text=":"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/star"
+                    android:textColor="#FFffff"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/panchth_phone2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.35"
+                    android:background="@drawable/edittextstyle"
+                    android:hint="@string/phone_hint"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:paddingEnd="0dp"
+                    android:paddingStart="5dp"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="#000"
+                    android:textSize="18sp" 
+                    android:textStyle="bold"/>
+            </LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/wt_layout_gender2"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="152dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingEnd="5dp"
+                    android:paddingStart="0dp"
+                    android:text="@string/gender"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingRight="15dp"
+                    android:text=":"
+                    android:textColor="@color/text_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/star"
+                    android:textColor="#FF0000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <RadioGroup
+                    android:id="@+id/wt_gender_group2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="1" >
+
+                    <RadioButton
+                        android:id="@+id/panchth_male2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.1"
+                        android:checked="true"
+                        android:paddingEnd="0dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/male"
+                        android:textColor="@color/text_color"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/panchth_female2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:paddingEnd="0dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/female"
+                        android:textColor="@color/text_color"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/panchth_other2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:paddingEnd="0dp"
+                        android:paddingStart="10dp"
+                        android:text="@string/third_gender"
+                        android:textColor="@color/text_color"
+                        android:visibility="gone"
+                        android:textSize="18sp" />
+                </RadioGroup>
+
+
+            </LinearLayout>
+
+            
+        </LinearLayout>
+        
+        <Button
+            android:id="@+id/add_panchayath2"
+            style="@style/naviblue_custom_style"
+            android:layout_width="350dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:singleLine="true"
+            android:text="@string/add_panch2"
+            android:textColor="#ffffff"
+            android:textSize="22sp"
+            android:visibility="visible" />
+
+<LinearLayout
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"
+     android:layout_marginTop="15dp"
+     android:orientation="horizontal"
+     android:paddingStart="10dp"
+     android:layout_marginBottom="20dp"
+     android:paddingEnd="0dp"
+     android:gravity="center"
+     android:paddingTop="10dp" >
+
+     <ImageView
+         android:id="@+id/back_btn"
+         android:layout_width="170dp"
+         android:layout_height="60dp"
+         android:layout_marginLeft="-155dp"
+         android:layout_marginStart="25dp"
+         android:contentDescription="@null"
+         android:src="@drawable/back" />
+ 
+	<Button
+	    android:id="@+id/panchayatdhar_btn"
+	    style="@style/naviblue_custom_style"
+	    android:layout_width="150dp"
+	    android:layout_height="65dp"
+	    android:layout_gravity="center"
+	    android:singleLine="true"
+	    android:text="@string/panchayathdhars_submit"
+	    android:textColor="#ffffff"
+	    android:textSize="25sp"
+	    android:visibility="visible" />
+
+</LinearLayout>
+    </LinearLayout>
+
+  </ScrollView>
+
+</RelativeLayout>

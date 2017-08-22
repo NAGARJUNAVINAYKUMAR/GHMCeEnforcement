@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/background_screen" >
+
+  <!-- Header aligned to top -->
+  <RelativeLayout
+    android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:gravity="center" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        android:src="@drawable/header"
+        android:contentDescription="@null"
+        android:scaleType="fitXY" />
+  </RelativeLayout>
+
+  <!-- Footer aligned to bottom -->
+  <RelativeLayout
+    android:id="@+id/footer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:gravity="center" >
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="fill_parent"
+        android:layout_height="42dp"
+        android:src="@drawable/footer" 
+        android:contentDescription="@null"
+        android:scaleType="fitXY" />
+  </RelativeLayout>
+
+  <!-- Scrollable Content below header and above footer -->
+  <ScrollView
+    android:id="@+id/container"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_screen"
+    android:layout_above="@id/footer"
+    android:layout_below="@id/header" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:gravity="center"
+        android:orientation="vertical" 
+        android:weightSum="1">
+  
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="fill_parent"
+           android:layout_marginTop="15dp"
+           android:layout_weight="0.3"
+           android:gravity="center"
+           android:orientation="vertical" >
+
+        <!-- Record video button -->
+
+        <Button
+            android:id="@+id/btnRecordVideo"
+            style="@style/naviblue_custom_style"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Record a Video" />
+        
+        <Button
+            android:id="@+id/save_video"
+            style="@style/naviblue_custom_style"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Save Video" />
+
+    </LinearLayout>
+
+    <!-- <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.7"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Preview" 
+            android:textColor="@color/text_color_all"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        To display picture taken
+        <ImageView
+            android:id="@+id/imgPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        To preview video recorded
+        <VideoView
+            android:id="@+id/videoPreview"
+            android:layout_width="fill_parent"
+            android:layout_height="400dp"
+            android:visibility="gone"
+             />
+        
+        <ImageButton
+		    android:id="@+id/play_button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_gravity="center_vertical|center_horizontal"
+		    android:src="@drawable/ic_launcher"
+		     android:visibility="gone"/>
+    </LinearLayout> -->
+<RelativeLayout
+         android:id="@+id/vedio_complete_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="600dp"
+        android:layout_marginTop="10dp"
+        android:visibility="visible"
+        android:orientation="horizontal" >
+
+        <VideoView
+            android:id="@+id/videoPreview"
+            android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignParentEnd="true"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentRight="true"
+	        android:layout_alignParentStart="true"
+	        android:layout_alignParentTop="true"/>
+        
+      <MediaController
+        android:id="@+id/mediaController1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		/>
+       </RelativeLayout> 
+    </LinearLayout>
+
+  </ScrollView>
+
+</RelativeLayout>

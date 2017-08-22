@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="complete_weight">2</integer>
+    <integer name="weight_division">1</integer>
+</resources>
+

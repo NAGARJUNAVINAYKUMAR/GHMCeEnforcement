@@ -1,0 +1,258 @@
+[
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_ph_print.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_ph_print.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\row.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\row.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_splash.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_splash.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\section_list.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\section_list.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\list_item_device.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\list_item_device.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\sdssdsd.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\sdssdsd.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_preview.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_preview.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_ph_print.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_ph_print.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_pet_count.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_pet_count.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_detained_items.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_detained_items.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_splash.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_splash.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\list_item_device.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\list_item_device.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_print_display.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_print_display.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_paired_devices.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_paired_devices.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_preview.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_preview.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_reports.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_reports.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\list_group.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\list_group.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_sections.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_sections.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_ip_settings.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_ip_settings.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\myprogressdialog.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\myprogressdialog.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_settings.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_settings.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_main.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_main.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_witness_form.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_witness_form.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_dashboard.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_dashboard.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_previous__history.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_previous__history.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_bluetooth__paired_list.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_bluetooth__paired_list.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_previous__history.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_previous__history.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_otp_input.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_otp_input.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_generate_case.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_generate_case.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\row.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\row.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_paired_devices.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_paired_devices.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_capture_images.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_capture_images.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_otp_input.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_otp_input.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_main.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_main.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_dashboard.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_dashboard.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\list_item.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\list_item.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_login.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_login.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\childrow.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\childrow.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_detained_items.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_detained_items.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\childrow.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\childrow.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_capture_video.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_capture_video.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_ip_settings.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_ip_settings.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_print_display.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_print_display.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_login.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_login.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_settings.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_settings.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_capture_video.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_capture_video.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\sdssdsd.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\sdssdsd.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_seized_items.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_seized_items.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\section_list.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\section_list.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_reports.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_reports.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_duplicat_print.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_duplicat_print.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\list_item.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\list_item.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\custom_progress_dialog.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\custom_progress_dialog.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_seized_items.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_seized_items.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\list_group.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\list_group.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_capture_images.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_capture_images.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\myprogressdialog.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\myprogressdialog.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_pet_count.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\activity_pet_count.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_witness_form.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_witness_form.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_duplicat_print.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_duplicat_print.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\custom_progress_dialog.xml",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\layout-sw600dp\\custom_progress_dialog.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_generate_case.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_generate_case.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_sections.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_sections.xml"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\activity_bluetooth__paired_list.xml",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\layout-sw600dp\\activity_bluetooth__paired_list.xml"
+    }
+]

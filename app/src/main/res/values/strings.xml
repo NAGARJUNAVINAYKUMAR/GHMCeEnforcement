@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GHMC\ne-Enforcement</string>
+    <string name="app_version">Version-1.0</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_login">Login</string>
+    <string name="welcome_txt">WELCOME</string>
+    <string name="login">Login</string>
+    <string name="cancel">Cancel</string>
+    <string name="submit">Submit</string>
+    <string name="user_id_hint">User ID</string>
+    <string name="password_hint">Password</string>
+    <string name="ip_settings">IP Settings</string>
+    <string name="save">Save</string>
+    <string name="live">Live</string>
+    <string name="test">Test</string>
+    <string name="capture_pics">Please Capture Scene Photos</string>
+    <string name="manager_based">Manager</string>
+    <string name="shop_based">Shopkeeper</string>
+    <string name="firm_based">Firm Based</string>
+    <string name="owner_based">Owner</string>
+    <string name="person_based">Person based</string>
+    <string name="shop_based1">Shop based</string>
+    <string name="images">Encroachment Information</string>
+    <string name="measurements">Encroachment Measurements</string>
+    <string name="length">Length:</string>
+    <string name="length_hint">Enter Length</string>
+    <string name="width">Width:</string>
+    <string name="width_hint">Enter Width</string>
+    <string name="height">Height</string>
+    <string name="height_hint">Enter Height</string>
+    <string name="aadhaar">Aadhaar</string>
+    <string name="aadhaar_image">Please Capture Image</string>
+    <string name="get_aadhaar">Get Details</string>
+    <string name="aadhaar_details">Respondent Details</string>
+    <string name="owner_aadhaar_details">Owner Details</string>
+    <string name="aadhaar_hint">Enter Aadhaar Number</string>
+    <string name="add_panchayathdhars">Add PANCHAYATHDARS </string>
+    <string name="panchayathdhars_submit">Save </string>
+    <string name="add_panch2">Add Panchayathdhar </string>
+    <string name="shop_or_firm">Respondent Details</string>
+    <string name="firmname">Firm Name </string>
+    <string name="firmname_hint">Enter Shop Name</string>
+    <string name="firm_ownername">Firm Owner Name</string>
+    <string name="id_presence">ID Proof</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="third_gender">Third Gender</string>
+    <string name="select_date">Select Date</string>
+    <string name="get_details">Get</string>
+    <string name="back">Back</string>
+    <string name="name">Name</string>
+    <string name="name_hint">Enter Name</string>
+    <string name="father_name">Father Name</string>
+    <string name="father_name_hint">Enter Respondent Father Name</string>
+    <string name="mobile">Mobile No</string>
+    <string name="mobile_hint">Enter Mobile No</string>
+    <string name="firm_ownername_hint">Enter Shop Owner Name</string>
+    <string name="tin_no">TIN No </string>
+    <string name="tin_no_hint">Enter TIN Number</string>
+    <string name="father_hint">Enter Father Name</string>
+    <string name="phone">Mobile No</string>
+    <string name="phone_hint">Enter Phone Number</string>
+    <string name="age">Age</string>
+    <string name="age_hint">Enter Age</string>
+    <string name="address">Address</string>
+    <string name="address_hint">Enter Complete Address</string>
+    <string name="click_addImage">Click to Add Image</string>
+    <string name="click_addFPs">Click to Add Finger Print</string>
+    <string name="add_resp_btn">Add Respondent</string>
+    <string name="star">*</string>
+    <string name="add_leaser_btn">Add Leaser</string>
+    <string name="add_manager_btn">Add Manager</string>
+    <string name="add_sections">Select Sections</string>
+    <string name="add_witness">Select Witness</string>
+    <string name="witness_btn">Witness Form</string>
+    <string name="seizedItems">Add Detained Items</string>
+    <string name="respondent2">Respondent 2 Details</string>
+    <string name="remove_resp">Remove Respondent</string>
+    <string name="respondent3">Respondent 3 Details</string>
+    <string name="respondent4">Respondent 4 Details</string>
+    <string name="witness_details">Witness Details</string>
+    <string name="sections_added">Sections Added</string>
+    <string name="idproof_based">ID Proof Based</string>
+    <string name="fps_based">Finger Print Based</string>
+    <string name="select_idhint">Selected ID</string>
+    <string name="proof_yes">Yes</string>
+    <string name="proof_no">No</string>
+    <string name="id_Options_prompt">Choose an Option</string>
+    <string name="witness_particulars">Witness Particulars</string>
+    <string name="wt_name">Name </string>
+    <string name="wt_name_hint">Enter Name </string>
+    <string name="locality">City / District</string>
+    <string name="locality_hint">Enter City/District Name</string>
+    <string name="add_wt">Add Witness</string>
+    <string name="wt_form2">Witness Form 2</string>
+    <string name="wt_form3">Witness Form 3</string>
+    <string name="wt_form4">Witness Form 4</string>
+    <string name="remove_wt">Remove Witness</string>
+
+    <string-array name="id_Options_list">
+        <item>Select ID</item>
+        <item>Aadhar</item>
+        <item>Driving License</item>
+        <item>Vehicle RC</item>
+        <item>PAN Card</item>
+        <item>Voter ID</item>
+        <item>Ration Card</item>
+        <item>Passport</item>
+        <item>Contact Number</item>
+    </string-array>
+
+    <string name="section_category">Select Sections Category</string>
+
+    <string-array name="sections_list">
+        <item>Select Section</item>
+        <item>Engineering</item>
+        <item>Town Planning</item>
+        <item>Metro Water Supply</item>
+        <item>Sewerage Board</item>
+        <item>Veterinary</item>
+        <item>Healthe &amp; Sanitation</item>
+    </string-array>
+
+    <string name="server_url_hint">Enter Server URL</string>
+    <string name="generate_case">Generate Case</string>
+    <string name="previous_history">Previous History</string>
+    <string name="duplicate_print">Duplicate Print</string>
+    <string name="reports">Reports</string>
+    <string name="download_masters">Download Masters</string>
+    <string name="settings">Settings</string>
+    <string name="video">Capture Video</string>
+    <string name="nationality">Nationality</string>
+    <string name="indian">Indian</string>
+    <string name="foreigner">Foreigner</string>
+    <string name="passport">Passport</string>
+    <string name="passport_hint">Enter Passport</string>
+    <string name="nri">International Driving License Number</string>
+    <string name="nri_hint">Enter Driving License Number</string>
+
+    <color name="text_color">#195C2A</color>
+
+    <string name="title_activity_ip_settings">IP_settings</string>
+    <string name="title_activity_dashboard">Dashboard</string>
+    <string name="title_activity_generate_case">GenerateCase</string>
+    <string name="title_activity_previous__history">Previous_History</string>
+    <string name="title_activity_duplicat_print">DuplicatPrint</string>
+    <string name="title_activity_reports">Reports</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_print_display">PrintDisplay</string>
+    <string name="reports_prompt">Select Report Type</string>
+
+    <string-array name="reports_menu">
+        <item>-Select Report Type-</item>
+        <item>Officer DSR Report</item>
+        <item>PS DSR Report</item>
+    </string-array>
+
+    <string name="title_activity_witness_form">WitnessForm</string>
+    <string name="title_activity_seized_items">SeizedItems</string>
+    <string name="title_activity_sections">Sections</string>
+    <string name="dashoboard_psName">PS Name :</string>
+    <string name="dashboard_offName">Officer Name :</string>
+    <string name="title_activity_preview">Preview</string>
+    <string name="title_activity_pet_count">Pet_count</string>
+    <string name="title_activity_capture_images">CaptureImages</string>
+    <string name="title_activity_capture_video">CaptureVideo</string>
+    <string name="title_activity_detained_items">DetainedItems</string>
+    <string name="title_activity_splash">Splash</string>
+    <string name="title_activity_ph_print">Ph_printActivity</string>
+
+</resources>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/edittextstyle" >
+
+  <!-- Header aligned to top -->
+  <RelativeLayout
+    android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:visibility="gone"
+    android:gravity="center" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="fill_parent"
+        android:layout_height="135dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/header" />
+  </RelativeLayout>
+
+  <!-- Footer aligned to bottom -->
+  <RelativeLayout
+    android:id="@+id/footer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:visibility="gone"
+    android:gravity="center" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="0dp"
+        android:gravity="center"
+        android:text="DEVELOPED BY MOTHER TECHNOLOGIES PROJECT VENTURES"
+        android:textColor="#cccccc"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+  </RelativeLayout>
+
+    <LinearLayout
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_horizontal"
+      android:layout_above="@id/footer"
+      android:layout_below="@id/header" 
+      android:orientation="vertical" >
+      
+       <TextView
+           android:id="@+id/tv_status"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:gravity="center"
+           android:text="Bluetooth Devices Found"
+           android:textColor="@color/text_color"
+           android:textSize="35sp"
+           android:textStyle="bold" />
+       
+       <TextView
+           android:id="@+id/tv_device"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:gravity="center"
+           android:text="Bluetooth Devices Found"
+           android:textColor="@color/text_color"
+           android:textSize="35sp"
+           android:visibility="gone"
+           android:textStyle="bold" />
+       
+    
+    <ListView
+        android:id="@+id/lv_paired"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:cacheColorHint="#001b50" />
+ 
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/background_screen" >
+
+  <!-- Header aligned to top -->
+  <RelativeLayout
+    android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:gravity="center" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:src="@drawable/header"
+        android:contentDescription="@null"
+        android:scaleType="fitXY" />
+    
+<!--     <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_version"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:layout_below="@id/imageView1"
+        android:layout_marginTop="-22dp"
+        android:layout_centerInParent="true"/>
+ -->  </RelativeLayout>
+
+  <!-- Footer aligned to bottom -->
+  <RelativeLayout
+    android:id="@+id/footer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:gravity="center" >
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="fill_parent"
+        android:layout_height="42dp"
+        android:src="@drawable/footer" 
+        android:contentDescription="@null"
+        android:scaleType="fitXY" />
+  </RelativeLayout>
+
+  <!-- Scrollable Content below header and above footer -->
+  <ScrollView
+    android:id="@+id/container"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_screen"
+    android:layout_above="@id/footer"
+    android:layout_below="@id/header" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:orientation="vertical" >
+  
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Capture Images"
+            android:textColor="@color/text_color"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+        
+        <ImageView
+            android:id="@+id/encroachment_image"
+            android:layout_width="450dp"
+            android:layout_height="480dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:contentDescription="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/photo" />
+        
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                android:weightSum="1" >
+                
+                <Button
+                    android:id="@+id/back_Btn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/navi_blue_btn_style"
+                    android:text="Back"
+                    android:textColor="#ffffff"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+                
+                <Button
+                    android:id="@+id/next_image"
+                    android:layout_width="fill_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/navi_blue_btn_style"
+                    android:text="Next Image"
+                    android:textColor="#ffffff"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        
+        
+        <LinearLayout
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:layout_marginLeft="10dp"
+      android:layout_marginRight="5dp"
+      android:orientation="vertical" >
+
+                <LinearLayout
+                    android:id="@+id/detendL"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical" >
+
+                </LinearLayout>
+            
+                <LinearLayout
+                   android:id="@+id/seize_layout2"
+                   android:layout_width="fill_parent"
+                   android:layout_height="65dp"
+                   android:layout_margin="5dp"
+                   android:layout_marginTop="10dp"
+                   android:gravity="center"
+                   android:visibility="gone"
+                   android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/Itemname_ET2"
+                    android:layout_width="250dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittextstyle"
+                    android:gravity="center"
+                    android:hint="Seized Item Name"
+                    android:inputType="textCapCharacters"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/qty_ET2"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edittextstyle"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Qty"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:textSize="18dp"
+                    android:textColor="#000000" />
+                
+                <Button
+                    android:id="@+id/remove1"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/navi_blue_btn_style"
+                    android:gravity="center"
+                    android:inputType="textCapCharacters"
+                    android:text="Remove"
+                    android:textColor="#ffffff"
+                    android:textSize="18dp" />
+                
+                
+
+            </LinearLayout>
+            
+              <LinearLayout
+                   android:id="@+id/seize_layout3"
+                   android:layout_width="fill_parent"
+                   android:layout_height="65dp"
+                   android:layout_margin="5dp"
+                   android:layout_marginTop="10dp"
+                   android:gravity="center"
+                   android:visibility="gone"
+                   android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/Itemname_ET3"
+                    android:layout_width="250dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittextstyle"
+                    android:gravity="center"
+                    android:hint="Seized Item Name"
+                    android:inputType="textCapCharacters"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/qty_ET3"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edittextstyle"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Qty"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:textSize="18dp"
+                    android:textColor="#000000" />
+                
+                <Button
+                    android:id="@+id/remove2"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/navi_blue_btn_style"
+                    android:gravity="center"
+                    android:inputType="textCapCharacters"
+                    android:text="Remove"
+                    android:textColor="#ffffff"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+            
+                <LinearLayout
+                   android:id="@+id/seize_layout4"
+                   android:layout_width="fill_parent"
+                   android:layout_height="65dp"
+                   android:layout_margin="5dp"
+                   android:layout_marginTop="10dp"
+                   android:gravity="center"
+                   android:visibility="gone"
+                   android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/Itemname_ET4"
+                    android:layout_width="250dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittextstyle"
+                    android:gravity="center"
+                    android:hint="Seized Item Name"
+                    android:inputType="textCapCharacters"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/qty_ET4"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edittextstyle"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Qty"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:textSize="18dp"
+                    android:textColor="#000000" />
+                
+                <Button
+                    android:id="@+id/remove3"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/navi_blue_btn_style"
+                    android:gravity="center"
+                    android:inputType="textCapCharacters"
+                    android:text="Remove"
+                    android:textColor="#ffffff"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+            
+                 <LinearLayout
+                   android:id="@+id/seize_layout5"
+                   android:layout_width="fill_parent"
+                   android:layout_height="65dp"
+                   android:layout_margin="5dp"
+                   android:layout_marginTop="10dp"
+                   android:gravity="center"
+                   android:visibility="gone"
+                   android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/Itemname_ET5"
+                    android:layout_width="250dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittextstyle"
+                    android:gravity="center"
+                    android:hint="Seized Item Name"
+                    android:inputType="textCapCharacters"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/qty_ET5"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edittextstyle"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Qty"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:textSize="18dp"
+                    android:textColor="#000000" />
+                
+                <Button
+                    android:id="@+id/remove4"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/navi_blue_btn_style"
+                    android:gravity="center"
+                    android:inputType="textCapCharacters"
+                    android:text="Remove"
+                    android:textColor="#ffffff"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+            
+             <LinearLayout
+                   android:id="@+id/seize_layout6"
+                   android:layout_width="fill_parent"
+                   android:layout_height="65dp"
+                   android:layout_margin="5dp"
+                   android:layout_marginTop="10dp"
+                   android:gravity="center"
+                   android:visibility="gone"
+                   android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/Itemname_ET6"
+                    android:layout_width="250dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittextstyle"
+                    android:gravity="center"
+                    android:hint="Seized Item Name"
+                    android:inputType="textCapCharacters"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/qty_ET6"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edittextstyle"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Qty"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:textSize="18dp"
+                    android:textColor="#000000" />
+                
+                <Button
+                    android:id="@+id/remove5"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/navi_blue_btn_style"
+                    android:gravity="center"
+                    android:inputType="textCapCharacters"
+                    android:text="Remove"
+                    android:textColor="#ffffff"
+                    android:textSize="18dp" />
+
+            </LinearLayout>  
+            
+              <LinearLayout
+                   android:id="@+id/seize_layout7"
+                   android:layout_width="fill_parent"
+                   android:layout_height="65dp"
+                   android:layout_margin="5dp"
+                   android:layout_marginTop="10dp"
+                   android:gravity="center"
+                   android:visibility="gone"
+                   android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/Itemname_ET7"
+                    android:layout_width="250dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittextstyle"
+                    android:gravity="center"
+                    android:hint="Seized Item Name"
+                    android:inputType="textCapCharacters"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/qty_ET7"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edittextstyle"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Qty"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:textSize="18dp"
+                    android:textColor="#000000" />
+                
+                <Button
+                    android:id="@+id/remove6"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/navi_blue_btn_style"
+                    android:gravity="center"
+                    android:inputType="textCapCharacters"
+                    android:text="Remove"
+                    android:textColor="#ffffff"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+            
+              <LinearLayout
+                   android:id="@+id/seize_layout8"
+                   android:layout_width="fill_parent"
+                   android:layout_height="65dp"
+                   android:layout_margin="5dp"
+                   android:layout_marginTop="10dp"
+                   android:gravity="center"
+                   android:visibility="gone"
+                   android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/Itemname_ET8"
+                    android:layout_width="250dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittextstyle"
+                    android:gravity="center"
+                    android:hint="Seized Item Name"
+                    android:inputType="textCapCharacters"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/qty_ET8"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edittextstyle"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Qty"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:textSize="18dp"
+                    android:textColor="#000000" />
+                
+                <Button
+                    android:id="@+id/remove7"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/navi_blue_btn_style"
+                    android:gravity="center"
+                    android:inputType="textCapCharacters"
+                    android:text="Remove"
+                    android:textColor="#ffffff"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+            
+                <LinearLayout
+                   android:id="@+id/seize_layout9"
+                   android:layout_width="fill_parent"
+                   android:layout_height="65dp"
+                   android:layout_margin="5dp"
+                   android:layout_marginTop="10dp"
+                   android:gravity="center"
+                   android:visibility="gone"
+                   android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/Itemname_ET9"
+                    android:layout_width="250dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittextstyle"
+                    android:gravity="center"
+                    android:hint="Seized Item Name"
+                    android:inputType="textCapCharacters"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/qty_ET9"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edittextstyle"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Qty"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:textSize="18dp"
+                    android:textColor="#000000" />
+                
+                <Button
+                    android:id="@+id/remove8"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/navi_blue_btn_style"
+                    android:gravity="center"
+                    android:inputType="textCapCharacters"
+                    android:text="Remove"
+                    android:textColor="#ffffff"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+                
+                
+               <LinearLayout
+                   android:id="@+id/seize_layout10"
+                   android:layout_width="fill_parent"
+                   android:layout_height="65dp"
+                   android:layout_margin="5dp"
+                   android:layout_marginTop="10dp"
+                   android:gravity="center"
+                   android:visibility="gone"
+                   android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/Itemname_ET10"
+                    android:layout_width="250dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/edittextstyle"
+                    android:gravity="center"
+                    android:hint="Seized Item Name"
+                    android:inputType="textCapCharacters"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#000000"
+                    android:textSize="18dp" />
+
+                <EditText
+                    android:id="@+id/qty_ET10"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edittextstyle"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Qty"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:textSize="18dp"
+                    android:textColor="#000000" />
+                
+                <Button
+                    android:id="@+id/remove9"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/navi_blue_btn_style"
+                    android:gravity="center"
+                    android:inputType="textCapCharacters"
+                    android:text="Remove"
+                    android:textColor="#ffffff"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+
+      </LinearLayout>
+        
+    </LinearLayout>
+
+  </ScrollView>
+
+</RelativeLayout>

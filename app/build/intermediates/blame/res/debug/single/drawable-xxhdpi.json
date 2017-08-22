@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\footer.png",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\drawable-xxhdpi\\footer.png"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\footer.png",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\drawable-xxhdpi\\footer.png"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_launcher.png",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\drawable-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\ic_launcher.png",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\drawable-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\header.png",
+        "source": "D:\\Android\\GHMCeEnforcement\\app\\src\\main\\res\\drawable-xxhdpi\\header.png"
+    },
+    {
+        "merged": "D:\\Android\\GHMCeEnforcement1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi\\header.png",
+        "source": "D:\\Android\\GHMCeEnforcement1\\app\\src\\main\\res\\drawable-xxhdpi\\header.png"
+    }
+]
