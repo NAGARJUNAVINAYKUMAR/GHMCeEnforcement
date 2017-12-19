@@ -1,19 +1,5 @@
 package com.mtpv.ghmcepettycase;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.UUID;
-
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,12 +18,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.text.Html;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,8 +43,23 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mtpv.ghmcenforcement.BuildConfig;
 import com.mtpv.ghmcenforcement.R;
 import com.mtpv.services.DataBase;
+
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.UUID;
 
 @SuppressLint("SdCardPath")
 public class Settings extends Activity {
@@ -138,7 +142,12 @@ public class Settings extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				new Async_UpdateApk().execute();
+				if(isOnline()) {
+					new Async_UpdateApk().execute();
+				}else
+				{
+					showToast("Please Check Your Network Connection");
+				}
 			}
 		});
 
@@ -155,7 +164,6 @@ public class Settings extends Activity {
 				if (cursor.moveToFirst()) {
 					do {
 
-						Log.i("1 :", "" + cursor.getString(0));
 						BLT_Name = cursor.getString(0);
 
 						et_bt_address.setText(BLT_Name);
@@ -170,8 +178,6 @@ public class Settings extends Activity {
 
 		}
 
-		/* BLUETOOTH CONNECTIVITY */
-		// if (et_bt_address.getText().toString().trim().equals("")) {
 		bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		CheckBlueToothState();
 		registerReceiver(ActionFoundReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
@@ -180,17 +186,14 @@ public class Settings extends Activity {
 
 		lv_bt_items.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Log.i("bluetoothFLG and pinpadFLG********", "" + bluetoothFLG + " And " + pinpadFLG);
 
 				if (bluetoothFLG) {
-					Log.i("bluetoothFLG Bluetooth********", "" + bluetoothFLG);
 					/**
 					 * Toast.makeText(getApplicationContext(),
 					 * ""+listDevicesFound.getCount(),
 					 * Toast.LENGTH_SHORT).show();
 					 */
 					String selection = (String) (lv_bt_items.getItemAtPosition(position));
-					Log.i("selection Bluetooth********", ""+ selection);
 					Toast.makeText(getApplicationContext(), "BLUETOOTH ADDRESS IS SAVED SUCCESSFULLY",
 							Toast.LENGTH_SHORT).show();
 					address = "";
@@ -257,10 +260,10 @@ public class Settings extends Activity {
 		});
 
 		scan_bluetooth.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View arg0) {
-				
+
 				bluetoothFLG = true;
 				pinpadFLG = false;
 
@@ -271,7 +274,7 @@ public class Settings extends Activity {
 				progressDialog.show();
 
 				runOnUiThread(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						btArrayAdapter.clear();
@@ -378,28 +381,12 @@ public class Settings extends Activity {
 			FTPClient ftpClient = new FTPClient();
 
 			try {
-				if (ftpString != null) {
-					server = ftpString.split("\\:")[0];
 
-					port = Integer.parseInt(ftpString.split("\\:")[1]);
-
-				} else if (IP_settings.et_ftp_url.getText().toString().trim() != null) {
-					// server = IP_settings.et_ftp_url.getText().toString() ;
-					server = IP_settings.et_ftp_url.getText().toString()
-							.split("\\:")[0];
-
-					port = Integer.parseInt(IP_settings.et_ftp_url.getText()
-							.toString().split("\\:")[1]);
-				}
-				
 				if (null != Login.URL && Login.URL.equals("https://www.echallan.org/GHMCWebService")) {
 					server = IP_settings.open_ftp_fix;
-					}else{
+				}else{
 					server = IP_settings.ftp_fix;
-					}
-				
-				Log.i("server URL ::", "" + server);
-				Log.i("port URL ::", "" + port);
+				}
 
 				ftpClient.connect(server, port);
 				ftpClient.login(username, password);
@@ -496,31 +483,7 @@ public class Settings extends Activity {
 
 				else {
 
-					/*
-					 * try { Log.i("SUCCess LOG 1::::::::",
-					 * "***********ENTERED*******"); SQLiteDatabase db2 =
-					 * openOrCreateDatabase( DBHelper.DATABASE_NAME,
-					 * MODE_PRIVATE, null); db2.execSQL("DROP TABLE IF EXISTS "
-					 * + DBHelper.psName_table);
-					 * db2.execSQL("DROP TABLE IF EXISTS " +
-					 * DBHelper.wheelercode_table);
-					 * db2.execSQL(DBHelper.psNamesCreation);
-					 * db2.execSQL(DBHelper.wheelerCodeCreation);
-					 * 
-					 * db2.close();
-					 * 
-					 * SharedPreferences preferences =
-					 * getSharedPreferences("PREFERENCE", 0);
-					 * SharedPreferences.Editor editor = preferences.edit();
-					 * editor.clear(); editor.commit();
-					 * 
-					 * } catch (Exception e) { // TODO: handle exception
-					 * e.printStackTrace();
-					 * Log.i("CATCH BLOG 1::::::::","***********ENTERED*******"
-					 * );
-					 * 
-					 * }
-					 */
+
 					totalSize = remoteFile1.length();
 
 					runOnUiThread(new Runnable() {
@@ -557,29 +520,36 @@ public class Settings extends Activity {
 						ftpClient.logout();
 						ftpClient.disconnect();
 
-						/*
-						 * try { Log.i("SUCCess LOG ::::::::",
-						 * "***********ENTERED*******"); db.open();
-						 * db.execSQL("delete from " + DBHelper.psName_table); }
-						 * catch (Exception e) { // TODO: handle exception
-						 * e.printStackTrace(); Log.i("CATCH BLOG ::::::::",
-						 * "***********ENTERED*******"); db.close(); }
-						 */
 
 						finish();
 
-						System.out
-								.println("File #1 has been downloaded successfully.");
+						if (Build.VERSION.SDK_INT <= 23) {
 
-						Intent intent = new Intent(Intent.ACTION_VIEW);
-						intent.setDataAndType(Uri.fromFile(new File(Environment
-								.getExternalStorageDirectory()
-								+ "/Download/"
-								+ "GHMC.apk")),
-								"application/vnd.android.package-archive");
-						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(intent);
+							Intent intent = new Intent(Intent.ACTION_VIEW);
+							intent.setDataAndType(
+									Uri.fromFile(new File(
+											Environment
+													.getExternalStorageDirectory()
+													+ "/Download/"
+													+ "GHMC.apk")),
+									"application/vnd.android.package-archive");
+							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							startActivity(intent);
+						}
 
+						else {
+
+							Uri apkUri = FileProvider.getUriForFile(Settings.this, BuildConfig.APPLICATION_ID +
+									".provider", new File(
+									Environment
+											.getExternalStorageDirectory()
+											+ "/Download/"
+											+ "GHMC.apk"));
+							Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+							intent.setData(apkUri);
+							intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+							startActivity(intent);
+						}
 					}
 				}
 
@@ -612,12 +582,12 @@ public class Settings extends Activity {
 
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
-		case PROGRESS_DIALOG:
-			ProgressDialog pd = ProgressDialog.show(this, "", "", true);
-			pd.setContentView(R.layout.custom_progress_dialog);
-			pd.setCancelable(false);
+			case PROGRESS_DIALOG:
+				ProgressDialog pd = ProgressDialog.show(this, "", "", true);
+				pd.setContentView(R.layout.custom_progress_dialog);
+				pd.setCancelable(false);
 
-			return pd;
+				return pd;
 		}
 		return null;
 	}
@@ -668,5 +638,13 @@ public class Settings extends Activity {
 		unregisterReceiver(ActionFoundReceiver);
 
 	}
+
+	public Boolean isOnline() {
+		ConnectivityManager conManager = (ConnectivityManager) this
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo nwInfo = conManager.getActiveNetworkInfo();
+		return nwInfo != null;
+	}
+
 
 }

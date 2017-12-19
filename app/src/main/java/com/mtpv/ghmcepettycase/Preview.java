@@ -20,6 +20,8 @@ import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -373,58 +375,6 @@ public class Preview extends Activity implements LocationListener {
 		owner_MobileNo = case_Vals.getString("owner_MobileNo", "");
 		owner_address = case_Vals.getString("owner_address", "");
 
-		Log.i("tine_No ::::", tine_No);
-		Log.i("image1 ::::", image1);
-		Log.i("image2 ::::", image2);
-		Log.i("owner_image ::::", owner_image);
-		Log.i("unitCode  ::::", unitCode);
-		Log.i("unitName ::::", unitName);
-		Log.i("bookedPsCode ::::", bookedPsCode);
-		Log.i("bookedPsName ::::", bookedPsName);
-		Log.i("pointCode ::::", pointCode);
-		Log.i("pointName ::::", pointName);
-		Log.i("pidCd ::::", pidCd);
-		Log.i("pidName ::::", pidName);
-		Log.i("password ::::", password);
-		Log.i("cadreCD ::::", cadreCD);
-		Log.i("cadre ::::", cadre);
-		Log.i("onlineMode ::::", onlineMode);
-		Log.i("imageEvidence ::::", imageEvidence);
-		Log.i("offenceImg1 ::::", offenceImg1);
-		Log.i("offenceDt ::::", offenceDt);
-		Log.i("offenceTime ::::", offenceTime);
-		Log.i("firmRegnNo ::::", firmRegnNo);
-		Log.i("shopName ::::", shopName);
-		Log.i("shopOwnerName ::::", shopOwnerName);
-		Log.i("shopAddress ::::", shopAddress);
-		Log.i("current_location ::::", "" + location);
-		Log.i("psCode ::::", psCode);
-		Log.i("psName ::::", psName);
-		Log.i("respondantName ::::", respondantName);
-		Log.i("respondantFatherName ::::", respondantFatherName);
-		Log.i("respondantAddress ::::", respondantAddress);
-		Log.i("respondantContactNo ::::", respondantContactNo);
-		Log.i("respondantAge ::::", respondantAge);
-		Log.i("IDCode ::::", IDCode);
-		Log.i("IDDetails ::::", IDDetails);
-		Log.i("simId ::::", simId);
-		Log.i("imeiNo ::::", imeiNo);
-		Log.i("macId ::::", macId);
-		Log.i("gpsLatitude ::::", gpsLatitude);
-		Log.i("gpsLongitude ::::", gpsLongitude);
-		Log.i("totalFine ::::", totalFine);
-		Log.i("encrHeight ::::", encrHeight);
-		Log.i("encrWidth ::::", encrWidth);
-		Log.i("encrLength ::::", encrLength);
-		Log.i("shopRunBy ::::", shopRunBy);
-		Log.i("ghmcCirNo ::::", ghmcCirNo);
-		Log.i("ghmcCirName ::::", ghmcCirName);
-		Log.i("basedOn ::::", basedOn);
-		Log.i("offenceImg2 ::::", offenceImg2);
-		Log.i("aadharImg ::::", aadharImg);
-		Log.i("seizedImg ::::", seizedImg);
-		Log.i("detainedItems ::::", detainedItems);
-		Log.i("sections ::::", sections);
 
 		if (shopRunBy.equals("OWNER")) {
 			shoprun_by_txt.setText("Owner Details");
@@ -741,9 +691,19 @@ public class Preview extends Activity implements LocationListener {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				new Async_Submit().execute();
+				if(isOnline()) {
+					new Async_Submit().execute();
+				}else
+				{
+					showToast("Please Check Your Network Connection");
+				}
 			}
 		});
+	}
+	public Boolean isOnline() {
+		ConnectivityManager conManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo nwInfo = conManager.getActiveNetworkInfo();
+		return nwInfo != null;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -825,7 +785,6 @@ public class Preview extends Activity implements LocationListener {
 			
 			// if (isNetworkEnabled) {
 			ServiceHelper.final_resp = ServiceHelper.final_resp != null ? ServiceHelper.final_resp : "";
-			Log.i("ServiceHelper.final_resp ------------->", ""+ ServiceHelper.final_resp);
 
 			if (ServiceHelper.final_resp.equals("1$1")) {
 				TextView title = new TextView(Preview.this);
@@ -918,7 +877,6 @@ public class Preview extends Activity implements LocationListener {
 				btn1.setBackgroundColor(Color.RED);
 
 			} else if (ServiceHelper.final_resp.equals("NA$NA")) {
-				Log.i("condition NA$NA matched ", "yes");
 				TextView title = new TextView(Preview.this);
 				title.setText("GHMC e-Enforcement");
 				title.setBackgroundColor(Color.RED);
@@ -969,7 +927,6 @@ public class Preview extends Activity implements LocationListener {
 				// Log.i("ServiceHelper.final_resp... :",
 				// ServiceHelper.print_resp);
 				String printdata = ServiceHelper.final_resp.trim().split("\\$")[0];
-				Log.i("printdata... :", printdata);
 				generateCaseFLG = true;
 				SharedPreferences prefs = getSharedPreferences("printData", MODE_PRIVATE);
 				SharedPreferences.Editor edit = prefs.edit();

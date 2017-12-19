@@ -148,12 +148,8 @@ public class Previous_History extends Activity {
 		table_layout = (TableLayout) findViewById(R.id.tableLayout);
 		prevoius_history = (LinearLayout) findViewById(R.id.prevoius_history);
 		prevoius_history.setVisibility(View.GONE);
-		// Tv = (TextView)findViewById(R.id.printTv);
 
 		ArrayList<String> prv_det_id_list;
-
-		// lv = (ListView) findViewById(R.id.list);
-		// Tv.setText("");
 
 		firm_prevH_id_layout = (LinearLayout) findViewById(R.id.firm_prevH_id_layout);
 		prevH_id_layout = (LinearLayout) findViewById(R.id.prevH_id_layout);
@@ -214,7 +210,12 @@ public class Previous_History extends Activity {
 				// TODO Auto-generated method stub
 				et_id_text_prev_hist.setText("");
 				prevoius_history.setVisibility(View.GONE);
-				new Async_getIDS().execute();
+				if(isOnline()) {
+					new Async_getIDS().execute();
+				}else
+				{
+					showToast("Please Check Your Network Connection");
+				}
 			}
 		});
 
@@ -457,10 +458,20 @@ public class Previous_History extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if (firm_based.isChecked() == true) {
-					new Asyncprevoius_history_firm().execute();
+					if(isOnline()) {
+						new Asyncprevoius_history_firm().execute();
+					}else {
+						showToast("Please Enable Data Connection!!");
+					}
+
 				}
 				if (prevH_GHMCTIN_based.isChecked() == true) {
-					new Asyncprevoius_history_GHMCTIN().execute();
+
+					if(isOnline()) {
+						new Asyncprevoius_history_GHMCTIN().execute();
+					}else {
+						showToast("Please Enable Data Connection!!");
+					}
 				}
 			}
 		});
@@ -484,9 +495,7 @@ public class Previous_History extends Activity {
 		Cursor loc_cursor = null;
 		// selectedPs_code
 		try {
-			Log.i("query try block ::::", "Enterd");
 			db.open();
-			Log.i("query try block ::::", "Enterd 2");
 			loc_cursor = DataBase.db.rawQuery(id_query, null);
 
 			if (loc_cursor.moveToFirst()) {
@@ -545,43 +554,25 @@ public class Previous_History extends Activity {
 						SoapEnvelope.VER11);
 				envelope.dotNet = true;
 				envelope.setOutputSoapObject(request);
-				Log.i("request", "" + request);
-				
-				// Log.i("WebService.SOAP_ADDRESS ::::::::::::::", "" +
-				// WebService.SOAP_ADDRESS);
 				HttpTransportSE androidHttpTransport = new HttpTransportSE(Login.URL);
-				//Log.i("androidHttpTransport", "" + androidHttpTransport);
 				androidHttpTransport.call(SOAP_ACTION, envelope);
 				
 				Object result = envelope.getResponse();
 				Id_proof_result = result.toString();
-				Log.i("Id_proof_result :::", ""+ Id_proof_result);
-				/*10:TRADE LICENSE NO@
-				1:AADHAAR@
-				2:DRIVING LICENCE@
-				3:PAN CARD@
-				4:PASSPORT@
-				5:VOTER ID@
-				6:ELECTRICITY BILL@
-				7:LPG GAS BILL@
-				8:WATER BILL@
-				9:BSNL PHONE BILL*/
+
 				
 				if ("NA".equals(Id_proof_result)
 						|| "anyType{}".equals(Id_proof_result)
 						|| Id_proof_result == null) {
 					Id_proof_result = null;
 				} else {
-					// resp_array = new String[0];
 					Id_proof_result = result.toString();
 					Previous_History.resp_array = Id_proof_result.split("@");
-					Log.i("enter in to do in background id detils size::::::::::",
-							"" + Previous_History.resp_array.length);
 				}
-				// INSERT ID PROOF DETAILS END
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();
+				Id_proof_result = null;
 			}
 			return null;
 		}
@@ -597,24 +588,20 @@ public class Previous_History extends Activity {
 			idDetails_arr.clear();
 			for (int i = 0; i < resp_array.length; i++) {
 				String IdProofs = Previous_History.resp_array[i].split("\\:")[1];
-				Log.i("allIdproofs", IdProofs);
 				idDetails_arr.add(IdProofs);
 			}
 			/************** for put in to a list end for show *************/
 			
 			if (Previous_History.Id_proof_result.trim() != null) {
 
-				Log.i("enter in to post execute id detils size::::::::::", ""
-						+ Previous_History.resp_array.length);
+
 				Previous_History.resp_array = Previous_History.Id_proof_result.split("\\@");
 
 				for (String idProofDet : Previous_History.resp_array) {
 					String[] idDet = idProofDet.split("\\:");
 
 					try {
-						Log.i("All Points Values :::", "" + idDet[0] + "\n " + idDet[1]);
 						idDetailsMap.put("" + idDet[1].trim(), "" + idDet[0].trim());
-						Log.i("All Points Values :::", "" + idDet[0] + "\n " + idDet[1]);
 					} catch (Exception e) {
 						// TODO: handle exception
 						e.printStackTrace();
@@ -649,7 +636,6 @@ public class Previous_History extends Activity {
 										int which) {
 									// TODO Auto-generated method stub
 									prevH_id_options.setText(idDetails_arr.get(which));
-									Log.i("Id proof Selected :::", "" + idDetails_arr.get(which));
 									String id_proof_code = null;
 									Selected_id_prrof = "" + prevH_id_options.getText().toString();
 									for (String id_code : idDetailsMap.keySet()) {
@@ -658,7 +644,6 @@ public class Previous_History extends Activity {
 											Log.i("id_proof_code ::", "" + id_proof_code);
 											selectedId_Code = id_proof_code;
 										}
-										Log.i("id_proof_code ::", "" + id_proof_code);
 									}
 								}
 							});
@@ -683,8 +668,6 @@ public class Previous_History extends Activity {
 			String idCode = "" + selectedId_Code;
 			String idValue = et_id_text_prev_hist.getText().toString().trim();
 			// String idCode,String idValue,String firmName
-			Log.i("Seleceted id  code ::::", "" + selectedId_Code);
-			Log.i("Seleceted id   ::::", "" + Selected_id_prrof);
 			ServiceHelper.getPreviousHstry(idCode, idValue, "", "");
 			id_history_resp_arr = new ArrayList<String>();
 			id_history_resp_arr.clear();
@@ -698,15 +681,7 @@ public class Previous_History extends Activity {
 			removeDialog(PROGRESS_DIALOG);
 
 			String response_id = ServiceHelper.prv_hisrty_resp;
-			
-			/*{"PREVIOUS_DETAILS":[{"CHALLAN_NO":"HYD003B170002046","OFFENCE_DT":"2017-02-17","SECTION_NAME":"39(b)"},
-            {"CHALLAN_NO":"HYD003B170003101","OFFENCE_DT":"2017-02-22","SECTION_NAME":"39(b)"},
-            {"CHALLAN_NO":"HYD003B170003119","OFFENCE_DT":"2017-03-03","SECTION_NAME":"39(b)"},
-            {"CHALLAN_NO":"HYD003B170003173","OFFENCE_DT":"2017-03-07","SECTION_NAME":"39(b)"},
-            {"CHALLAN_NO":"HYD003B170003256","OFFENCE_DT":"2017-03-10","SECTION_NAME":"39(b)"},
-            {"CHALLAN_NO":"GHMC8000000432","OFFENCE_DT":"2017-02-06","SECTION_NAME":"407(1)"},
-            {"CHALLAN_NO":"GHMC8000000470","OFFENCE_DT":"2017-02-10","SECTION_NAME":"407(1)"},
-            {"CHALLAN_NO":"GHMC8000000474","OFFENCE_DT":"2017-02-10","SECTION_NAME":"407(1)"}]}*/
+
 			
 			SimpleDateFormat parse = new SimpleDateFormat("yyyy-mm-dd");
 			SimpleDateFormat format = new SimpleDateFormat("dd-mm-yyyy");
@@ -1174,8 +1149,7 @@ public class Previous_History extends Activity {
 													.execute();
 											Log.i("ticket number tv:::::::", ""
 													+ tv);
-											Log.i("ticket number eticket:::::::",
-													"" + eticketNo);
+
 										}
 									});
 
@@ -1236,7 +1210,6 @@ public class Previous_History extends Activity {
 
 			SharedPreferences TableValues = getSharedPreferences("TableValues", MODE_PRIVATE);
 			eticketNo = TableValues.getString("eticketNo", "");
-			Log.i("eticketNo at service calling :::::::", "" + eticketNo);
 			ServiceHelper.getDuplicatePrintByEticket(eticketNo);
 			return null;
 		}
@@ -1247,7 +1220,6 @@ public class Previous_History extends Activity {
 			super.onPostExecute(result);
 			removeDialog(PROGRESS_DIALOG);
 			PRINT_DATA_ID = ServiceHelper.print_resp;
-			Log.i("print Response by ticket no ::::::::::", "" + PRINT_DATA_ID);
 
 			if (PRINT_DATA_ID != null) {
 				previoushistoryFLG = true;
@@ -1344,5 +1316,14 @@ public class Previous_History extends Activity {
 
 		table_layout.addView(tr, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 	}
+
+	public Boolean isOnline() {
+		ConnectivityManager conManager = (ConnectivityManager) this
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo nwInfo = conManager.getActiveNetworkInfo();
+		return nwInfo != null;
+	}
+
+
 }
 

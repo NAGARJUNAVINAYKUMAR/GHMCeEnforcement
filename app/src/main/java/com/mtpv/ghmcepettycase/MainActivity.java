@@ -24,19 +24,16 @@ public class MainActivity extends Activity{
         /*******start to check the heap memory***********/
         Runtime rt = Runtime.getRuntime();
         long maxMemory = rt.maxMemory();
-        Log.i("onCreate", "maxMemory:" + Long.toString(maxMemory));
         /*******end to check the heap memory***********/
-        
+
         /*******start to check the class memory***********/
         ActivityManager am = (ActivityManager)getSystemService(ACTIVITY_SERVICE);
         int memoryClass = am.getMemoryClass();
-        Log.i("onCreate", "memoryClass:" + Integer.toString(memoryClass));
         /*******end to check the class memory***********/
         
 		/**************Adding Shortcut of Application**************/
 	    SharedPreferences prefs = getSharedPreferences("ShortCutPrefs", MODE_PRIVATE);
 	    if(!prefs.getBoolean("isFirstTime", false)){
-	    	Log.i("*******addShortcut*************", "**********addShortcut*******");
 	        addShortcut();
 	        SharedPreferences.Editor editor = prefs.edit();
 	        editor.putBoolean("isFirstTime", true);

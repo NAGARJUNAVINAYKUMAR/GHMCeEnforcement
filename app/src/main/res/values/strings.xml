@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">GHMC\ne-Enforcement</string>
-    <string name="app_version">Version-1.0</string>
+    <string name="app_version">Version-2.0.0</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_login">Login</string>
     <string name="welcome_txt">WELCOME</string>
@@ -99,6 +99,7 @@
     <string name="wt_form3">Witness Form 3</string>
     <string name="wt_form4">Witness Form 4</string>
     <string name="remove_wt">Remove Witness</string>
+    <string name="permissions">Please accept all permissions</string>
 
     <string-array name="id_Options_list">
         <item>Select ID</item>

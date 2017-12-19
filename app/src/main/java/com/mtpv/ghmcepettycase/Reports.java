@@ -10,7 +10,10 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -105,21 +108,8 @@ public class Reports extends Activity {
 			if (cursor.moveToFirst()) {
 				do {
 
-					Log.i("1 :", "" + cursor.getString(0));
-					Log.i("2 :", "" + cursor.getString(1));
-					Log.i("3 :", "" + cursor.getString(2));
-					Log.i("4 :", "" + cursor.getString(3));
-					Log.i("5 :", "" + cursor.getString(4));
-					Log.i("6 :", "" + cursor.getString(5));
 					PidCode = cursor.getString(0);
 
-					/*
-					 * pidCode = cursor.getString(0); pidName =
-					 * cursor.getString(1); psCode = cursor.getString(2); psName
-					 * = cursor.getString(3); cadreCd = cursor.getString(4);
-					 * cadreName = cursor.getString(5); unitCd =
-					 * cursor.getString(6); unitName = cursor.getString(7);
-					 */
 				} while (cursor.moveToNext());
 			}
 			db.close();
@@ -155,7 +145,13 @@ public class Reports extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				printFLG = false;
-				new Async_task_getDetails().execute();
+
+				if(isOnline()) {
+					new Async_task_getDetails().execute();
+				}else
+				{
+					showToast("Please Check Your Network Connection");
+				}
 			}
 		});
 
@@ -175,7 +171,12 @@ public class Reports extends Activity {
 				// TODO Auto-generated method stub
 				if (ReportPrint != null && printFLG
 						&& !printTv.getText().toString().trim().equals("")) {
-					new Async_Task_PrintData().execute();
+					if(isOnline()) {
+						new Async_Task_PrintData().execute();
+					}else
+					{
+						showToast("Please Check Your Network Connection");
+					}
 				} else {
 					showToast("Please Click on Get Button to Get Reports");
 				}
@@ -213,7 +214,6 @@ public class Reports extends Activity {
 				if (cursor.moveToFirst()) {
 					do {
 
-						Log.i("1 :", "" + cursor.getString(0));
 						bt = cursor.getString(0);
 
 						// et_bt_address.setText(BLT_Name);
@@ -227,25 +227,10 @@ public class Reports extends Activity {
 			}
 
 			try {
-				/*
-				 * Bluetooth_Printer_3inch_ThermalAPI preparePrintData= new
-				 * Bluetooth_Printer_3inch_ThermalAPI(); String
-				 * printdata=preparePrintData
-				 * .font_Courier_36(printTv.getText().toString().trim()+"\n\n");
-				 * AnalogicsThermalPrinter printer=new
-				 * AnalogicsThermalPrinter();
-				 * printer.Call_PrintertoPrint(bt,printdata);
-				 */
 
 				Bluetooth_Printer_3inch_ThermalAPI printer = new Bluetooth_Printer_3inch_ThermalAPI();
 				AnalogicsThermalPrinter conn = new AnalogicsThermalPrinter();
 				String data = printTv.getText().toString() + "\n";
-				/*
-				 * for (int i = 1; i <= 100; i++) { data +=
-				 * i+printTv.getText().toString()+"\n";
-				 * 
-				 * }
-				 */
 
 				String printdata = printer.font_Courier_41(printTv.getText()
 						.toString() + "\n");
@@ -307,9 +292,6 @@ public class Reports extends Activity {
 
 			String offenceDate = date_Btn.getText().toString();
 			String pidCode = PidCode;
-
-			Log.i("pidCode :::", "" + pidCode);
-			Log.i("offenceDate :::", "" + offenceDate);
 
 			ServiceHelper.getReport(offenceDate, pidCode);
 
@@ -408,5 +390,11 @@ public class Reports extends Activity {
 			break;
 		}
 		return null;
+	}
+	public Boolean isOnline() {
+		ConnectivityManager conManager = (ConnectivityManager) this
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo nwInfo = conManager.getActiveNetworkInfo();
+		return nwInfo != null;
 	}
 }

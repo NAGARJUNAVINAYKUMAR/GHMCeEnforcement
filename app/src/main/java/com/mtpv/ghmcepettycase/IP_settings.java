@@ -55,7 +55,7 @@ public class IP_settings extends Activity {
 
 	public static String open_ftp_fix = "125.16.1.69";
 	
-	public static String Test = "http://192.168.11.10:8080/GHMCWebService";
+	public static String Test = "http://192.168.11.4/GHMCWebService";
 	// http://192.168.11.55:8080/GHMCWebService/services/GHMCWebServiceImpl?wsdl
 	Button cancel, save;
 
@@ -90,6 +90,9 @@ public class IP_settings extends Activity {
 	public static EditText et_serverUrl, et_ftp_url;
 
 	DataBase db;
+	SharedPreferences preference;
+	SharedPreferences.Editor editor;
+	String SERVICE_URL_PREF = "", FTP_URL_PREF = "", SERVICE_TYPE_PREf = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +111,18 @@ public class IP_settings extends Activity {
 		et_serverUrl = (EditText) findViewById(R.id.et_serverUrl);
 		et_ftp_url = (EditText) findViewById(R.id.et_ftp_url);
 
-		et_serverUrl.setText("" + Live);
+	//	et_serverUrl.setText("" + Live);
+
+
+		preference = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+		editor = preference.edit();
+
+		//This is main varible to set ipsettings defaultly if we change to live then ipsettings live set default one
+		SERVICE_TYPE_PREf = preference.getString("servicetype", "test");
+
+		SERVICE_URL_PREF = preference.getString("IP_ADDRESS", "url1");
+		FTP_URL_PREF = preference.getString("FTP_URL", "url2");
+
 
 		live.setOnClickListener(new OnClickListener() {
 
@@ -172,7 +186,7 @@ public class IP_settings extends Activity {
 	}
 
 	@SuppressLint("NewApi")
-	class Async_UpdateApk extends AsyncTask<Void, Void, String> {
+	/*class Async_UpdateApk extends AsyncTask<Void, Void, String> {
 
 		@Override
 		protected void onPreExecute() {
@@ -346,7 +360,8 @@ public class IP_settings extends Activity {
 		}
 
 	}
-
+*/
+/*
 	private void showProgress(String server) {
 		// TODO Auto-generated method stub
 		dialog = new Dialog(IP_settings.this);
@@ -368,8 +383,8 @@ public class IP_settings extends Activity {
 		progress.setProgressDrawable(getResources().getDrawable(
 				R.drawable.green_progress));
 	}
+*/
 
-	@SuppressLint("NewApi")
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		// TODO Auto-generated method stub
@@ -381,7 +396,7 @@ public class IP_settings extends Activity {
 			pd.setCancelable(false);
 			return pd;
 
-		case ALERT_USER:
+		/*case ALERT_USER:
 			TextView title2 = new TextView(this);
 			title2.setText("ALERT");
 			title2.setBackgroundColor(Color.RED);
@@ -456,7 +471,7 @@ public class IP_settings extends Activity {
 			btn3.setTypeface(btn3.getTypeface(), Typeface.BOLD);
 			btn3.setBackgroundColor(Color.RED);
 			return alert_Dialog;
-
+*/
 		default:
 			break;
 		}

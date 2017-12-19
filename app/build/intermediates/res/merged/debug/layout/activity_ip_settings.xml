@@ -74,7 +74,8 @@
          android:layout_height="wrap_content"
          android:orientation="horizontal"
          android:layout_marginTop="25dp"
-         android:weightSum="1">
+         android:weightSum="1"
+         android:id="@+id/rg_live_test">
          
          <RadioButton
              android:id="@+id/live"

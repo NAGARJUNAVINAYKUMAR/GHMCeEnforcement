@@ -1,15 +1,9 @@
 package com.mtpv.ghmcepettycase;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -33,15 +27,20 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.mtpv.ghmcenforcement.R;
 import com.mtpv.services.DataBase;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @SuppressLint({ "InflateParams", "ShowToast" })
 public class Sections extends Activity {
 
 	public static EditText add, decription_text, remarks_text;
-	Button btn, save_btn;
-	ImageView reset_btn, back_btn;
+	Button btn, save_btn,back_btn;
+	ImageView reset_btn;
 	ListView list;
 	ArrayList<String> arr;
 	ListAdapter aliAdapter;
@@ -80,45 +79,53 @@ public class Sections extends Activity {
 		section_txt.setText("" + sbf);
 
 		db = new DataBase(getApplicationContext());
+		back_btn=(Button)findViewById(R.id.back_btn);
+
+		back_btn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 
 		checkedList = new ArrayList<String>();
 
 		mainListView = (ListView) findViewById(R.id.mylist);
 		mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-					
+
 			@Override
 			public void onItemClick(AdapterView<?> parent, View item,
-					int position, long id) {
+									int position, long id) {
 
-						mItems_list planet = listAdapter.getItem(position);
-						Log.i("checked name :", planet.getName());
-						if (planet.getName().contains("407(1)")) {
-							// 407(1) 50 Prohibition of the tethering of animals
-							// in public streets
-							Intent pets = new Intent(Sections.this, Pet_count.class);
-							startActivity(pets);
-						}
-						// Sections.checkedList
-						// seccode:secname:fine@
-						if (Sections.checkedList.contains((planet.getName()))) {
-							Log.i("already checked name :", planet.getName());
-							Sections.checkedList.remove(planet.getName());
-							planet.toggleChecked();
-							List_select_ViewHolder viewHolder = (List_select_ViewHolder) item.getTag();
-							viewHolder.getCheckBox().setChecked(planet.isChecked());
-							viewHolder.getCheckBox().setVisibility(View.VISIBLE);
-						} else {
-							Sections.checkedList.add(planet.getName());
-							planet.toggleChecked();
-							List_select_ViewHolder viewHolder = (List_select_ViewHolder) item.getTag();
-							viewHolder.getCheckBox().setChecked(planet.isChecked());
-							viewHolder.getCheckBox().setVisibility(View.VISIBLE);
-						}
-						for (String sec : Sections.checkedList) {
-							Log.i(" Sections.checkedList :", sec);
-						}
-					}
-				});
+				mItems_list planet = listAdapter.getItem(position);
+				Log.i("checked name :", planet.getName());
+				if (planet.getName().contains("407(1)")) {
+					// 407(1) 50 Prohibition of the tethering of animals
+					// in public streets
+					Intent pets = new Intent(Sections.this, Pet_count.class);
+					startActivity(pets);
+				}
+				// Sections.checkedList
+				// seccode:secname:fine@
+				if (Sections.checkedList.contains((planet.getName()))) {
+					Log.i("already checked name :", planet.getName());
+					Sections.checkedList.remove(planet.getName());
+					planet.toggleChecked();
+					List_select_ViewHolder viewHolder = (List_select_ViewHolder) item.getTag();
+					viewHolder.getCheckBox().setChecked(planet.isChecked());
+					viewHolder.getCheckBox().setVisibility(View.VISIBLE);
+				} else {
+					Sections.checkedList.add(planet.getName());
+					planet.toggleChecked();
+					List_select_ViewHolder viewHolder = (List_select_ViewHolder) item.getTag();
+					viewHolder.getCheckBox().setChecked(planet.isChecked());
+					viewHolder.getCheckBox().setVisibility(View.VISIBLE);
+				}
+				for (String sec : Sections.checkedList) {
+					Log.i(" Sections.checkedList :", sec);
+				}
+			}
+		});
 
 		Sections.secMap = new DataBase(getApplicationContext()).getSecMap(getApplicationContext());
 		List<String> seclist = new ArrayList<String>();
@@ -168,22 +175,7 @@ public class Sections extends Activity {
 
 					GenerateCase.section_tick.setVisibility(View.VISIBLE);
 
-					/*
-					 * ListIterator<String> it =
-					 * Sections.checkedList.listIterator(); int amount = 0 ;
-					 * while (it.hasNext()) { Log.i("ITerator Vlue",
-					 * ""+it.next());
-					 * 
-					 * String[] sec_split = it.next().split("\\-");
-					 * Log.i("amount loop 0", ""+sec_split[0]);
-					 * Log.i("amount loop 1", ""+sec_split[1]);
-					 * Log.i("amount loop 2", ""+sec_split[2]);
-					 * 
-					 * 
-					 * amount= amount+Integer.parseInt(sec_split[2].trim());
-					 * 
-					 * } Log.i("amount Vlue", ""+amount);
-					 */
+
 
 				}
 			}
@@ -193,7 +185,7 @@ public class Sections extends Activity {
 
 	private InputFilter filter = new InputFilter() {
 		public CharSequence filter(CharSequence source, int start, int end,
-				Spanned dest, int dstart, int dend) {
+								   Spanned dest, int dstart, int dend) {
 			// TODO Auto-generated method stub
 			if (source != null && blockCharacterSet.contains(("" + source))) {
 				Toast.makeText(getApplicationContext(), "Not Allowed",
@@ -216,12 +208,12 @@ public class Sections extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
 		switch (item.getItemId()) {
-		case 1:
+			case 1:
 
-			for (int i = 0; i < checked.size(); i++) {
-				Log.d("pos : ", "" + checked.get(i));
-			}
-			break;
+				for (int i = 0; i < checked.size(); i++) {
+					Log.d("pos : ", "" + checked.get(i));
+				}
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

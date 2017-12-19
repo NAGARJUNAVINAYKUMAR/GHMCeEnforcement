@@ -24,10 +24,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.telephony.TelephonyManager;
 import android.text.format.DateFormat;
 import android.util.Base64;
@@ -41,6 +43,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.mtpv.ghmcenforcement.BuildConfig;
 import com.mtpv.ghmcenforcement.R;
 
 public class CaptureImages extends Activity implements LocationListener {
@@ -237,11 +241,21 @@ public class CaptureImages extends Activity implements LocationListener {
 	            public void onClick(DialogInterface dialog, int item) {
 	        		if (options[item].equals("Open Camera"))
 	                {
-	                   Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-	                   File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-	                   intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-	                   startActivityForResult(intent, 1);
-	                }
+						if (Build.VERSION.SDK_INT<=23) {
+							Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+							File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+							intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+							startActivityForResult(intent, 1);
+						}else{
+							Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+							File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+							intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(CaptureImages.this,
+									BuildConfig.APPLICATION_ID + ".provider",f));
+							intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+							startActivityForResult(intent, 1);
+						}
+
+					}
 	                /*else if (options[item].equals("Choose from Gallery"))
 	                {
 	                	
@@ -293,8 +307,7 @@ public class CaptureImages extends Activity implements LocationListener {
 	                    OutputStream outFile = null;
 	                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
                     try {
-                    	Log.i("Camera Path :::",""+file.getAbsolutePath());
-                        
+
                     	outFile = new FileOutputStream(file);
                         Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                     	Canvas canvas = new Canvas(mutableBitmap); //bmp is the bitmap to dwaw into
@@ -370,8 +383,7 @@ public class CaptureImages extends Activity implements LocationListener {
 	                c.close();
 	                
 	                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-	                Log.w("path of image from gallery......******************.........", picturePath+"");
-                
+
                 	Bitmap mutableBitmap = thumbnail.copy(Bitmap.Config.ARGB_8888, true);
                 	Canvas canvas = new Canvas(mutableBitmap); //bmp is the bitmap to dwaw into
 
@@ -453,4 +465,7 @@ public class CaptureImages extends Activity implements LocationListener {
 		super.onBackPressed();
 		newtimer.cancel();
 	}
+
+
+
 	}

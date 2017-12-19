@@ -1,8 +1,5 @@
 package com.mtpv.ghmcepettycase;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -17,8 +14,12 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -27,12 +28,28 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mtpv.ghmcenforcement.BuildConfig;
 import com.mtpv.ghmcenforcement.R;
 import com.mtpv.services.DataBase;
 import com.mtpv.services.ServiceHelper;
+
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Dashboard extends Activity {
 
@@ -41,6 +58,14 @@ public class Dashboard extends Activity {
 	TextView psname, officerName;
 	final int PROGRESS_DIALOG = 1;
 	final int WHEELER_CODE = 2;
+	String server = "192.168.11.9", username = "ftpuser", password = "Dk0r$l1qMp6", filename = "Version-1.5.1.apk", netwrk_info_txt = "" ;
+	int port = 99;
+	private static final int BUFFER_SIZE = 4096;
+	ProgressBar progress;
+	Dialog dialog;
+	int downloadedSize = 0;
+	int totalSize = 0;
+	TextView cur_val;
 
 	/* FOR PS NAMES */
 	ArrayList<String> ps_codes_fr_names_arr;
@@ -53,7 +78,7 @@ public class Dashboard extends Activity {
 	public static String SOAP_ACTION = NAMESPACE + methodIDMaster;
 
 	public static String Id_proof_result = "";
-	public static String[] resp_array;
+	public static String[] resp_array,otp_Master;
 
 	public static HashMap<String, String> idDetailsMap = new HashMap<String, String>();
 
@@ -80,6 +105,7 @@ public class Dashboard extends Activity {
 	DataBase db;
 	Cursor c;
 	GPSTracker gps;
+	public static String OtpStatus, OtpResponseDelayTime;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,13 +133,63 @@ public class Dashboard extends Activity {
 		SharedPreferences prefs = getSharedPreferences("loginValues",
 				MODE_PRIVATE);
 		String psName = prefs.getString("PS_NAME", "");
-		Log.i("psName :::", "" + psName);
-
 		String officer_Name = prefs.getString("PID_NAME", "");
-		Log.i("officer_Name :::", "" + officer_Name);
-
 		psname.setText("" + psName);
 		officerName.setText("" + officer_Name);
+
+		if (Login.SECURITY_CD.equals("N")) {
+
+			TextView title = new TextView(this);
+			title.setText("GHMC_enforcement");
+			title.setBackgroundColor(Color.RED);
+			title.setGravity(Gravity.CENTER);
+			title.setTextColor(Color.WHITE);
+			title.setTextSize(26);
+			title.setTypeface(title.getTypeface(), Typeface.BOLD);
+			title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.dialog_logo, 0, R.drawable.dialog_logo, 0);
+			title.setPadding(20, 0, 20, 0);
+			title.setHeight(70);
+
+			String otp_message = "\nPlease Update your Application...! \n";
+
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Dashboard.this,
+					AlertDialog.THEME_HOLO_LIGHT);
+			alertDialogBuilder.setCustomTitle(title);
+			alertDialogBuilder.setIcon(R.drawable.dialog_logo);
+			alertDialogBuilder.setMessage(otp_message);
+			alertDialogBuilder.setCancelable(false);
+			alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					if(isOnline()) {
+						new Async_UpdateApk().execute();
+					}else {
+						showToast("Please Check Your Network Connection");
+					}
+					Login.SECURITY_CD = "Y";
+				}
+			});
+
+			AlertDialog alertDialog = alertDialogBuilder.create();
+			alertDialog.show();
+
+			alertDialog.getWindow().getAttributes();
+
+			TextView textView = (TextView) alertDialog.findViewById(android.R.id.message);
+			textView.setTextSize(28);
+			textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+			textView.setGravity(Gravity.CENTER);
+
+			Button btn = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+			btn.setTextSize(22);
+			btn.setTextColor(Color.WHITE);
+			btn.setTypeface(btn.getTypeface(), Typeface.BOLD);
+			btn.setBackgroundColor(Color.RED);
+
+		}
+
 
 		generate_case.setOnClickListener(new OnClickListener() {
 
@@ -133,24 +209,19 @@ public class Dashboard extends Activity {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					Log.i("Preview.latitude", "" + Preview.latitude);
-					Log.i("Preview.longitude", "" + Preview.longitude);
+
 
 					if ("0.0".equals(String.valueOf(Preview.latitude))
 							&& "0.0".equals(String.valueOf(Preview.longitude))) {
-						Log.i("calling toast", "called");
 						showToast("CHECK GPS SETTINGS");
-						
+
 					} else {
 						db.open();
 						String bt_query = "select * from " + DataBase.Bluetooth;
 						String ps_query = "select * from " + DataBase.psName_table;
 						String point_query = "select * from " + DataBase.pointName_table;
 
-						Log.i("bt_query ::::", "" + bt_query);
-						Log.i("ps_query ::::", "" + ps_query);
-						Log.i("point_query ::::", "" + point_query);
-						
+
 						Cursor bt_cursor = DataBase.db.rawQuery(bt_query, null);
 						Cursor ps_cursor = DataBase.db.rawQuery(ps_query, null);
 						Cursor point_cursor = DataBase.db.rawQuery(point_query, null);
@@ -161,8 +232,20 @@ public class Dashboard extends Activity {
 							showToast("Configure Download Masters!");
 						} else {
 							if (isOnline()) {
-								Intent generate = new Intent(Dashboard.this, GenerateCase.class);
-								startActivity(generate);
+
+								OtpStatus = "";
+								OtpResponseDelayTime = "";
+								Async_getOtpStatusNTime OtpStatusNTime = new Async_getOtpStatusNTime();
+								if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+									Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
+									OtpStatusNTime.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+								} else {
+									OtpStatusNTime.execute();
+								}
+
+
+
+
 							} else {
 								showToast("Please Check your Network");
 							}
@@ -179,8 +262,12 @@ public class Dashboard extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent ph = new Intent(Dashboard.this, Previous_History.class);
-				startActivity(ph);
+				if(isOnline()) {
+					Intent ph = new Intent(Dashboard.this, Previous_History.class);
+					startActivity(ph);
+				}else {
+					showToast("Please Check Your Network Connection");
+				}
 			}
 		});
 
@@ -189,6 +276,7 @@ public class Dashboard extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+
 				Intent images = new Intent(Dashboard.this, CaptureImages.class);
 				startActivity(images);
 			}
@@ -210,7 +298,7 @@ public class Dashboard extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				TextView title = new TextView(Dashboard.this);
-				title.setText("Hyderabad E-Ticket");
+				title.setText("GHMC Enforcement");
 				title.setBackgroundColor(Color.RED);
 				title.setGravity(Gravity.CENTER);
 				title.setTextColor(Color.WHITE);
@@ -234,7 +322,7 @@ public class Dashboard extends Activity {
 
 							@Override
 							public void onClick(DialogInterface dialog,
-									int which) {
+												int which) {
 								// TODO Auto-generated method stub
 								Intent intent = new Intent(
 										getApplicationContext(), Login.class);
@@ -250,7 +338,7 @@ public class Dashboard extends Activity {
 
 							@Override
 							public void onClick(DialogInterface dialog,
-									int which) {
+												int which) {
 								// TODO Auto-generated method stub
 
 							}
@@ -288,8 +376,13 @@ public class Dashboard extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent dp = new Intent(Dashboard.this, DuplicatPrint.class);
-				startActivity(dp);
+				if(isOnline()) {
+					Intent dp = new Intent(Dashboard.this, DuplicatPrint.class);
+					startActivity(dp);
+				}else
+				{
+					showToast("Please Check Your Network Connection");
+				}
 			}
 		});
 
@@ -298,8 +391,12 @@ public class Dashboard extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent rp = new Intent(Dashboard.this, Reports.class);
-				startActivity(rp);
+				if(isOnline()) {
+					Intent rp = new Intent(Dashboard.this, Reports.class);
+					startActivity(rp);
+				}else {
+					showToast("Please Check Your Network");
+				}
 			}
 		});
 
@@ -308,7 +405,12 @@ public class Dashboard extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				new Async_DownloadMasters().execute();
+				if(isOnline()) {
+					new Async_DownloadMasters().execute();
+				}else {
+					showToast("Please Check Your Network");
+				}
+
 			}
 		});
 
@@ -317,8 +419,12 @@ public class Dashboard extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent setting = new Intent(Dashboard.this, Settings.class);
-				startActivity(setting);
+				if(isOnline()) {
+					Intent setting = new Intent(Dashboard.this, Settings.class);
+					startActivity(setting);
+				}else {
+					showToast("Please Check Your Network");
+				}
 			}
 		});
 
@@ -331,81 +437,7 @@ public class Dashboard extends Activity {
 		return nwInfo != null;
 	}
 
-	// Async_SectionsMasters
-	class Async_SectionsMasters extends AsyncTask<Void, Void, String> {
 
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-			showDialog(PROGRESS_DIALOG);
-		}
-
-		@Override
-		protected String doInBackground(Void... arg0) {
-			// TODO Auto-generated method stub
-			SharedPreferences prefs = getSharedPreferences("ghmcValues",
-					MODE_PRIVATE);
-			String unitCd = prefs.getString("UNIT_CODE", "");
-
-			ServiceHelper.getSectionMasters("" + unitCd);
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-			removeDialog(PROGRESS_DIALOG);
-			if (ServiceHelper.sectionmasters_resp != null) {
-
-				if ((!ServiceHelper.sectionmasters_resp.equals("0"))
-						&& (ServiceHelper.section_details_master.length > 0)) {
-
-					section_code_name = new String[ServiceHelper.section_details_master.length][2];
-					section_name_arr = new ArrayList<String>();
-
-					SQLiteDatabase db2 = openOrCreateDatabase(
-							DataBase.DATABASE_NAME, MODE_PRIVATE, null);
-					// db.execSQL("delete from " + DataBase.USER_TABLE);
-					db2.execSQL("DROP TABLE IF EXISTS "
-							+ DataBase.sections_table);
-					db2.execSQL(DataBase.SectionTableCreation);
-
-					System.out
-							.println("*********************OFFICER TABLE Insertion Successfully **********************************");
-
-					db.open();
-					for (int i = 0; i < ServiceHelper.section_details_master.length; i++) {
-						section_code_name[i] = (ServiceHelper.section_details_master[i]
-								.split(":"));
-						section_name_arr.add(section_code_name[i][1]);
-						db.insertSectionDetails("" + section_code_name[i][0],
-								"" + section_code_name[i][1]);
-
-						Log.i("DATA :::::", "" + section_code_name[i][0] + ", "
-								+ section_code_name[i][1]);
-					}
-					db.close();
-					db2.close();
-
-					Intent generate = new Intent(Dashboard.this,
-							GenerateCase.class);
-					startActivity(generate);
-
-				} else {
-					showToast("Try again");
-					section_code_name = new String[0][0];
-					section_name_arr.clear();
-				}
-			} else {
-				showToast("Try again");
-				section_code_name = new String[0][0];
-				section_name_arr.clear();
-			}
-
-		}
-	}
 
 	class Async_DownloadMasters extends AsyncTask<Void, Void, String> {
 
@@ -421,35 +453,10 @@ public class Dashboard extends Activity {
 			// TODO Auto-generated method stub
 			ServiceHelper.getgetSubSectionsBy_Sectioncode(""+ section_code_send, ""+ Login.OFFICER_TYPE);
 			ServiceHelper.getPSNames(""+ Login.uintCode);
-			/*
-			 * try { // INSERT ID PROOF DETAILS START SoapObject request = new
-			 * SoapObject(NAMESPACE, "getIDProofMaster");
-			 * SoapSerializationEnvelope envelope = new
-			 * SoapSerializationEnvelope(SoapEnvelope.VER11); envelope.dotNet =
-			 * true; envelope.setOutputSoapObject(request); Log.i("request", ""
-			 * + request); //Log.i("WebService.SOAP_ADDRESS ::::::::::::::", ""
-			 * + WebService.SOAP_ADDRESS); HttpTransportSE androidHttpTransport
-			 * = new HttpTransportSE(Login.URL); Log.i("androidHttpTransport",
-			 * "" + androidHttpTransport);
-			 * androidHttpTransport.call(SOAP_ACTION, envelope); Object result =
-			 * envelope.getResponse(); Id_proof_result = result.toString();
-			 * Log.i("**  ID DETAILS  response***", "" + Id_proof_result);
-			 * 
-			 * 
-			 * if ("NA".equals(Id_proof_result)
-			 * ||"anyType{}".equals(Id_proof_result) || Id_proof_result == null)
-			 * { Id_proof_result = null ; } else { //resp_array = new String[0];
-			 * Id_proof_result = result.toString(); Dashboard.resp_array =
-			 * Id_proof_result.split("@");
-			 * Log.i("enter in to do in background id detils size::::::::::",
-			 * ""+Dashboard.resp_array.length); }
-			 * 
-			 * // INSERT ID PROOF DETAILS END } catch (Exception e) { // TODO:
-			 * handle exception e.printStackTrace(); }
-			 */
+
 
 			/*********** SECTIONS RESPONSE *************/
-			if (ServiceHelper.sub_sectionmasters_resp != null) {
+			if (ServiceHelper.sub_sectionmasters_resp != null && !"0".equals(ServiceHelper.sub_sectionmasters_resp)) {
 				// 15:403:1000@17:406:550@18:407 (1):50@20:413 (1):10000
 				temp_sections_master2 = new String[ServiceHelper.temp_sections_master.length][];
 				for (int i = 0; i < ServiceHelper.temp_sections_master.length; i++) {
@@ -478,8 +485,7 @@ public class Dashboard extends Activity {
 
 						db.insertTempSectionDetails(""+ temp_sections_master2[j][0], ""+ temp_sections_master2[j][1], ""
 								+ temp_sections_master2[j][2], ""+ temp_sections_master2[j][3]);
-						Log.i("insertTempSectionDetails[i] :::", ""+ temp_sections_master2[j][0] + ":"
-								+ temp_sections_master2[j][1] + ":"+ temp_sections_master2[j][2]);
+
 					}
 					db2.close();
 				} catch (Exception e) {
@@ -489,6 +495,7 @@ public class Dashboard extends Activity {
 					}
 				}
 			}
+
 			return null;
 		}
 
@@ -497,88 +504,51 @@ public class Dashboard extends Activity {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 
-			/*	
-		*//************** for put in to a list start for show *************/
-			/*
-			 * idDetails_arr = new ArrayList<String>();
-			 * 
-			 * idDetails_arr.clear(); for (int i = 0; i < resp_array.length;
-			 * i++) { String IdProofs = resp_array[i].split("\\:")[1];
-			 * 
-			 * Log.i("allIdproofs", IdProofs); idDetails_arr.add(IdProofs); }
-			 *//************** for put in to a list end for show *************/
-			/*
-			 * 
-			 * 
-			 * if (Dashboard.Id_proof_result.trim()!=null) {
-			 * 
-			 * Log.i("enter in to post execute id detils size::::::::::",
-			 * ""+Dashboard.resp_array.length); Dashboard.resp_array =
-			 * Dashboard.Id_proof_result.split("\\@"); //SQLiteDatabase sdb =
-			 * null ;
-			 * 
-			 * SQLiteDatabase db2 =
-			 * openOrCreateDatabase(DataBase.DATABASE_NAME,MODE_PRIVATE, null);
-			 * //db.execSQL("delete from " + DataBase.USER_TABLE);
-			 * db2.execSQL("DROP TABLE IF EXISTS " + DataBase.Id_details_table);
-			 * db2.execSQL(DataBase.idDetailsCreation);
-			 * 
-			 * for (String idProofDet:Dashboard.resp_array) { String
-			 * []idDet=idProofDet.split("\\:");
-			 * 
-			 * try { db.open(); db.insertIdProofDetails(""+idDet[0],
-			 * ""+idDet[1]);
-			 * Log.i("All Points Values :::",""+idDet[0]+"\n "+idDet[1]);
-			 * idDetailsMap.put(""+idDet[1].trim(), ""+idDet[0].trim());
-			 * Log.i("All Points Values :::",""+idDet[0]+"\n "+idDet[1]); }
-			 * catch (Exception e) { // TODO: handle exception if (db!=null) {
-			 * db.close(); } if (db2!=null) { db2.close(); }
-			 * 
-			 * }
-			 * 
-			 * } }
-			 */
-
 			/*********** PS NAMES RESPONSE *************/
-			psname_name_code_arr = new String[ServiceHelper.psNames_master.length][2];
-			for (int i = 0; i < ServiceHelper.psNames_master.length; i++) {
-				psname_name_code_arr[i] = ServiceHelper.psNames_master[i].split(":");
-			}
-			try {
-				SQLiteDatabase sdb = openOrCreateDatabase(DataBase.DATABASE_NAME, MODE_PRIVATE, null);
-				// db.execSQL("delete from " + DataBase.USER_TABLE);
-				sdb.execSQL("DROP TABLE IF EXISTS " + DataBase.Id_details_table);
-				sdb.execSQL(DataBase.idDetailsCreation);
-				sdb.close();
-
-				db.open();
-				ps_codes_fr_names_arr = new ArrayList<String>();
-				ps_names_arr = new ArrayList<String>();
-				ps_codes_fr_names_arr.clear();
-				ps_names_arr.clear();
-
-				SQLiteDatabase db2 = openOrCreateDatabase(DataBase.DATABASE_NAME, MODE_PRIVATE, null);
-				// db.execSQL("delete from " + DataBase.USER_TABLE);
-				db2.execSQL("DROP TABLE IF EXISTS " + DataBase.psName_table);
-				db2.execSQL(DataBase.psNamesCreation);
-
-				for (int j = 0; j < psname_name_code_arr.length; j++) {
-					ps_codes_fr_names_arr.add(psname_name_code_arr[j][0]);
-					ps_names_arr.add(psname_name_code_arr[j][1]);
-
-					db.insertPsNameDetails("" + psname_name_code_arr[j][0], ""+ psname_name_code_arr[j][1]);
-					Log.i("psname_name_code_arr[i] :::", ""+ psname_name_code_arr[j][0] + psname_name_code_arr[j][1]);
+			if (!"0".equals(ServiceHelper.sub_sectionmasters_resp)) {
+				psname_name_code_arr = new String[ServiceHelper.psNames_master.length][2];
+				for (int i = 0; i < ServiceHelper.psNames_master.length; i++) {
+					psname_name_code_arr[i] = ServiceHelper.psNames_master[i].split(":");
 				}
-				db2.close();
-			} catch (Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
-				if (db != null) {
-					db.close();
+				try {
+					SQLiteDatabase sdb = openOrCreateDatabase(DataBase.DATABASE_NAME, MODE_PRIVATE, null);
+					// db.execSQL("delete from " + DataBase.USER_TABLE);
+					sdb.execSQL("DROP TABLE IF EXISTS " + DataBase.Id_details_table);
+					sdb.execSQL(DataBase.idDetailsCreation);
+					sdb.close();
+
+					db.open();
+					ps_codes_fr_names_arr = new ArrayList<String>();
+					ps_names_arr = new ArrayList<String>();
+					ps_codes_fr_names_arr.clear();
+					ps_names_arr.clear();
+
+					SQLiteDatabase db2 = openOrCreateDatabase(DataBase.DATABASE_NAME, MODE_PRIVATE, null);
+					// db.execSQL("delete from " + DataBase.USER_TABLE);
+					db2.execSQL("DROP TABLE IF EXISTS " + DataBase.psName_table);
+					db2.execSQL(DataBase.psNamesCreation);
+
+					for (int j = 0; j < psname_name_code_arr.length; j++) {
+						ps_codes_fr_names_arr.add(psname_name_code_arr[j][0]);
+						ps_names_arr.add(psname_name_code_arr[j][1]);
+
+						db.insertPsNameDetails("" + psname_name_code_arr[j][0], "" + psname_name_code_arr[j][1]);
+					}
+					db2.close();
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+					if (db != null) {
+						db.close();
+					}
 				}
+				removeDialog(PROGRESS_DIALOG);
+				showToast("Successfully Downloaded Master's!!!!");
+			}else
+			{
+				removeDialog(PROGRESS_DIALOG);
+				showToast("Please Check Network Try Again");
 			}
-			removeDialog(PROGRESS_DIALOG);
-			showToast("Successfully Downloaded Master's!!!!");
 		}
 	}
 
@@ -591,7 +561,6 @@ public class Dashboard extends Activity {
 			super.onPreExecute();
 			showDialog(PROGRESS_DIALOG);
 
-			Log.i("Async_task_GetPsName ::::", "Entered");
 		}
 
 		@Override
@@ -635,9 +604,7 @@ public class Dashboard extends Activity {
 
 					db.insertPsNameDetails("" + psname_name_code_arr[j][0], ""
 							+ psname_name_code_arr[j][1]);
-					Log.i("psname_name_code_arr[i] :::", ""
-							+ psname_name_code_arr[j][0]
-							+ psname_name_code_arr[j][1]);
+
 				}
 
 				db2.close();
@@ -658,15 +625,15 @@ public class Dashboard extends Activity {
 		// TODO Auto-generated method stub
 		switch (id) {
 
-		case PROGRESS_DIALOG:
-			ProgressDialog pd = ProgressDialog.show(this, "", "", true);
-			pd.setContentView(R.layout.custom_progress_dialog);
-			pd.setCancelable(false);
+			case PROGRESS_DIALOG:
+				ProgressDialog pd = ProgressDialog.show(this, "", "", true);
+				pd.setContentView(R.layout.custom_progress_dialog);
+				pd.setCancelable(false);
 
-			return pd;
+				return pd;
 
-		default:
-			break;
+			default:
+				break;
 		}
 		return super.onCreateDialog(id);
 	}
@@ -757,4 +724,298 @@ public class Dashboard extends Activity {
 		btn2.setBackgroundColor(Color.RED);
 
 	}
+
+	class Async_UpdateApk extends AsyncTask<Void, Void, String> {
+
+		@SuppressWarnings("deprecation")
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			showDialog(PROGRESS_DIALOG);
+
+		}
+
+		@Override
+		protected String doInBackground(Void... arg0) {
+			// TODO Auto-generated method stub
+
+			FTPClient ftpClient = new FTPClient();
+
+			try {
+
+				if (null != Login.URL && Login.URL.equals("https://www.echallan.org/GHMCWebService")) {
+					server = IP_settings.open_ftp_fix;
+				}else{
+					server = IP_settings.ftp_fix;
+				}
+
+				ftpClient.connect(server, port);
+				ftpClient.login(username, password);
+				ftpClient.enterLocalPassiveMode();
+				ftpClient.setBufferSize(1024 * 1024);
+				ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+
+				// ftp://192.168.11.9:99/23/TabAPK/Version-1.5.1.txt
+				File downloadFile1 = new File("/sdcard/Download/GHMC.apk");
+				// String remoteFile1 = "/23/TabAPK" + "/" + version;
+				String remoteFile1 = "/23/TabAPK" + "/GHMC.apk";
+
+				OutputStream outputStream = new BufferedOutputStream(
+						new FileOutputStream(downloadFile1));
+				boolean success = ftpClient.retrieveFile(remoteFile1,
+						outputStream);
+
+				FileOutputStream fileOutput = new FileOutputStream(
+						downloadFile1);
+				InputStream inputStream = ftpClient
+						.retrieveFileStream(remoteFile1);
+
+				if (inputStream == null || ftpClient.getReplyCode() == 550) {
+					// it means that file doesn't exist.
+					fileOutput.close();
+					outputStream.close();
+
+					runOnUiThread(new Runnable() {
+
+						@SuppressWarnings("deprecation")
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							removeDialog(PROGRESS_DIALOG);
+
+							// showToast("your is Upto Date");
+							TextView title = new TextView(Dashboard.this);
+							title.setText("GHMC enforcement");
+							title.setBackgroundColor(Color.RED);
+							title.setGravity(Gravity.CENTER);
+							title.setTextColor(Color.WHITE);
+							title.setTextSize(26);
+							title.setTypeface(title.getTypeface(),
+									Typeface.BOLD);
+							title.setCompoundDrawablesWithIntrinsicBounds(
+									R.drawable.dialog_logo, 0,
+									R.drawable.dialog_logo, 0);
+							title.setPadding(20, 0, 20, 0);
+							title.setHeight(70);
+
+							String otp_message = "\n Your Application is Upto Date \n No Need to Update \n";
+
+							AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+									Dashboard.this, AlertDialog.THEME_HOLO_LIGHT);
+							alertDialogBuilder.setCustomTitle(title);
+							alertDialogBuilder.setIcon(R.drawable.dialog_logo);
+							alertDialogBuilder.setMessage(otp_message);
+							alertDialogBuilder.setCancelable(false);
+							alertDialogBuilder.setPositiveButton("Ok",
+									new DialogInterface.OnClickListener() {
+
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											// TODO Auto-generated method stub
+
+										}
+									});
+
+							AlertDialog alertDialog = alertDialogBuilder
+									.create();
+							alertDialog.show();
+
+							alertDialog.getWindow().getAttributes();
+
+							TextView textView = (TextView) alertDialog
+									.findViewById(android.R.id.message);
+							textView.setTextSize(28);
+							textView.setTypeface(textView.getTypeface(),
+									Typeface.BOLD);
+							textView.setGravity(Gravity.CENTER);
+
+							Button btn1 = alertDialog
+									.getButton(DialogInterface.BUTTON_POSITIVE);
+							btn1.setTextSize(22);
+							btn1.setTextColor(Color.WHITE);
+							btn1.setTypeface(btn1.getTypeface(), Typeface.BOLD);
+							btn1.setBackgroundColor(Color.RED);
+
+						}
+					});
+				}
+
+				else {
+
+
+					totalSize = remoteFile1.length();
+
+					runOnUiThread(new Runnable() {
+						@SuppressWarnings("deprecation")
+						public void run() {
+							removeDialog(PROGRESS_DIALOG);
+							showProgress(server);
+							progress.setMax(totalSize);
+						}
+					});
+
+					// create a buffer...
+					byte[] buffer = new byte[1024];
+					int bufferLength = 0;
+
+					while ((bufferLength = inputStream.read(buffer)) > 0) {
+						fileOutput.write(buffer, 0, bufferLength);
+						downloadedSize += bufferLength;
+						// update the progressbar //
+						runOnUiThread(new Runnable() {
+							public void run() {
+								progress.setProgress(downloadedSize);
+								float per = ((float) downloadedSize / totalSize) * 100;
+								cur_val.setText((int) per / 1500000 + "%");
+							}
+						});
+					}
+
+					// close the output stream when complete //
+					fileOutput.close();
+					outputStream.close();
+
+					if (success) {
+						ftpClient.logout();
+						ftpClient.disconnect();
+
+
+
+						finish();
+
+						if (Build.VERSION.SDK_INT <= 23) {
+
+							Intent intent = new Intent(Intent.ACTION_VIEW);
+							intent.setDataAndType(
+									Uri.fromFile(new File(
+											Environment
+													.getExternalStorageDirectory()
+													+ "/Download/"
+													+ "GHMC.apk")),
+									"application/vnd.android.package-archive");
+							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							startActivity(intent);
+						}
+
+						else {
+
+							Uri apkUri = FileProvider.getUriForFile(Dashboard.this, BuildConfig.APPLICATION_ID +
+									".provider", new File(
+									Environment
+											.getExternalStorageDirectory()
+											+ "/Download/"
+											+ "GHMC.apk"));
+							Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+							intent.setData(apkUri);
+							intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+							startActivity(intent);
+						}
+
+					}
+				}
+
+			} catch (SocketException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			// removeDialog(PROGRESS_DIALOG);
+		}
+
+		@Override
+		protected void onProgressUpdate(Void... values) {
+			super.onProgressUpdate(values);
+		}
+
+	}
+	@SuppressWarnings("deprecation")
+	private void showProgress(String server) {
+		// TODO Auto-generated method stub
+		dialog = new Dialog(Dashboard.this);
+		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		dialog.setContentView(R.layout.myprogressdialog);
+		dialog.setTitle("Download Progress");
+		dialog.setCancelable(false);
+
+		TextView text = (TextView) dialog.findViewById(R.id.tv1);
+		text.setText("Downloading file ... ");
+		cur_val = (TextView) dialog.findViewById(R.id.cur_pg_tv);
+		cur_val.setText("It may Take Few Minutes.....");
+		dialog.show();
+
+		progress = (ProgressBar) dialog.findViewById(R.id.progress_bar);
+		progress.setProgress(0);// initially progress is 0
+		progress.setMax(100);
+		progress.setIndeterminate(true);
+		progress.setProgressDrawable(getResources().getDrawable(
+				R.drawable.green_progress));
+	}
+	public class Async_getOtpStatusNTime extends AsyncTask<Void, Void, String> {
+		@Override
+		protected String doInBackground(Void... params) {
+
+
+
+			String rtaApproverResponse = ServiceHelper.getOtpStatusNTime(String.valueOf(UnitCode));
+
+			return rtaApproverResponse;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			showDialog(PROGRESS_DIALOG);
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+
+			removeDialog(PROGRESS_DIALOG);
+
+			if (result != null && !result.equalsIgnoreCase("") && !result.equalsIgnoreCase("NA|NA")) {
+
+
+				try {
+
+					otp_Master = new String[0];
+
+					otp_Master = result.split("\\|");
+
+					OtpStatus=otp_Master[0].toString()!= null ? otp_Master[0].toString().trim() : "N";
+					OtpResponseDelayTime=otp_Master[1].toString()!= null ? otp_Master[1].toString().trim(): "0";
+
+					Intent generate = new Intent(Dashboard.this, GenerateCase.class);
+					startActivity(generate);
+
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					OtpStatus="N";
+					OtpResponseDelayTime="0";
+
+				}
+
+			}
+
+		}
+
+	}
+
+
 }

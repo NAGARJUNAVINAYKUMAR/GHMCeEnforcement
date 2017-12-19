@@ -12,10 +12,13 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -103,23 +106,10 @@ public class DuplicatPrint extends Activity {
 
 			if (cursor.moveToFirst()) {
 				do {
-					Log.i("PID_CODE", "" + cursor.getString(0));
-					Log.i("PID_NAME", "" + cursor.getString(1));
-					Log.i("PS_CODE", "" + cursor.getString(2));
-					Log.i("PS_NAME", "" + cursor.getString(3));
-					Log.i("CADRE_CODE", "" + cursor.getString(4));
-					Log.i("CADRE_NAME", "" + cursor.getString(5));
-					Log.i("SECURITY_CD", ""+cursor.getString(6));
-					Log.i("OFFICER_TYPE", ""+cursor.getString(7));
+
 					PidCode = cursor.getString(0);
 
-					/*
-					 * pidCode = cursor.getString(0); pidName =
-					 * cursor.getString(1); psCode = cursor.getString(2); psName
-					 * = cursor.getString(3); cadreCd = cursor.getString(4);
-					 * cadreName = cursor.getString(5); unitCd =
-					 * cursor.getString(6); unitName = cursor.getString(7);
-					 */
+
 				} while (cursor.moveToNext());
 			}
 			db.close();
@@ -143,8 +133,7 @@ public class DuplicatPrint extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				showDialog(DATE_DIALOG_ID);
-				// Toast.makeText(getApplicationContext(), "Date Button",
-				// Toast.LENGTH_SHORT).show();
+
 			}
 		});
 
@@ -161,7 +150,11 @@ public class DuplicatPrint extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				new Async_task_getDetails().execute();
+				if(isOnline()) {
+					new Async_task_getDetails().execute();
+				}else {
+					showToast("Please Check Your Network Connection");
+				}
 
 			}
 
@@ -258,17 +251,12 @@ public class DuplicatPrint extends Activity {
 												Log.i("etcicket ", duplicateChallanMap.get(buttonText));
 												button_response = duplicateChallanMap.get(buttonText);
 												dupprintFLG = false;
-												new Async_task_eTicket().execute();
-												/*
-												 * String
-												 * getDuplicatePrintByEticket =
-												 * WS
-												 * .getDuplicatePrintByEticket(
-												 * ""+duplicateChallanMap.get(
-												 * buttonText)); Log.e(
-												 * "getDuplicatePrintByEticket",
-												 * getDuplicatePrintByEticket);
-												 */
+												if(isOnline()) {
+													new Async_task_eTicket().execute();
+												}else
+												{
+													showToast("Please Check Your Network Connection");
+												}
 
 											}
 										}
@@ -289,65 +277,6 @@ public class DuplicatPrint extends Activity {
 							});
 						}
 
-						/*
-						 * try{ //((LinearLayout)ll.getParent()).removeView(ll);
-						 * 
-						 * if (DuplicatePrint!=null&&DuplicatePrint.length()>0){
-						 * DuplicatePrint1 = DuplicatePrint.split("\\ ");
-						 * 
-						 * for (int j=0;j<DuplicatePrint1.length;j++) { String
-						 * []Dprint = DuplicatePrint1[j].split("\\@"); String
-						 * Eticket_No = Dprint[0]; String ShopName = Dprint[1];
-						 * String respondantName = Dprint[2];
-						 * 
-						 * duplicateChallan.add(Eticket_No+"\t\t"+ShopName+"\t\t\t"
-						 * +respondantName);
-						 * textdata.add(""+ShopName+" "+respondantName);
-						 * duplicateChallanMap
-						 * .put(Eticket_No+"\t\t"+ShopName+"\t\t\t"
-						 * +respondantName, Eticket_No);
-						 * 
-						 * ll = new LinearLayout(DuplicatPrint.this,null);
-						 * ll.setOrientation(LinearLayout.HORIZONTAL);
-						 * 
-						 * Btn = new Button(DuplicatPrint.this); Btn.setId(j);
-						 * Btn.setWidth(550);
-						 * Btn.setText(Eticket_No+"\t\t"+ShopName
-						 * +"\t\t\t"+respondantName);
-						 * 
-						 * Btn.setOnClickListener(new View.OnClickListener() {
-						 * 
-						 * @Override public void onClick(View v) { // TODO
-						 * Auto-generated method stub CharSequence
-						 * selectedButtonValue = ((Button) v).getText();
-						 * Log.e("text :",selectedButtonValue.toString());
-						 * 
-						 * for(String buttonText:duplicateChallanMap.keySet()){
-						 * if
-						 * (buttonText.equals(selectedButtonValue.toString())){
-						 * 
-						 * Log.i("etcicket ",duplicateChallanMap.get(buttonText))
-						 * ; button_response =
-						 * duplicateChallanMap.get(buttonText); dupprintFLG =
-						 * false ; new Async_task_eTicket().execute(); String
-						 * getDuplicatePrintByEticket =
-						 * WS.getDuplicatePrintByEticket
-						 * (""+duplicateChallanMap.get(buttonText));
-						 * Log.e("getDuplicatePrintByEticket",
-						 * getDuplicatePrintByEticket);
-						 * 
-						 * } } } }); ll.addView(Btn); layout.addView(ll); }//end
-						 * of for loop } else{ //Btn.setText("");//end
-						 * validation //Toast.makeText(getApplicationContext(),
-						 * "Data Not Found",Toast.LENGTH_LONG).show(); }
-						 * }catch(Exception error){ runOnUiThread(new Runnable()
-						 * {
-						 * 
-						 * @Override public void run() { // TODO Auto-generated
-						 * method stub
-						 * 
-						 * //showToast("Data Not Found"); } }); }
-						 */
 					}
 				});
 			}
@@ -383,7 +312,7 @@ public class DuplicatPrint extends Activity {
 			super.onPostExecute(result);
 			removeDialog(PROGRESS_DIALOG);
 
-			if (ServiceHelper.duplicatePrint_by_Eticket_resp.equals("0^NA^NA")) {
+			if (ServiceHelper.duplicatePrint_by_Eticket_resp.equals(null) && ServiceHelper.duplicatePrint_by_Eticket_resp.equals("0^NA^NA")) {
 				dupprintFLG = false;
 			} else if (ServiceHelper.duplicatePrint_by_Eticket_resp
 					.equals("anyType{}")) {
@@ -392,7 +321,6 @@ public class DuplicatPrint extends Activity {
 				dupprintFLG = true;
 				String Challan_response = ""
 						+ ServiceHelper.duplicatePrint_by_Eticket_resp;
-				Log.i("Challan_response :::", "" + Challan_response);
 				Intent i = new Intent(DuplicatPrint.this, PrintDisplay.class);
 				startActivity(i);
 
@@ -442,11 +370,7 @@ public class DuplicatPrint extends Activity {
 
 	@SuppressLint("SimpleDateFormat")
 	private void updateDisplay() {
-		/*
-		 * datepicker_Btn.setText(new StringBuilder() // Month is 0 based so add
-		 * 1 .append(d).append("/") .append(m + 1).append("/")
-		 * .append(y).append(" "));
-		 */
+
 		date_Btn.setText(new StringBuilder()
 				// Month is 0 based so add 1
 				.append(pDay).append("/").append(pMonth + 1).append("/")
@@ -455,8 +379,7 @@ public class DuplicatPrint extends Activity {
 				.append(pMonth + 1).append("/").append(pYear).append("/")
 				.append(mHour).append(":").append(mMinute).append(":")
 				.append(mSecond).append(" ");
-		// Toast.makeText(getApplicationContext(), "timeStamp" +timestamp,
-		// Toast.LENGTH_LONG).show();
+
 	}
 
 	protected Dialog onCreateDialog(int id) {
@@ -497,6 +420,14 @@ public class DuplicatPrint extends Activity {
 		// super.onBackPressed();
 		Intent back = new Intent(DuplicatPrint.this, Dashboard.class);
 		startActivity(back);
+	}
+
+
+	public Boolean isOnline() {
+		ConnectivityManager conManager = (ConnectivityManager) this
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo nwInfo = conManager.getActiveNetworkInfo();
+		return nwInfo != null;
 	}
 
 }

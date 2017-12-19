@@ -217,7 +217,7 @@
                     android:layout_height="65dp"
                     android:layout_gravity="center"
                     android:background="@drawable/edittextstyle"
-                    android:hint="Ditend Items"
+                    android:hint="Detained Items"
                     android:gravity="center"
                     android:inputType="textCapCharacters"
                     android:textAppearance="?android:attr/textAppearanceMedium"

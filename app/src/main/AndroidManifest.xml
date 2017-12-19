@@ -17,7 +17,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COURSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -33,6 +33,18 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@style/AppTheme" >
+
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.mtpv.ghmcenforcement.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
         <activity
             android:name="com.mtpv.ghmcepettycase.MainActivity"
             android:label="@string/app_name"
@@ -156,6 +168,12 @@
             android:name="com.mtpv.ghmcepettycase.Ph_printDisplay"
             android:label="@string/title_activity_ph_print" >
         </activity>
+
+        <activity
+            android:name="com.mtpv.ghmcepettycase.IPSettings_New"
+            android:label="@string/title_activity_ph_print" >
+        </activity>
+
     </application>
 
 </manifest>

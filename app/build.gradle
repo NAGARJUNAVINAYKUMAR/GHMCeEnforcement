@@ -1,25 +1,34 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "26.0.1"
-
+    signingConfigs {
+        config {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('C:/Users/Srinivas/.android/DEBUG/debug.keystore')
+            storePassword 'android'
+        }
+    }
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "com.mtpv.ghmcenforcement"
-        minSdkVersion 17
-        targetSdkVersion 23
+        minSdkVersion 15
+        targetSdkVersion 25
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
+        debug {
+            signingConfig signingConfigs.config
+        }
     }
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:19.1.0'
+    compile 'com.android.support:support-v4:25.3.1'
     compile files('libs/AnalogicsVersa3TBTPrinterAPI.jar')
     compile files('libs/common-lang3.jar')
     compile files('libs/commons-net-3.5.jar')
@@ -33,4 +42,7 @@ dependencies {
     compile files('libs/N5PrinterAPI.jar')
     compile files('libs/opencv_library-2.4.3.jar')
     compile files('libs/org-apache-commons-codec.jar')
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile files('libs/sun.misc.BASE64Decoder.jar')
 }

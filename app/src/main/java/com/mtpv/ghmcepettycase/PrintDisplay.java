@@ -1,10 +1,5 @@
 package com.mtpv.ghmcepettycase;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -32,9 +27,14 @@ import com.mtpv.ghmcenforcement.R;
 import com.mtpv.services.DataBase;
 import com.mtpv.services.ServiceHelper;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class PrintDisplay extends Activity implements OnItemSelectedListener,
 		LocationListener {
-	
+
 	final int PROGRESS_DIALOG = 1;
 	TextView Tv;
 	Button back_Btn, print_Btn;
@@ -69,10 +69,10 @@ public class PrintDisplay extends Activity implements OnItemSelectedListener,
 
 		if (GenerateCase.generateCaseFLG && !DuplicatPrint.dupprintFLG) {
 			Tv.setText("" + data_to_print);
-			
+
 		} else if (!GenerateCase.generateCaseFLG && DuplicatPrint.dupprintFLG) {
 			Tv.setText("" + ServiceHelper.duplicatePrint_by_Eticket_resp);
-			
+
 		} else {
 			Tv.setText("");
 		}
@@ -80,7 +80,7 @@ public class PrintDisplay extends Activity implements OnItemSelectedListener,
 		try {
 			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
 
-			String path = android.os.Environment.getExternalStorageDirectory() + File.separator + "GHMC-Videos" 
+			String path = android.os.Environment.getExternalStorageDirectory() + File.separator + "GHMC-Videos"
 					+ File.separator + GenerateCase.date;
 
 			File from = new File(path, "temp.mp4");
@@ -106,14 +106,14 @@ public class PrintDisplay extends Activity implements OnItemSelectedListener,
 					longitude = gps.getLongitude();
 					Log.i("latitude ::::", "" + latitude);
 					Log.i("longitude :::", "" + longitude);
-					
+
 				} else {
 					// can't get location
 					// GPS or Network is not enabled
 					// Ask user to enable GPS/network in settings
 					gps.showSettingsAlert();
 				}
-				
+
 				if (GenerateCase.generateCaseFLG && !DuplicatPrint.dupprintFLG) {
 					GenerateCase.image1ByteArray = null;
 					GenerateCase.imageByteArray = null;
@@ -145,13 +145,13 @@ public class PrintDisplay extends Activity implements OnItemSelectedListener,
 					DetainedItems.detItems.setLength(0);
 					DetainedItems.detendItemsA.setLength(0);
 
-					Intent i = new Intent(PrintDisplay.this, GenerateCase.class);
+					Intent i = new Intent(PrintDisplay.this, Dashboard.class);
 					startActivity(i);
-					
+
 				} else if (!GenerateCase.generateCaseFLG && DuplicatPrint.dupprintFLG) {
 					Intent i2 = new Intent(PrintDisplay.this, DuplicatPrint.class);
 					startActivity(i2);
-					
+
 				} else {
 					Intent i3 = new Intent(PrintDisplay.this, Dashboard.class);
 					startActivity(i3);
@@ -164,18 +164,13 @@ public class PrintDisplay extends Activity implements OnItemSelectedListener,
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+
 				new Async_Task_PrintData().execute();
 
 			}
 		});
 
-		/*
-		 * Intent intent = getIntent();
-		 * 
-		 * generateChallan = intent.getStringExtra("generateChallan");
-		 * 
-		 * Log.e("generateChallan TEXTVIEW:: ", generateChallan);
-		 */
+
 
 	}
 
@@ -207,7 +202,6 @@ public class PrintDisplay extends Activity implements OnItemSelectedListener,
 
 				if (cursor.moveToFirst()) {
 					do {
-						Log.i("1 :", "" + cursor.getString(0));
 						bt = cursor.getString(0);
 						// et_bt_address.setText(BLT_Name);
 					} while (cursor.moveToNext());
@@ -276,14 +270,14 @@ public class PrintDisplay extends Activity implements OnItemSelectedListener,
 
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
-		case PROGRESS_DIALOG:
-			ProgressDialog pd = ProgressDialog.show(this, "", "", true);
-			pd.setContentView(R.layout.custom_progress_dialog);
-			pd.setCancelable(false);
-			return pd;
+			case PROGRESS_DIALOG:
+				ProgressDialog pd = ProgressDialog.show(this, "", "", true);
+				pd.setContentView(R.layout.custom_progress_dialog);
+				pd.setCancelable(false);
+				return pd;
 
-		default:
-			break;
+			default:
+				break;
 		}
 		return null;
 	}
@@ -321,7 +315,7 @@ public class PrintDisplay extends Activity implements OnItemSelectedListener,
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
-			long id) {
+							   long id) {
 		// TODO Auto-generated method stub
 
 	}

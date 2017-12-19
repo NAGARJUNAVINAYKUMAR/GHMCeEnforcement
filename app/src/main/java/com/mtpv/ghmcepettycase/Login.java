@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -23,13 +24,19 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.*;
+
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.util.Log;
+import android.util.SparseIntArray;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -56,9 +63,11 @@ public class Login extends Activity implements LocationListener {
 	public static String ip_got = null;
 
 	final int PROGRESS_DIALOG = 1;
+	private static final int REQUEST_PERMISSIONS = 20;
+	public SparseIntArray mErrorString;
 
 	public static String URL = "";
-	private String url_to_fix = "/services/GHMCWebServiceImpl?wsdl";
+	private String url_to_fix = "/services/GHMCWebServiceImpl?wsdl",appVersion = null;
 	public static String temp_usr = null, temp_psd = null, imei_No = null,
 			sim_No = null;
 
@@ -98,8 +107,7 @@ public class Login extends Activity implements LocationListener {
 	ArrayList<String> ps_names_arr;
 	String[][] psname_name_code_arr;
 	public static int UnitCode = 23;
-
-	private static final String[] requiredPermissions = new String[] {
+	private static final String[] requiredPermissions = new String[]{
 			Manifest.permission.READ_PHONE_STATE,
 			Manifest.permission.ACCESS_FINE_LOCATION,
 			Manifest.permission.ACCESS_NETWORK_STATE,
@@ -108,12 +116,16 @@ public class Login extends Activity implements LocationListener {
 			Manifest.permission.INTERNET,
 			Manifest.permission.WRITE_EXTERNAL_STORAGE,
 			Manifest.permission.READ_EXTERNAL_STORAGE,
-			Manifest.permission.INSTALL_SHORTCUT, Manifest.permission.CAMERA,
-			Manifest.permission.RECORD_AUDIO, Manifest.permission.ADD_VOICEMAIL
-	/* ETC.. */
+			Manifest.permission.INSTALL_SHORTCUT,
+			Manifest.permission.CAMERA,
+			Manifest.permission.RECORD_AUDIO
 	};
-	private static final int REQUEST_APP_SETTINGS = 168;
 
+
+
+	private static final int REQUEST_APP_SETTINGS = 168;
+    @SuppressWarnings("deprecation")
+    @SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -121,24 +133,36 @@ public class Login extends Activity implements LocationListener {
 		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		setContentView(R.layout.activity_login);
 
+		appVersion=getResources().getString(R.string.app_version);
+
+		mErrorString=new SparseIntArray();
+		user_name = (EditText) findViewById(R.id.et_userName);
+		password = (EditText) findViewById(R.id.et_password);
+		
+		// LOGIN CREDENTIALS
+/*		user_name.setText("23001004");
+		password.setText("WdSt48Pri");*/
+
+		submit = (Button) findViewById(R.id.submit);
+		cancel = (Button) findViewById(R.id.cancel);
+		ip_settings = (ImageView) findViewById(R.id.ip_settings);
 		try {
 			if (Build.VERSION.SDK_INT > 22 && !hasPermissions(requiredPermissions)) {
-				ActivityCompat.requestPermissions(Login.this, new String[] {
-						Manifest.permission.READ_EXTERNAL_STORAGE,
-						Manifest.permission.READ_PHONE_STATE,
-						Manifest.permission.ACCESS_FINE_LOCATION,
-						Manifest.permission.ACCESS_NETWORK_STATE,
-						Manifest.permission.ACCESS_WIFI_STATE,
-						Manifest.permission.ACCESS_COARSE_LOCATION,
-						Manifest.permission.INTERNET,
-						Manifest.permission.WRITE_EXTERNAL_STORAGE,
-						Manifest.permission.READ_EXTERNAL_STORAGE,
-						Manifest.permission.READ_SMS,
-						Manifest.permission.SEND_SMS,
-						Manifest.permission.INSTALL_SHORTCUT,
-						Manifest.permission.CAMERA,
-						Manifest.permission.RECORD_AUDIO,
-						Manifest.permission.ADD_VOICEMAIL }, 1);
+
+				Login.this.requestAppPermissions(new
+								String[]{
+								Manifest.permission.READ_PHONE_STATE,
+								Manifest.permission.ACCESS_FINE_LOCATION,
+								Manifest.permission.ACCESS_NETWORK_STATE,
+								Manifest.permission.ACCESS_WIFI_STATE,
+								Manifest.permission.ACCESS_COARSE_LOCATION,
+								Manifest.permission.INTERNET,
+								Manifest.permission.WRITE_EXTERNAL_STORAGE,
+								Manifest.permission.READ_EXTERNAL_STORAGE,
+								Manifest.permission.INSTALL_SHORTCUT,
+								Manifest.permission.CAMERA,
+								Manifest.permission.RECORD_AUDIO}, R.string.permissions
+						, REQUEST_PERMISSIONS);
 			} else {
 				getLocation();
 				try {
@@ -151,34 +175,11 @@ public class Login extends Activity implements LocationListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		db = new DataBase(getApplicationContext());
-		getLocation();
-		
-		try {
-			TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-			IMEI = getDeviceID(telephonyManager);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		user_name = (EditText) findViewById(R.id.et_userName);
-		password = (EditText) findViewById(R.id.et_password);
-		
-		// LOGIN CREDENTIALS
-		user_name.setText("23001004");
-		password.setText("WdSt48Pr");
-
-		submit = (Button) findViewById(R.id.submit);
-		cancel = (Button) findViewById(R.id.cancel);
-		ip_settings = (ImageView) findViewById(R.id.ip_settings);
 
 		try {
 			SharedPreferences prefs = getSharedPreferences("ghmcPref", MODE_PRIVATE);
 			ip_got = prefs.getString("IP_ADDRESS", "");
 			URL = ip_got + url_to_fix;
-			Log.i("URL ::: ", "" + URL);
-			Log.i("ip_got ::: ", "" + ip_got);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -196,26 +197,34 @@ public class Login extends Activity implements LocationListener {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				Intent ip_settings = new Intent(Login.this, IP_settings.class);
+				Intent ip_settings = new Intent(Login.this, IPSettings_New.class);
 				startActivity(ip_settings);
 			}
 		});
+		db = new DataBase(getApplicationContext());
+		getLocation();
+
+		try {
+			TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+			IMEI = getDeviceID(telephonyManager);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		submit.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+
 				
 				try {
 					SharedPreferences prefs = getSharedPreferences("ghmcPref", MODE_PRIVATE);
 					ip_got = prefs.getString("IP_ADDRESS", "");
 					URL = ip_got + url_to_fix;
-					Log.i("URL ::: ", "" + URL);
-					Log.i("ip_got ::: ", "" + ip_got);
 				} catch (Exception e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
+
 				
 				if (user_name.getText().toString().trim().equals("")) {
 					user_name.setError(Html.fromHtml("<font color='black'>Please Enter User Name</font>"));
@@ -233,7 +242,6 @@ public class Login extends Activity implements LocationListener {
 					ip_got = prefs.getString("IP_ADDRESS", "");
 
 					if (ip_got.length() > 1) {
-						Log.i("IF Block", "Entered");
 						SQLiteDatabase db2 = openOrCreateDatabase(DataBase.DATABASE_NAME, MODE_PRIVATE, null);
 						// db.execSQL("delete from " + DataBase.USER_TABLE);
 						db2.execSQL("DROP TABLE IF EXISTS " + DataBase.IP_TABLE);
@@ -261,7 +269,13 @@ public class Login extends Activity implements LocationListener {
 						}
 						LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 						if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-							new Async_Login().execute();
+
+							if(isOnline()) {
+								new Async_Login().execute();
+							}else
+							{
+								showToast("Please Check Your Netwrok Connection");
+							}
 						} else {
 							showGPSDisabledAlertToUser();
 						}
@@ -283,44 +297,8 @@ public class Login extends Activity implements LocationListener {
 		});
 	}
 
-	public boolean hasPermissions(String... permissions) {
-		for (String permission : permissions)
-			if (PackageManager.PERMISSION_GRANTED != checkCallingOrSelfPermission(permission))
-				return false;
-		return true;
-	}
 
-	@SuppressLint("Override")
-	public void onRequestPermissionsResult(int requestCode,
-			String permissions[], int[] grantResults) {
-		switch (requestCode) {
-		
-		case 1: {
-			if (grantResults.length > 0
-					&& grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-				// permission was granted, yay! Do the
-				// contacts-related task you need to do.
-			} else {
-				ActivityCompat.requestPermissions(Login.this, new String[] {
-						Manifest.permission.READ_EXTERNAL_STORAGE,
-						Manifest.permission.READ_PHONE_STATE,
-						Manifest.permission.ACCESS_FINE_LOCATION,
-						Manifest.permission.ACCESS_NETWORK_STATE,
-						Manifest.permission.ACCESS_WIFI_STATE,
-						Manifest.permission.ACCESS_COARSE_LOCATION,
-						Manifest.permission.INTERNET,
-						Manifest.permission.WRITE_EXTERNAL_STORAGE,
-						Manifest.permission.READ_EXTERNAL_STORAGE,
-						Manifest.permission.READ_SMS,
-						Manifest.permission.SEND_SMS,
-						Manifest.permission.INSTALL_SHORTCUT }, 1);
 
-				showToast("Please Enable All the Permissions required to Use the App");
-			}
-			return;
-		}
-		}
-	}
 
 	class AsyncSections extends AsyncTask<Void, Void, String> {
 
@@ -442,7 +420,7 @@ public class Login extends Activity implements LocationListener {
 					}
 				}
 			}
-		} catch (Exception e) {
+		} catch (SecurityException e) {
 			e.printStackTrace();
 		}
 	}
@@ -454,7 +432,7 @@ public class Login extends Activity implements LocationListener {
 		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
-	class Async_Login extends AsyncTask<Void, Void, String> {
+	private class Async_Login extends AsyncTask<Void, Void, String> {
 
 		@Override
 		protected void onPreExecute() {
@@ -466,7 +444,9 @@ public class Login extends Activity implements LocationListener {
 		@Override
 		protected String doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
-			ServiceHelper.getLogin(temp_usr, temp_psd, IMEI, ""+ latitude, ""+ longitude);
+
+			String[] version_split = appVersion.split("\\-");
+			ServiceHelper.getLogin(temp_usr, temp_psd, IMEI, ""+ latitude, ""+ longitude,""+version_split[1]);
 			return null;
 		}
 
@@ -534,15 +514,7 @@ public class Login extends Activity implements LocationListener {
 
 							SharedPreferences prefs = getSharedPreferences("loginValues", MODE_PRIVATE);
 							SharedPreferences.Editor edit = prefs.edit();
-							/*
-							 * PID_CODE= ""; PID_NAME=""; PS_CODE="";
-							 * PS_NAME=""; CADRE_CODE=""; CADRE_NAME="";
-							 * SECURITY_CD=""; GHMC_AUTH=""; CONTACT_NO="";
-							 * AADHAAR_DATA_FLAG=""; TIN_FLAG="";
-							 * OTP_NO_FLAG=""; CASHLESS_FLAG="";
-							 * MOBILE_NO_FLAG=""; RTA_DATA_FLAG="";
-							 * DL_DATA_FLAG="";
-							 */
+
 							edit.putString("PID_CODE", PID_CODE); //0
 							edit.putString("PID_NAME", PID_NAME); //1
 							edit.putString("PS_CODE", PS_CODE); //2
@@ -561,11 +533,7 @@ public class Login extends Activity implements LocationListener {
 							edit.putString("RTA_DATA_FLAG", RTA_DATA_FLAG); //14
 							edit.putString("DL_DATA_FLAG", DL_DATA_FLAG); //15
 
-							// edit.putString("", "")
-							Log.i("PS_NAME :::", "" + PS_NAME);
-							Log.i("PID_CODE :::", "" + PID_CODE);
-							Log.i("Async_task_GetPsName ::::", "Entered");
-							edit.commit();
+							edit.apply();
 						} catch (Exception e) {
 							// TODO: handle exception
 							if (db != null) {
@@ -584,6 +552,76 @@ public class Login extends Activity implements LocationListener {
 		}
 	}
 
+
+	public void requestAppPermissions(final String[] requestedPermissions,
+									  final int stringId, final int requestCode) {
+		mErrorString.put(requestCode, stringId);
+		int permissionCheck = PackageManager.PERMISSION_GRANTED;
+		boolean shouldShowRequestPermissionRationale = false;
+		for (String permission : requestedPermissions) {
+			permissionCheck = permissionCheck + ContextCompat.checkSelfPermission(this, permission);
+			shouldShowRequestPermissionRationale = shouldShowRequestPermissionRationale || ActivityCompat.shouldShowRequestPermissionRationale(this, permission);
+		}
+		if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+			if (shouldShowRequestPermissionRationale) {
+				Snackbar.make(findViewById(android.R.id.content), stringId,
+						Snackbar.LENGTH_INDEFINITE).setAction("GRANT",
+						new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								ActivityCompat.requestPermissions(Login.this, requestedPermissions, requestCode);
+							}
+						}).show();
+			} else {
+				ActivityCompat.requestPermissions(this, requestedPermissions, requestCode);
+			}
+		} else {
+			onPermissionsGranted(requestCode);
+		}
+	}
+
+	public void onPermissionsGranted(final int requestCode) {
+		Toast.makeText(this, "Permissions Received.", Toast.LENGTH_LONG).show();
+	}
+
+
+
+
+	public boolean hasPermissions(String... permissions) {
+		for (String permission : permissions)
+			if (PackageManager.PERMISSION_GRANTED != checkCallingOrSelfPermission(permission))
+				return false;
+		return true;
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		int permissionCheck = PackageManager.PERMISSION_GRANTED;
+		for (int permission : grantResults) {
+			permissionCheck = permissionCheck + permission;
+		}
+		if ((grantResults.length > 0) && permissionCheck == PackageManager.PERMISSION_GRANTED) {
+			onPermissionsGranted(requestCode);
+		} else {
+			Snackbar.make(findViewById(android.R.id.content), mErrorString.get(requestCode),
+					Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
+					new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent intent = new Intent();
+							intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+							intent.addCategory(Intent.CATEGORY_DEFAULT);
+							intent.setData(Uri.parse("package:" + getPackageName()));
+							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+							intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+							startActivity(intent);
+						}
+					}).show();
+		}
+	}
+
 	public class Async_task_GetPsName extends AsyncTask<Void, Void, String> {
 
 		@SuppressWarnings("deprecation")
@@ -592,7 +630,7 @@ public class Login extends Activity implements LocationListener {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
 			showDialog(PROGRESS_DIALOG);
-			Log.i("Async_task_GetPsName ::::", "Entered");
+			Log.d("GetPsName :", "Entered");
 		}
 
 		@Override
@@ -631,7 +669,7 @@ public class Login extends Activity implements LocationListener {
 					ps_names_arr.add(psname_name_code_arr[j][1]);
 
 					db.insertPsNameDetails(""+ psname_name_code_arr[j][0], ""+ psname_name_code_arr[j][1]);
-					Log.i("psname_name_code_arr[i] :::", ""+ psname_name_code_arr[j][0] + psname_name_code_arr[j][1]);
+					Log.i("psncode_arr[i] :::", ""+ psname_name_code_arr[j][0] + psname_name_code_arr[j][1]);
 				}
 				db2.close();
 			} catch (Exception e) {
@@ -677,6 +715,11 @@ public class Login extends Activity implements LocationListener {
 		toast.show();
 	}
 
+	public Boolean isOnline() {
+		ConnectivityManager conManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo nwInfo = conManager.getActiveNetworkInfo();
+		return nwInfo != null;
+	}
 	@Override
 	public void onLocationChanged(Location arg0) {
 		// TODO Auto-generated method stub
