@@ -19,9 +19,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.text.Html;
 import android.util.Base64;
 import android.util.Log;
@@ -35,6 +37,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import com.mtpv.ghmcenforcement.BuildConfig;
 import com.mtpv.ghmcenforcement.R;
 
 public class DetainedItems extends Activity {
@@ -242,10 +246,19 @@ public class DetainedItems extends Activity {
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Open Camera"))
                 {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                    startActivityForResult(intent, 1);
+					if (Build.VERSION.SDK_INT <= 23) {
+						Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+						File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+						intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+						startActivityForResult(intent, 1);
+					} else {
+						Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+						File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+						intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(DetainedItems.this,
+								BuildConfig.APPLICATION_ID + ".provider", f));
+						intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+						startActivityForResult(intent, 1);
+					}
                 }
                 else if (options[item].equals("Choose from Gallery"))
                 {
@@ -325,8 +338,6 @@ public class DetainedItems extends Activity {
                     	ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
                     	mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 5, stream1);
                     	seizedImageInbyteArray = stream1.toByteArray();
-                        Log.i("seizedImageInbyteArray 1::", ""+seizedImageInbyteArray);
-
                         Seize_image = Base64.encodeToString(seizedImageInbyteArray, Base64.NO_WRAP);
                     }
                     
@@ -342,15 +353,7 @@ public class DetainedItems extends Activity {
 	                String picturePath = c.getString(columnIndex);
 	                c.close();
 	                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-	 //               Bitmap image = (Bitmap) data.getExtras().get("data");
-	                Log.w("path of image from gallery......******************.........", picturePath+"");
-	                //picture1.setImageBitmap(thumbnail);
                 if("1".equals(SeizedItems.SelPicId)){
-                    
-                	/*seized_item_image.setImageBitmap(thumbnail);
-                	ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                	thumbnail.compress(Bitmap.CompressFormat.JPEG, 50, stream);
-                	seizedImageInbyteArray = stream.toByteArray();*/
                 	
                 	Bitmap mutableBitmap = thumbnail.copy(Bitmap.Config.ARGB_8888, true);
                 	Canvas canvas = new Canvas(mutableBitmap); //bmp is the bitmap to dwaw into

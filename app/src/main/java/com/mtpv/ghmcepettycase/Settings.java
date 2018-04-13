@@ -382,7 +382,7 @@ public class Settings extends Activity {
 
 			try {
 
-				if (null != Login.URL && Login.URL.equals("https://www.echallan.org/GHMCWebService")) {
+				if (null != Login.URL && Login.URL.contains("https://www.echallan.org/GHMCWebService")) {
 					server = IP_settings.open_ftp_fix;
 				}else{
 					server = IP_settings.ftp_fix;

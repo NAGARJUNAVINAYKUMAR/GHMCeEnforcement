@@ -232,7 +232,6 @@ public class Dashboard extends Activity {
 							showToast("Configure Download Masters!");
 						} else {
 							if (isOnline()) {
-
 								OtpStatus = "";
 								OtpResponseDelayTime = "";
 								Async_getOtpStatusNTime OtpStatusNTime = new Async_getOtpStatusNTime();
@@ -242,10 +241,6 @@ public class Dashboard extends Activity {
 								} else {
 									OtpStatusNTime.execute();
 								}
-
-
-
-
 							} else {
 								showToast("Please Check your Network");
 							}

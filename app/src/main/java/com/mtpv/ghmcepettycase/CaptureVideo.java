@@ -12,9 +12,12 @@ import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -24,6 +27,8 @@ import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
+
+import com.mtpv.ghmcenforcement.BuildConfig;
 import com.mtpv.ghmcenforcement.R;
 
 public class CaptureVideo extends Activity {
@@ -52,6 +57,8 @@ public class CaptureVideo extends Activity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_capture_video);
+		StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+		StrictMode.setVmPolicy(builder.build());
 
 		imgPreview = (ImageView) findViewById(R.id.imgPreview);
 		videoPreview = (VideoView) findViewById(R.id.videoPreview);
@@ -148,18 +155,34 @@ public class CaptureVideo extends Activity {
 	 * Recording video
 	 */
 	private void recordVideo() {
-		Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 
-		fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
 
-		// set video quality
-		intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-		intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 5);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file
-															// name
 
-		// start the video capture Intent
-		startActivityForResult(intent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);
+
+		if (Build.VERSION.SDK_INT<=23) {
+			Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+
+			fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
+
+			// set video quality
+			intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+			intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 5);
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file
+			// name
+
+			// start the video capture Intent
+			startActivityForResult(intent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);
+		}else{
+			Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+			fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
+			intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+			intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 5);
+			//File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(CaptureVideo.this,
+					BuildConfig.APPLICATION_ID + ".provider",new File(fileUri.getPath())));
+			intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+			startActivityForResult(intent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);
+		}
 	}
 
 	/**
@@ -284,11 +307,14 @@ public class CaptureVideo extends Activity {
 	 */
 	private static File getOutputMediaFile(int type) {
 
+
+
+		String path = android.os.Environment.getExternalStorageDirectory()
+				+ File.separator + "GHMC-Videos"+File.separator+"Direct_Vedio";
+
 		// External sdcard location
 		File mediaStorageDir = new File(
-				Environment
-						.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-				IMAGE_DIRECTORY_NAME);
+				path);
 
 		// Create the storage directory if it does not exist
 		if (!mediaStorageDir.exists()) {

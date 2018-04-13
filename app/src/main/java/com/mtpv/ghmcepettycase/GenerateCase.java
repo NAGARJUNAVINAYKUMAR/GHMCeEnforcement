@@ -306,6 +306,7 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
     ImageButton imagebutton;
 
     public boolean videoPrevwFLG = false;
+    String video_file;
     private int position = 0;
     private MediaController mediaController;
 
@@ -1840,7 +1841,7 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                 videoPrevwFLG = true;
                 vedio_complete_layout.setVisibility(View.VISIBLE);
 
-                Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+              /*  Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 
                 fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
                 // set video quality
@@ -1848,7 +1849,36 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                 intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 5);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file
                 // start the video capture Intent
-                startActivityForResult(intent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);
+                startActivityForResult(intent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);*/
+
+
+
+
+
+                if (Build.VERSION.SDK_INT<=23) {
+                    Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+
+                    fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
+
+                    // set video quality
+                    intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+                    intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 5);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file
+                    // name
+
+                    // start the video capture Intent
+                    startActivityForResult(intent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);
+                }else{
+                    Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                    fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
+                    intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+                    intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 5);
+                    //File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(GenerateCase.this,
+                            BuildConfig.APPLICATION_ID + ".provider",new File(fileUri.getPath())));
+                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivityForResult(intent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);
+                }
 
 
             }
@@ -7066,9 +7096,16 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
 
                 if (videoPrevwFLG) {
                     previewVideo();
+
+                    if(null!=fileUri){
+                        video_file = getRealVideoPathFromURI(fileUri);
+                    }else{
+                        video_file = "";
+                    }
                 } else {
                     videoPreview.stopPlayback();
                 }
+
 
             } else if (resultCode == RESULT_CANCELED) {
                 // user cancelled recording
@@ -7209,15 +7246,7 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
         // External sdcard location
         String path = android.os.Environment.getExternalStorageDirectory()
                 + File.separator + "GHMC-Videos" + File.separator + GenerateCase.date;
-
-		/*
-		 * File mediaStorageDir = new File(
-		 * Environment.getExternalStoragePublicDirectory
-		 * (Environment.DIRECTORY_PICTURES), IMAGE_DIRECTORY_NAME);
-		 */
         File mediaStorageDir = new File(path);
-
-        // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
                 Log.d(IMAGE_DIRECTORY_NAME, "Oops! Failed create " + IMAGE_DIRECTORY_NAME + " directory");
@@ -7225,7 +7254,6 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
             }
         }
 
-        // Create a media file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
                 Locale.getDefault()).format(new Date());
         File mediaFile;
@@ -7237,6 +7265,28 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
 
         return mediaFile;
     }
+
+
+
+    private String getRealVideoPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Video.VideoColumns.DATA);
+            if (idx >= 0) {
+                result = cursor.getString(idx);
+            } else {
+                result = null;
+            }
+            cursor.close();
+        }
+        return result;
+
+    }
+
 
     @Override
     public void onBackPressed() {

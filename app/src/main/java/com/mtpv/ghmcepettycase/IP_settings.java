@@ -51,7 +51,8 @@ public class IP_settings extends Activity {
 
 	EditText server_ET;
 	//public static String Live = "http://192.168.11.4/GHMCWebService";
-	public static String Live = "https://www.echallan.org/GHMCWebService";
+	//public static String Live = "https://www.echallan.org/GHMCWebService";
+	public static String Live = "https://www.echallan.org/Test_GHMCWebService";
 
 	public static String open_ftp_fix = "125.16.1.69";
 	
