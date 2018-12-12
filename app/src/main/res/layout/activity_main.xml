@@ -14,7 +14,7 @@
         android:text="@string/welcome_txt"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/text_color_all"
-        android:textSize="@dimen/welcome_txt_size"
+        android:textSize="50sp"
         android:textStyle="bold" />
     
     <LinearLayout
@@ -28,15 +28,15 @@
 
         <ImageView
             android:id="@+id/htp"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:contentDescription="@null"
             android:src="@drawable/traffic" />
 
         <ImageView
             android:id="@+id/ghmc"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:contentDescription="@null"
             android:src="@drawable/ghmc" />
     </LinearLayout>
@@ -48,7 +48,7 @@
         android:gravity="center"
         android:text="GHMC \n e-Enforcement"
         android:textColor="@color/text_color_all"
-        android:textSize="@dimen/welcome_txt_size"
+        android:textSize="55sp"
         android:textStyle="bold" />
 
 </LinearLayout>

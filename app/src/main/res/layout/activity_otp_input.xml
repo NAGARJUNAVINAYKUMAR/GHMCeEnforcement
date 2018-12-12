@@ -3,47 +3,47 @@
     android:id="@+id/layout_root"
     android:layout_width="500dp"
     android:layout_height="300dp"
-    android:gravity="top"
     android:background="@drawable/background_screen"
-    android:orientation="vertical" >
-    
-<LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="50dp"
-    android:layout_marginTop="0dp"
-    android:background="@color/text_color_all"
-    android:gravity="center"
-    android:orientation="horizontal"
-    android:weightSum="1" >
-    
-    <ImageView 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:src="@drawable/exit_logo"
-        android:layout_weight="0.05"/>
-    
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.9"
-        android:gravity="center"
-        android:text="OTP STATUS"
-        android:textColor="#ffffff"
-        android:textSize="22sp"
-        android:textStyle="bold" >
+    android:gravity="top"
+    android:orientation="vertical">
 
-    </TextView>
-    
-     <ImageView 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        
-        android:layout_weight="0.05"
-        android:src="@drawable/exit_logo2"/>
-    
-</LinearLayout>
-    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="0dp"
+        android:background="@color/text_color_all"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:gravity="left"
+            android:src="@drawable/exit_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
+            android:gravity="center"
+            android:text="OTP STATUS"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold">
+
+        </TextView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="0.05"
+            android:src="@drawable/exit_logo2" />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/otp_heading"
         android:layout_width="wrap_content"
@@ -53,8 +53,9 @@
         android:text="Enter OTP"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/text_color_all"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
+
 
     <EditText
         android:id="@+id/otp_input"
@@ -62,17 +63,18 @@
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
+        android:background="@drawable/edittextstyle"
+        android:gravity="center"
         android:hint="Enter OTP number"
         android:inputType="number"
         android:maxLength="4"
-        android:gravity="center"
         android:textColor="@color/text_color_all"
-        android:background="@drawable/edittextstyle"
-        android:textSize="20sp" >
+        android:textSize="20sp">
 
         <requestFocus />
 
     </EditText>
+
     <TextView
         android:id="@+id/otp_timer"
         android:layout_width="wrap_content"
@@ -82,7 +84,7 @@
         android:text=""
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FC0303"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -91,25 +93,26 @@
         android:layout_marginTop="38dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:weightSum="1" >
-        
+        android:weightSum="1">
+
         <Button
             android:id="@+id/cancel_dialog"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
+            android:layout_weight="0.5"
             android:background="@color/text_color_all"
             android:text="Cancel"
             android:textColor="#ffffff"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_weight="0.5" /> 
-        
-        <TextView android:layout_width="wrap_content"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" ">
-            
+
         </TextView>
-        
+
         <Button
             android:id="@+id/ok_dialog"
             android:layout_width="fill_parent"

@@ -14,6 +14,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -39,6 +40,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -81,8 +83,17 @@ public class CaptureImages extends Activity implements LocationListener {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_capture_images);
-		
-		
+
+		SharedPreferences prefs1 = getSharedPreferences("loginValues", MODE_PRIVATE);
+		String psName = prefs1.getString("PS_NAME", "");
+		String officer_Name1 = prefs1.getString("PID_NAME", "");
+		TextView officer_PS = (TextView)findViewById(R.id.officer_PS);
+		TextView officer_Name = (TextView)findViewById(R.id.officer_Name);
+		TextView companyName = (TextView) findViewById(R.id.CompanyName);
+		companyName.startAnimation(AnimationUtils.loadAnimation(this, R.anim.marquee));
+		officer_PS.setText(psName);
+		officer_Name.setText(officer_Name1);
+
 		getLocation();
 		
 		newtimer = new CountDownTimer(1000000000, 50) { 

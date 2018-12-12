@@ -171,5 +171,7 @@
     <string name="title_activity_detained_items">DetainedItems</string>
     <string name="title_activity_splash">Splash</string>
     <string name="title_activity_ph_print">Ph_printActivity</string>
+    <string name="header_txt">GHMC\ne-Enforcement</string>
+    <string name="CompanyName">Telangana Integrated eChallan System</string>
 
 </resources>

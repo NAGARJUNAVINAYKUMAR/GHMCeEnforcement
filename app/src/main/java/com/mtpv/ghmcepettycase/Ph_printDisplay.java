@@ -31,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
@@ -56,6 +57,16 @@ public class Ph_printDisplay extends Activity implements OnItemSelectedListener,
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_ph_print);
+
+		SharedPreferences prefs1 = getSharedPreferences("loginValues", MODE_PRIVATE);
+		String psName = prefs1.getString("PS_NAME", "");
+		String officer_Name1 = prefs1.getString("PID_NAME", "");
+		TextView officer_PS = (TextView)findViewById(R.id.officer_PS);
+		TextView officer_Name = (TextView)findViewById(R.id.officer_Name);
+		TextView companyName = (TextView) findViewById(R.id.CompanyName);
+		companyName.startAnimation(AnimationUtils.loadAnimation(this, R.anim.marquee));
+		officer_PS.setText(psName);
+		officer_Name.setText(officer_Name1);
 		
 		back_Btn = (Button)findViewById(R.id.back_Btn);
 		print_Btn = (Button)findViewById(R.id.print_Btn);

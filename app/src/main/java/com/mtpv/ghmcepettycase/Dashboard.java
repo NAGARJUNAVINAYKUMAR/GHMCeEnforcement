@@ -26,6 +26,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -130,12 +132,19 @@ public class Dashboard extends Activity {
 		psname = (TextView) findViewById(R.id.psname);
 		officerName = (TextView) findViewById(R.id.officername);
 
-		SharedPreferences prefs = getSharedPreferences("loginValues",
-				MODE_PRIVATE);
+		SharedPreferences prefs = getSharedPreferences("loginValues", MODE_PRIVATE);
 		String psName = prefs.getString("PS_NAME", "");
-		String officer_Name = prefs.getString("PID_NAME", "");
-		psname.setText("" + psName);
-		officerName.setText("" + officer_Name);
+		String officer_Name1 = prefs.getString("PID_NAME", "");
+
+		TextView officer_PS = (TextView)findViewById(R.id.officer_PS);
+		TextView officer_Name = (TextView)findViewById(R.id.officer_Name);
+		TextView companyName = (TextView) findViewById(R.id.CompanyName);
+		companyName.startAnimation(AnimationUtils.loadAnimation(this, R.anim.marquee));
+		officer_PS.setText(psName);
+		officer_Name.setText(officer_Name1);
+
+		psname.setText(psName);
+		officerName.setText(officer_Name1);
 
 		if (Login.SECURITY_CD.equals("N")) {
 
@@ -300,7 +309,7 @@ public class Dashboard extends Activity {
 				title.setTextSize(26);
 				title.setTypeface(title.getTypeface(), Typeface.BOLD);
 				title.setCompoundDrawablesWithIntrinsicBounds(
-						R.drawable.dialog_logo, 0, R.drawable.dialog_logo, 0);
+						R.drawable.ghmc_small, 0, R.drawable.traffic_small, 0);
 				title.setPadding(20, 0, 20, 0);
 				title.setHeight(70);
 

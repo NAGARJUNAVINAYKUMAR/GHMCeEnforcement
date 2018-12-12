@@ -1,145 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:background="@drawable/background_screen" >
-
-  <!-- Header aligned to top -->
-  <RelativeLayout
-    android:id="@+id/header"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:gravity="center" >
+    android:layout_height="match_parent"
+    android:background="@drawable/background_screen">
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:src="@drawable/header"
-        android:contentDescription="@null" 
-        android:scaleType="fitXY"/>
-  </RelativeLayout>
-
-  <!-- Footer aligned to bottom -->
-  <RelativeLayout
-    android:id="@+id/footer"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:gravity="center" >
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="fill_parent"
-        android:layout_height="42dp"
-        android:src="@drawable/footer" 
-        android:contentDescription="@null"
-        android:scaleType="fitXY" />
-  </RelativeLayout>
-
-  <!-- Scrollable Content below header and above footer -->
-  <ScrollView
-    android:id="@+id/container"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/background_screen"
-    android:layout_above="@id/footer"
-    android:layout_below="@id/header" >
-
-    <LinearLayout
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:gravity="center_horizontal"
-      android:layout_marginTop="20dp"
-      android:orientation="vertical" >
-      
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/header_grnt_padding_ten"
-            android:text="Reports"
-            android:textColor="@color/text_color_all"
-            android:textSize="35sp"
-            android:textStyle="bold" />
-      
-     <LinearLayout
-      android:layout_width="fill_parent"
-      android:layout_height="150dp"
-      android:layout_marginTop="20dp"
-      android:orientation="horizontal"
-      android:weightSum="1" >
-
-          <Button
-              android:id="@+id/report_date_btn"
-              style="@style/naviblue_custom_style"
-              android:layout_width="fill_parent"
-              android:layout_height="70dp"
-              android:layout_gravity="center"
-              android:layout_marginLeft="30dp"
-              android:layout_marginRight="15dp"
-              android:layout_weight="0.5"
-              android:focusable="false"
-              android:gravity="center"
-              android:hint="Select Date"
-              android:inputType="none"
-              android:textColor="#ffffff"
-              android:textColorHint="#ffffff"
-              android:textSize="22sp" />
-      
-         <Button
-             android:id="@+id/get_report_print"
-             style="@style/naviblue_custom_style"
-             android:layout_width="fill_parent"
-             android:layout_height="70dp"
-             android:layout_gravity="center"
-             android:layout_marginLeft="30dp"
-             android:layout_marginRight="15dp"
-             android:layout_weight="0.5"
-             android:text="Get Details"
-             android:textColor="#fff"
-             android:textSize="22sp" />
-
-      </LinearLayout>
-      
-  <TextView
-        android:id="@+id/report_text"
-       android:layout_width="fill_parent"
+    <!-- Header aligned to top -->
+    <!-- <RelativeLayout
+       android:id="@+id/header"
+       android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:gravity="center"
-       android:layout_marginLeft="20dp"
-       android:layout_marginRight="20dp"
-       android:textColor="@color/text_color_all"
-       android:text=""
-       android:visibility="visible"
-       android:textSize="20sp"
-          />
-       
-    <Button
-             android:id="@+id/print"
-             android:layout_width="250dp"
-             android:layout_height="70dp"
-             android:layout_gravity="center"
-             android:layout_marginLeft="30dp"
-             android:layout_marginRight="15dp"
-             style="@style/naviblue_custom_style"
-             android:text="Print"
-             android:visibility="gone"
-             android:textColor="#fff"
-             android:textSize="22sp" />
-        
-  
-  
-             <LinearLayout
-                 android:id="@+id/h1"
-                 android:layout_width="fill_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_gravity="center"
-                 android:layout_margin="5dp"
-                 android:orientation="vertical" >
-    </LinearLayout>
+       android:layout_alignParentTop="true"
+       android:gravity="center" >
+
+       <ImageView
+           android:id="@+id/imageView1"
+           android:layout_width="wrap_content"
+           android:layout_height="100dp"
+           android:src="@drawable/header"
+           android:contentDescription="@null"
+           android:scaleType="fitXY"/>
+     </RelativeLayout>-->
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/header_layout" />
+
+    <include
+        android:id="@+id/footer"
+        layout="@layout/footer_layout" />
+
+    <!-- Footer aligned to bottom -->
+    <!-- <RelativeLayout
+       android:id="@+id/footer"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_alignParentBottom="true"
+       android:gravity="center" >
+
+       <ImageView
+           android:id="@+id/imageView2"
+           android:layout_width="fill_parent"
+           android:layout_height="42dp"
+           android:src="@drawable/footer"
+           android:contentDescription="@null"
+           android:scaleType="fitXY" />
+     </RelativeLayout>-->
+
+    <!-- Scrollable Content below header and above footer -->
+    <ScrollView
+        android:id="@+id/container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/footer"
+        android:layout_below="@id/header"
+        android:background="@drawable/background_screen">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/header_grnt_padding_ten"
+                android:text="Reports"
+                android:textColor="@color/text_color_all"
+                android:textSize="35sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/report_date_btn"
+                    style="@style/naviblue_custom_style"
+                    android:layout_width="fill_parent"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="0.5"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:hint="Select Date"
+                    android:inputType="none"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#ffffff"
+                    android:textSize="22sp" />
+
+                <Button
+                    android:id="@+id/get_report_print"
+                    style="@style/naviblue_custom_style"
+                    android:layout_width="fill_parent"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="0.5"
+                    android:text="Get Details"
+                    android:textColor="#fff"
+                    android:textSize="22sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/report_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/text_color_all"
+                android:textSize="20sp"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/print"
+                style="@style/naviblue_custom_style"
+                android:layout_width="250dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="15dp"
+                android:text="Print"
+                android:textColor="#fff"
+                android:textSize="22sp"
+                android:visibility="gone" />
+
+
+            <LinearLayout
+                android:id="@+id/h1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:orientation="vertical"></LinearLayout>
 
 
             <LinearLayout
@@ -147,48 +152,47 @@
                 android:layout_width="fill_parent"
                 android:layout_height="20dp"
                 android:layout_margin="5dp"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/cancel_report_print"
+                    style="@style/naviblue_custom_style"
+                    android:layout_width="fill_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="0.5"
+                    android:text="Cancel"
+                    android:textColor="#fff"
+                    android:textSize="22sp" />
+
+
+                <Button
+                    android:id="@+id/print_Btn"
+                    style="@style/naviblue_custom_style"
+                    android:layout_width="fill_parent"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="0.5"
+                    android:text="Print"
+                    android:textColor="#fff"
+                    android:textSize="22sp"
+                    android:visibility="visible" />
+
             </LinearLayout>
-  
-  <LinearLayout
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="20dp"
-      android:orientation="horizontal" 
-      android:layout_marginBottom="20dp"
-      android:weightSum="1">
 
-          <Button
-              android:id="@+id/cancel_report_print"
-              android:layout_width="fill_parent"
-              android:layout_height="70dp"
-              android:layout_marginLeft="30dp"
-              android:layout_marginRight="15dp"
-              style="@style/naviblue_custom_style"
-              android:text="Cancel"
-              android:textColor="#fff"
-              android:textSize="22sp" 
-              android:layout_weight="0.5" />
+        </LinearLayout>
 
-      
-         <Button
-             android:id="@+id/print_Btn"
-             android:layout_width="fill_parent"
-             android:layout_height="70dp"
-             android:layout_gravity="center"
-             android:layout_marginLeft="30dp"
-             android:layout_marginRight="15dp"
-             style="@style/naviblue_custom_style"
-             android:text="Print"
-             android:textColor="#fff"
-             android:visibility="visible"
-             android:textSize="22sp" 
-             android:layout_weight="0.5" />
-
-      </LinearLayout>
- 
-    </LinearLayout>
-
-  </ScrollView>
+    </ScrollView>
 
 </RelativeLayout>

@@ -27,6 +27,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -86,7 +87,17 @@ public class DuplicatPrint extends Activity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_duplicat_print);
-		
+
+		SharedPreferences prefs1 = getSharedPreferences("loginValues", MODE_PRIVATE);
+		String psName = prefs1.getString("PS_NAME", "");
+		String officer_Name1 = prefs1.getString("PID_NAME", "");
+		TextView officer_PS = (TextView)findViewById(R.id.officer_PS);
+		TextView officer_Name = (TextView)findViewById(R.id.officer_Name);
+		TextView companyName = (TextView) findViewById(R.id.CompanyName);
+		companyName.startAnimation(AnimationUtils.loadAnimation(this, R.anim.marquee));
+		officer_PS.setText(psName);
+		officer_Name.setText(officer_Name1);
+
 		Thread.setDefaultUncaughtExceptionHandler(new UnCaughtException(DuplicatPrint.this));
 		
 		date_Btn = (Button) findViewById(R.id.duplicate_date_btn);

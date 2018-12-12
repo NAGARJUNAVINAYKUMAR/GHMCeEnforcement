@@ -3,65 +3,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_screen" >
-
-    <!-- Header aligned to top -->
+    android:background="@drawable/background_screen">
 
     <RelativeLayout
         android:id="@+id/header"
+        style="@style/header_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:gravity="center" >
+        android:layout_centerHorizontal="true"
+        android:padding="10dp">
 
         <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/header_height"
+            android:id="@+id/img_logo"
+            style="@style/header_images_style_left"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:contentDescription="@null"
-            android:scaleType="fitXY"
-            android:src="@drawable/header" />
+            android:src="@drawable/exit_logo"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/header_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="@string/header_txt"
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/textView2"
+            android:layout_below="@+id/textView1"
+            style="@style/cust_text_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageView1"
             android:layout_centerHorizontal="true"
-            android:textStyle="bold"
-            android:textSize="20dp"
             android:text="@string/app_version"
-            android:textColor="#ffffff"
+            android:textSize="15sp"
             android:textAppearance="?android:attr/textAppearanceSmall" />
-    </RelativeLayout>
-
-    <!-- Footer aligned to bottom -->
-
-    <RelativeLayout
-        android:id="@+id/footer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center" >
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/footer_height"
+            style="@style/header_images_style_right"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:contentDescription="@null"
-            android:scaleType="fitXY"
-            android:src="@drawable/footer" />
-    </RelativeLayout>
+            android:visibility="visible" />
 
-    <!-- Scrollable Content below header and above footer -->
+    </RelativeLayout>
 
     <ScrollView
         android:id="@+id/container"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@id/footer"
         android:layout_below="@id/header"
-        android:background="@drawable/background_screen" >
+        android:layout_above="@id/footer"
+        android:background="@drawable/background_screen">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -70,7 +75,7 @@
             android:layout_marginRight="25dp"
             android:layout_marginTop="50dp"
             android:gravity="center"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -88,13 +93,15 @@
                 android:layout_height="@dimen/login_et_size"
                 android:layout_marginTop="@dimen/login_margin_top"
                 android:background="@drawable/edittextstyle"
-                android:gravity="center"
                 android:hint="@string/user_id_hint"
                 android:inputType="number"
                 android:text=""
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingRight="0dp"
+                android:paddingEnd="0dp"
                 android:textColor="@color/text_color_all"
-                android:textSize="@dimen/login_txt_size" >
-            </EditText>
+                android:textSize="@dimen/login_txt_size" />
 
             <EditText
                 android:id="@+id/et_password"
@@ -102,20 +109,22 @@
                 android:layout_height="@dimen/login_et_size"
                 android:layout_marginTop="@dimen/login_margin_top"
                 android:background="@drawable/edittextstyle"
-                android:gravity="center"
                 android:hint="@string/password_hint"
                 android:inputType="textPassword"
                 android:text=""
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingRight="0dp"
+                android:paddingEnd="0dp"
                 android:textColor="@color/text_color_all"
-                android:textSize="@dimen/login_txt_size" >
-            </EditText>
+                android:textSize="@dimen/login_txt_size" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
                 android:orientation="horizontal"
-                android:weightSum="@integer/complete_weight" >
+                android:weightSum="@integer/complete_weight">
 
                 <Button
                     android:id="@+id/cancel"
@@ -133,6 +142,7 @@
                     style="@style/naviblue_custom_style"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/button_height"
+                    android:layout_marginLeft="@dimen/submit_margin"
                     android:layout_marginStart="@dimen/submit_margin"
                     android:layout_weight="@integer/weight_division"
                     android:text="@string/submit"
@@ -146,8 +156,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/ip_margin_end"
+                android:layout_marginRight="@dimen/ip_margin_end"
                 android:layout_marginTop="@dimen/ip_margin_top"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/ip_settings"
@@ -168,7 +179,13 @@
                     android:textSize="@dimen/ip_settings_txt_size"
                     android:textStyle="bold" />
             </LinearLayout>
+
         </LinearLayout>
+
     </ScrollView>
+
+    <include
+        android:id="@+id/footer"
+        layout="@layout/footer_layout" />
 
 </RelativeLayout>

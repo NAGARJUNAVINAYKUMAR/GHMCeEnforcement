@@ -15,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -43,12 +44,14 @@ import android.text.format.Time;
 import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
@@ -327,6 +330,17 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setContentView(R.layout.activity_generate_case);
+
+        SharedPreferences prefs1 = getSharedPreferences("loginValues", MODE_PRIVATE);
+        String psName = prefs1.getString("PS_NAME", "");
+        String officer_Name1 = prefs1.getString("PID_NAME", "");
+        TextView officer_PS = (TextView)findViewById(R.id.officer_PS);
+        TextView officer_Name = (TextView)findViewById(R.id.officer_Name);
+        TextView companyName = (TextView) findViewById(R.id.CompanyName);
+        companyName.startAnimation(AnimationUtils.loadAnimation(this, R.anim.marquee));
+        officer_PS.setText(psName);
+        officer_Name.setText(officer_Name1);
+
         Mobilenumber = "";
         // Thread.setDefaultUncaughtExceptionHandler(new UnCaughtException(GenerateCase.this));
 
@@ -1099,6 +1113,8 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
             public void onClick(View v) {
                 // TODO Auto-generated method stub
                 // getLocation();
+                //image1.setRotation(0);
+
                 gps = new GPSTracker(GenerateCase.this);
                 // check if GPS enabled
                 if (gps.getLocation() != null) {
@@ -1106,6 +1122,7 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                     longitude = gps.getLongitude();
                     videoPrevwFLG = false;
                     GenerateCase.SelPicId = "1";
+                    image1.setRotation(0);
                     selectImage();
 
                 } else {
@@ -1472,6 +1489,8 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                 // TODO Auto-generated method stub
                 // getLocation();
 
+                //image2.setRotation(0);
+
                 gps = new GPSTracker(GenerateCase.this);
 
                 // check if GPS enabled
@@ -1481,6 +1500,7 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                     longitude = gps.getLongitude();
 
                     GenerateCase.SelPicId = "2";
+                    image2.setRotation(0);
                     selectImage();
                     // \n is for new line
                     // Toast.makeText(getApplicationContext(),
@@ -1497,10 +1517,10 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
 
         // GetDatabaseValues();
 
-		/*
-		 * if (!select_ps_name.getText().toString().trim().equals("")) { new
-		 * Async_getPointNameByPsName().execute(); }
-		 */
+        /*
+         * if (!select_ps_name.getText().toString().trim().equals("")) { new
+         * Async_getPointNameByPsName().execute(); }
+         */
 
         try {
             TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
@@ -1572,16 +1592,15 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                             .fromHtml("<font color='black'>Please Enter Mobile</font>"));
                     owner_aadhaarMobileNo.requestFocus();
                     OwnerOTPFLG = false;
-                } else if (tempContactNumber != null
-                        && tempContactNumber.trim().length() > 1
-                        && tempContactNumber.trim().length() != 10) {
+                } else if (tempContactNumber.trim().length() > 1 && tempContactNumber.trim().length() != 10) {
                     owner_aadhaarMobileNo.setError(Html
                             .fromHtml("<font color='black'>Enter Valid mobile number!!</font>"));
                     owner_aadhaarMobileNo.requestFocus();
                     OwnerOTPFLG = false;
-                } else if ((tempContactNumber.charAt(0) != '7')
-                        || (tempContactNumber.charAt(0) != '8')
-                        || (tempContactNumber.charAt(0) != '9')) {
+                } else if ("6".equals(String.valueOf(tempContactNumber.charAt(0)))
+                        || "7".equals(String.valueOf(tempContactNumber.charAt(0)))
+                        || "8".equals(String.valueOf(tempContactNumber.charAt(0)))
+                        || "9".equals(String.valueOf(tempContactNumber.charAt(0)))) {
                     OwnerOTPFLG = true;
                     //		if ("Y".equals(OTP_NO_FLAG)) {
                     if (isOnline()) {
@@ -1852,10 +1871,7 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                 startActivityForResult(intent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);*/
 
 
-
-
-
-                if (Build.VERSION.SDK_INT<=23) {
+                if (Build.VERSION.SDK_INT <= 23) {
                     Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 
                     fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
@@ -1868,14 +1884,14 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
 
                     // start the video capture Intent
                     startActivityForResult(intent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);
-                }else{
+                } else {
                     Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
                     fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
                     intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
                     intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 5);
                     //File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(GenerateCase.this,
-                            BuildConfig.APPLICATION_ID + ".provider",new File(fileUri.getPath())));
+                            BuildConfig.APPLICATION_ID + ".provider", new File(fileUri.getPath())));
                     intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivityForResult(intent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);
                 }
@@ -2025,10 +2041,10 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                     } else if (DetainedItems.detItems.toString().trim().length() == 0) {
                                         showToast("Please Enter Items Found on Encroachment");
                                     }/*
-									 * else if (otp_verify_status.equals("N")) {
-									 * showToast("Please Verify OTP Number");
-									 * owner_aadhaarMobileNo.requestFocus(); }
-									 */ else {
+                                     * else if (otp_verify_status.equals("N")) {
+                                     * showToast("Please Verify OTP Number");
+                                     * owner_aadhaarMobileNo.requestFocus(); }
+                                     */ else {
                                         if (isOnline()) {
                                             new Async_PreviewDetails().execute();
                                         } else {
@@ -2057,19 +2073,19 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                         owner_aadhaarAddress.setError(Html.fromHtml("<font color='black'>Please Enter Owner Address</font>"));
                                         owner_aadhaarAddress.requestFocus();
                                     } /*
-									 * else if
-									 * (aadhaar_ownerImage.getDrawable().
-									 * getConstantState() ==
-									 * getResources().getDrawable
-									 * (R.drawable.camera).getConstantState()
-									 * ||aadhaar_ownerImage
-									 * .getDrawable().getConstantState() ==
-									 * getResources
-									 * ().getDrawable(R.drawable.photo
-									 * ).getConstantState()) {
-									 * showToast("Please Select Respondent Image"
-									 * ); }
-									 */ else if (Sections.checkedList.isEmpty()) {
+                                     * else if
+                                     * (aadhaar_ownerImage.getDrawable().
+                                     * getConstantState() ==
+                                     * getResources().getDrawable
+                                     * (R.drawable.camera).getConstantState()
+                                     * ||aadhaar_ownerImage
+                                     * .getDrawable().getConstantState() ==
+                                     * getResources
+                                     * ().getDrawable(R.drawable.photo
+                                     * ).getConstantState()) {
+                                     * showToast("Please Select Respondent Image"
+                                     * ); }
+                                     */ else if (Sections.checkedList.isEmpty()) {
                                         showToast("Please Select Atleast one Section");
 
                                     } else if (DetainedItems.detItems.toString().trim().length() == 0) {
@@ -2139,10 +2155,10 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                             || aadhaar_ownerImage.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.photo).getConstantState()) {
                                         showToast("Please Select Respondent Image");
                                     }/*
-									 * else if (otp_verify_status.equals("N")) {
-									 * showToast("Please Verify OTP Number");
-									 * owner_aadhaarMobileNo.requestFocus(); }
-									 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                     * else if (otp_verify_status.equals("N")) {
+                                     * showToast("Please Verify OTP Number");
+                                     * owner_aadhaarMobileNo.requestFocus(); }
+                                     */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                         showToast("Please Verify OTP Number");
                                     } else if (DetainedItems.detItems.toString().trim().length() == 0) {
                                         showToast("Please Enter Items Found on Encroachment");
@@ -2199,10 +2215,10 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                             .getConstantState()) {
                                         showToast("Please Select Respondent Image");
                                     }/*
-									 * else if (otp_verify_status.equals("N")) {
-									 * showToast("Please Verify OTP Number");
-									 * owner_aadhaarMobileNo.requestFocus(); }
-									 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                     * else if (otp_verify_status.equals("N")) {
+                                     * showToast("Please Verify OTP Number");
+                                     * owner_aadhaarMobileNo.requestFocus(); }
+                                     */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                         showToast("Please Verify OTP Number");
                                     } else if (Sections.checkedList.isEmpty()) {
                                         showToast("Please Select atleast one Section");
@@ -2272,15 +2288,15 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .fromHtml("<font color='black'>Please Enter Name</font>"));
                                         owner_aadhaarName.requestFocus();
                                     }/*
-									 * else if
-									 * (owner_aadhaarFatherName.getText()
-									 * .toString().trim().equals("")) {
-									 * owner_aadhaarFatherName
-									 * .setError(Html.fromHtml(
-									 * "<font color='black'>Please Enter Owner Father Number</font>"
-									 * ));
-									 * owner_aadhaarFatherName.requestFocus(); }
-									 */ else if (owner_aadhaarAge.getText()
+                                     * else if
+                                     * (owner_aadhaarFatherName.getText()
+                                     * .toString().trim().equals("")) {
+                                     * owner_aadhaarFatherName
+                                     * .setError(Html.fromHtml(
+                                     * "<font color='black'>Please Enter Owner Father Number</font>"
+                                     * ));
+                                     * owner_aadhaarFatherName.requestFocus(); }
+                                     */ else if (owner_aadhaarAge.getText()
                                             .toString().trim().equals("")) {
                                         owner_aadhaarAge.setError(Html
                                                 .fromHtml("<font color='black'>Please Enter Owner Age</font>"));
@@ -2296,18 +2312,18 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .fromHtml("<font color='black'>Please Enter Owner Address</font>"));
                                         owner_aadhaarAddress.requestFocus();
                                     }/*
-									 * else if
-									 * (aadhaar_ownerImage.getDrawable().
-									 * getConstantState() ==
-									 * getResources().getDrawable
-									 * (R.drawable.camera).getConstantState()
-									 * ||aadhaar_ownerImage
-									 * .getDrawable().getConstantState() ==
-									 * getResources
-									 * ().getDrawable(R.drawable.photo
-									 * ).getConstantState()) {
-									 * showToast("Please Select Owner Image"); }
-									 */ else if (aadhaarYes.isChecked() == true) { // SHOP-->MANAGE-->OWNER
+                                     * else if
+                                     * (aadhaar_ownerImage.getDrawable().
+                                     * getConstantState() ==
+                                     * getResources().getDrawable
+                                     * (R.drawable.camera).getConstantState()
+                                     * ||aadhaar_ownerImage
+                                     * .getDrawable().getConstantState() ==
+                                     * getResources
+                                     * ().getDrawable(R.drawable.photo
+                                     * ).getConstantState()) {
+                                     * showToast("Please Select Owner Image"); }
+                                     */ else if (aadhaarYes.isChecked() == true) { // SHOP-->MANAGE-->OWNER
                                         // Aadhaar-->RESP
                                         // Aadhaar
 
@@ -2371,25 +2387,25 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .getConstantState()) {
                                             showToast("Please Select Respondent Image");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * et_mobileNo.requestFocus(); }
-										 */ else if (Sections.checkedList
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * et_mobileNo.requestFocus(); }
+                                         */ else if (Sections.checkedList
                                                 .isEmpty()) {
                                             showToast("Please Select atleast one Section");
                                         } else if (DetainedItems.detItems
                                                 .toString().trim().length() == 0) {
                                             showToast("Please Enter Items Found on Encroachment");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * owner_aadhaarMobileNo.requestFocus();
-										 * }
-										 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * owner_aadhaarMobileNo.requestFocus();
+                                         * }
+                                         */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                             showToast("Please Verify OTP Number");
                                         } else {
                                             if (isOnline()) {
@@ -2440,12 +2456,12 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .getConstantState()) {
                                             showToast("Please Select Respondent Image");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * et_mobileNo.requestFocus(); }
-										 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * et_mobileNo.requestFocus(); }
+                                         */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                             showToast("Please Verify OTP Number");
                                         } else if (Sections.checkedList
                                                 .isEmpty()) {
@@ -2454,13 +2470,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .toString().trim().length() == 0) {
                                             showToast("Please Enter Items Found on Encroachment");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * owner_aadhaarMobileNo.requestFocus();
-										 * }
-										 */ else {
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * owner_aadhaarMobileNo.requestFocus();
+                                         * }
+                                         */ else {
                                             if (isOnline()) {
                                                 new Async_PreviewDetails().execute();
                                             } else {
@@ -2475,15 +2491,15 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .fromHtml("<font color='black'>Please Enter Name</font>"));
                                         owner_aadhaarName.requestFocus();
                                     }/*
-									 * else if
-									 * (owner_aadhaarFatherName.getText()
-									 * .toString().trim().equals("")) {
-									 * owner_aadhaarFatherName
-									 * .setError(Html.fromHtml(
-									 * "<font color='black'>Please Enter Owner Father Number</font>"
-									 * ));
-									 * owner_aadhaarFatherName.requestFocus(); }
-									 */ else if (owner_aadhaarAge.getText()
+                                     * else if
+                                     * (owner_aadhaarFatherName.getText()
+                                     * .toString().trim().equals("")) {
+                                     * owner_aadhaarFatherName
+                                     * .setError(Html.fromHtml(
+                                     * "<font color='black'>Please Enter Owner Father Number</font>"
+                                     * ));
+                                     * owner_aadhaarFatherName.requestFocus(); }
+                                     */ else if (owner_aadhaarAge.getText()
                                             .toString().trim().equals("")) {
                                         owner_aadhaarAge.setError(Html
                                                 .fromHtml("<font color='black'>Please Enter Owner Age</font>"));
@@ -2499,19 +2515,19 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .fromHtml("<font color='black'>Please Enter Owner Address</font>"));
                                         owner_aadhaarAddress.requestFocus();
                                     }/*
-									 * else if
-									 * (aadhaar_ownerImage.getDrawable().
-									 * getConstantState() ==
-									 * getResources().getDrawable
-									 * (R.drawable.camera).getConstantState()
-									 * ||aadhaar_ownerImage
-									 * .getDrawable().getConstantState() ==
-									 * getResources
-									 * ().getDrawable(R.drawable.photo
-									 * ).getConstantState()) {
-									 * showToast("Please Select Respondent Image"
-									 * ); }
-									 */ else if (aadhaarYes.isChecked()) { // SHOP-->MANAGE-->OWNER
+                                     * else if
+                                     * (aadhaar_ownerImage.getDrawable().
+                                     * getConstantState() ==
+                                     * getResources().getDrawable
+                                     * (R.drawable.camera).getConstantState()
+                                     * ||aadhaar_ownerImage
+                                     * .getDrawable().getConstantState() ==
+                                     * getResources
+                                     * ().getDrawable(R.drawable.photo
+                                     * ).getConstantState()) {
+                                     * showToast("Please Select Respondent Image"
+                                     * ); }
+                                     */ else if (aadhaarYes.isChecked()) { // SHOP-->MANAGE-->OWNER
                                         // Aadhaar-->RESP
                                         // Aadhaar
                                         Log.i("COndition : ",
@@ -2582,13 +2598,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .toString().trim().length() == 0) {
                                             showToast("Please Enter Items Found on Encroachment");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * owner_aadhaarMobileNo.requestFocus();
-										 * }
-										 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * owner_aadhaarMobileNo.requestFocus();
+                                         * }
+                                         */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                             showToast("Please Verify OTP Number");
                                         } else {
                                             if (isOnline()) {
@@ -2640,12 +2656,12 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .getConstantState()) {
                                             showToast("Please Select Respondent Image");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * et_mobileNo.requestFocus(); }
-										 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * et_mobileNo.requestFocus(); }
+                                         */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                             showToast("Please Verify OTP Number");
                                         } else if (Sections.checkedList
                                                 .isEmpty()) {
@@ -2708,15 +2724,15 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .fromHtml("<font color='black'>Please Enter Name</font>"));
                                         owner_aadhaarName.requestFocus();
                                     }/*
-									 * else if
-									 * (owner_aadhaarFatherName.getText()
-									 * .toString().trim().equals("")) {
-									 * owner_aadhaarFatherName
-									 * .setError(Html.fromHtml(
-									 * "<font color='black'>Please Enter Owner Father Number</font>"
-									 * ));
-									 * owner_aadhaarFatherName.requestFocus(); }
-									 */ else if (owner_aadhaarAge.getText()
+                                     * else if
+                                     * (owner_aadhaarFatherName.getText()
+                                     * .toString().trim().equals("")) {
+                                     * owner_aadhaarFatherName
+                                     * .setError(Html.fromHtml(
+                                     * "<font color='black'>Please Enter Owner Father Number</font>"
+                                     * ));
+                                     * owner_aadhaarFatherName.requestFocus(); }
+                                     */ else if (owner_aadhaarAge.getText()
                                             .toString().trim().equals("")) {
                                         owner_aadhaarAge.setError(Html
                                                 .fromHtml("<font color='black'>Please Enter Owner Age</font>"));
@@ -2732,19 +2748,19 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .fromHtml("<font color='black'>Please Enter Owner Address</font>"));
                                         owner_aadhaarAddress.requestFocus();
                                     }/*
-									 * else if
-									 * (aadhaar_ownerImage.getDrawable().
-									 * getConstantState() ==
-									 * getResources().getDrawable
-									 * (R.drawable.camera).getConstantState()
-									 * ||aadhaar_ownerImage
-									 * .getDrawable().getConstantState() ==
-									 * getResources
-									 * ().getDrawable(R.drawable.photo
-									 * ).getConstantState()) {
-									 * showToast("Please Select Respondent Image"
-									 * ); }
-									 */ else if (aadhaarYes.isChecked()) { // SHOP-->MANAGE-->OWNER
+                                     * else if
+                                     * (aadhaar_ownerImage.getDrawable().
+                                     * getConstantState() ==
+                                     * getResources().getDrawable
+                                     * (R.drawable.camera).getConstantState()
+                                     * ||aadhaar_ownerImage
+                                     * .getDrawable().getConstantState() ==
+                                     * getResources
+                                     * ().getDrawable(R.drawable.photo
+                                     * ).getConstantState()) {
+                                     * showToast("Please Select Respondent Image"
+                                     * ); }
+                                     */ else if (aadhaarYes.isChecked()) { // SHOP-->MANAGE-->OWNER
                                         // Aadhaar-->RESP
                                         // Aadhaar
                                         Log.i("COndition : ",
@@ -2809,12 +2825,12 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .getConstantState()) {
                                             showToast("Please Select Respondent Image");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * et_mobileNo.requestFocus(); }
-										 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * et_mobileNo.requestFocus(); }
+                                         */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                             showToast("Please Verify OTP Number");
                                         } else if (Sections.checkedList
                                                 .isEmpty()) {
@@ -2878,13 +2894,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .toString().trim().length() == 0) {
                                             showToast("Please Enter Items Found on Encroachment");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * owner_aadhaarMobileNo.requestFocus();
-										 * }
-										 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * owner_aadhaarMobileNo.requestFocus();
+                                         * }
+                                         */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                             showToast("Please Verify OTP Number");
                                         } else {
                                             if (isOnline()) {
@@ -2901,15 +2917,15 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .fromHtml("<font color='black'>Please Enter Name</font>"));
                                         owner_aadhaarName.requestFocus();
                                     }/*
-									 * else if
-									 * (owner_aadhaarFatherName.getText()
-									 * .toString().trim().equals("")) {
-									 * owner_aadhaarFatherName
-									 * .setError(Html.fromHtml(
-									 * "<font color='black'>Please Enter Owner Father Number</font>"
-									 * ));
-									 * owner_aadhaarFatherName.requestFocus(); }
-									 */ else if (owner_aadhaarAge.getText()
+                                     * else if
+                                     * (owner_aadhaarFatherName.getText()
+                                     * .toString().trim().equals("")) {
+                                     * owner_aadhaarFatherName
+                                     * .setError(Html.fromHtml(
+                                     * "<font color='black'>Please Enter Owner Father Number</font>"
+                                     * ));
+                                     * owner_aadhaarFatherName.requestFocus(); }
+                                     */ else if (owner_aadhaarAge.getText()
                                             .toString().trim().equals("")) {
                                         owner_aadhaarAge.setError(Html
                                                 .fromHtml("<font color='black'>Please Enter Owner Age</font>"));
@@ -2925,19 +2941,19 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .fromHtml("<font color='black'>Please Enter Owner Address</font>"));
                                         owner_aadhaarAddress.requestFocus();
                                     }/*
-									 * else if
-									 * (aadhaar_ownerImage.getDrawable().
-									 * getConstantState() ==
-									 * getResources().getDrawable
-									 * (R.drawable.camera).getConstantState()||
-									 * aadhaar_ownerImage
-									 * .getDrawable().getConstantState() ==
-									 * getResources
-									 * ().getDrawable(R.drawable.photo
-									 * ).getConstantState()) {
-									 * showToast("Please Select Respondent Image"
-									 * ); }
-									 */ else if (aadhaarYes.isChecked() == true) { // SHOP-->MANAGE-->OWNER
+                                     * else if
+                                     * (aadhaar_ownerImage.getDrawable().
+                                     * getConstantState() ==
+                                     * getResources().getDrawable
+                                     * (R.drawable.camera).getConstantState()||
+                                     * aadhaar_ownerImage
+                                     * .getDrawable().getConstantState() ==
+                                     * getResources
+                                     * ().getDrawable(R.drawable.photo
+                                     * ).getConstantState()) {
+                                     * showToast("Please Select Respondent Image"
+                                     * ); }
+                                     */ else if (aadhaarYes.isChecked() == true) { // SHOP-->MANAGE-->OWNER
                                         // Aadhaar-->RESP
                                         // Aadhaar
 
@@ -3007,13 +3023,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .toString().trim().length() == 0) {
                                             showToast("Please Enter Items Found on Encroachment");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * owner_aadhaarMobileNo.requestFocus();
-										 * }
-										 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * owner_aadhaarMobileNo.requestFocus();
+                                         * }
+                                         */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                             showToast("Please Verify OTP Number");
                                         } else {
                                             if (isOnline()) {
@@ -3071,13 +3087,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .toString().trim().length() == 0) {
                                             showToast("Please Enter Items Found on Encroachment");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * owner_aadhaarMobileNo.requestFocus();
-										 * }
-										 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * owner_aadhaarMobileNo.requestFocus();
+                                         * }
+                                         */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                             showToast("Please Verify OTP Number");
                                         } else {
                                             if (isOnline()) {
@@ -3143,15 +3159,15 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .fromHtml("<font color='black'>Please Enter Name</font>"));
                                         owner_aadhaarName.requestFocus();
                                     }/*
-									 * else if
-									 * (owner_aadhaarFatherName.getText()
-									 * .toString().trim().equals("")) {
-									 * owner_aadhaarFatherName
-									 * .setError(Html.fromHtml(
-									 * "<font color='black'>Please Enter Owner Father Number</font>"
-									 * ));
-									 * owner_aadhaarFatherName.requestFocus(); }
-									 */ else if (owner_aadhaarAge.getText()
+                                     * else if
+                                     * (owner_aadhaarFatherName.getText()
+                                     * .toString().trim().equals("")) {
+                                     * owner_aadhaarFatherName
+                                     * .setError(Html.fromHtml(
+                                     * "<font color='black'>Please Enter Owner Father Number</font>"
+                                     * ));
+                                     * owner_aadhaarFatherName.requestFocus(); }
+                                     */ else if (owner_aadhaarAge.getText()
                                             .toString().trim().equals("")) {
                                         owner_aadhaarAge.setError(Html
                                                 .fromHtml("<font color='black'>Please Enter Owner Age</font>"));
@@ -3167,13 +3183,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .fromHtml("<font color='black'>Please Enter Owner Address</font>"));
                                         owner_aadhaarAddress.requestFocus();
                                     }/*
-									 * else if
-									 * (aadhaar_ownerImage.getDrawable().
-									 * getConstantState() ==
-									 * getResources().getDrawable
-									 * (R.drawable.camera).getConstantState()) {
-									 * showToast("Please Select Owner Image"); }
-									 */ else if (aadhaarYes.isChecked() == true) { // SHOP-->MANAGE-->OWNER
+                                     * else if
+                                     * (aadhaar_ownerImage.getDrawable().
+                                     * getConstantState() ==
+                                     * getResources().getDrawable
+                                     * (R.drawable.camera).getConstantState()) {
+                                     * showToast("Please Select Owner Image"); }
+                                     */ else if (aadhaarYes.isChecked() == true) { // SHOP-->MANAGE-->OWNER
                                         // Aadhaar-->RESP
                                         // Aadhaar
                                         Log.i("COndition : ",
@@ -3239,13 +3255,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .toString().trim().length() == 0) {
                                             showToast("Please Enter Items Found on Encroachment");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * owner_aadhaarMobileNo.requestFocus();
-										 * }
-										 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * owner_aadhaarMobileNo.requestFocus();
+                                         * }
+                                         */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                             showToast("Please Verify OTP Number");
                                         } else {
                                             if (isOnline()) {
@@ -3298,13 +3314,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .toString().trim().length() == 0) {
                                             showToast("Please Enter Items Found on Encroachment");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * owner_aadhaarMobileNo.requestFocus();
-										 * }
-										 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * owner_aadhaarMobileNo.requestFocus();
+                                         * }
+                                         */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                             showToast("Please Verify OTP Number");
                                         } else {
                                             if (isOnline()) {
@@ -3321,15 +3337,15 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .fromHtml("<font color='black'>Please Enter Name</font>"));
                                         owner_aadhaarName.requestFocus();
                                     }/*
-									 * else if
-									 * (owner_aadhaarFatherName.getText()
-									 * .toString().trim().equals("")) {
-									 * owner_aadhaarFatherName
-									 * .setError(Html.fromHtml(
-									 * "<font color='black'>Please Enter Owner Father Number</font>"
-									 * ));
-									 * owner_aadhaarFatherName.requestFocus(); }
-									 */ else if (owner_aadhaarAge.getText()
+                                     * else if
+                                     * (owner_aadhaarFatherName.getText()
+                                     * .toString().trim().equals("")) {
+                                     * owner_aadhaarFatherName
+                                     * .setError(Html.fromHtml(
+                                     * "<font color='black'>Please Enter Owner Father Number</font>"
+                                     * ));
+                                     * owner_aadhaarFatherName.requestFocus(); }
+                                     */ else if (owner_aadhaarAge.getText()
                                             .toString().trim().equals("")) {
                                         owner_aadhaarAge.setError(Html
                                                 .fromHtml("<font color='black'>Please Enter Owner Age</font>"));
@@ -3345,13 +3361,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .fromHtml("<font color='black'>Please Enter Owner Address</font>"));
                                         owner_aadhaarAddress.requestFocus();
                                     }/*
-									 * else if
-									 * (aadhaar_ownerImage.getDrawable().
-									 * getConstantState() ==
-									 * getResources().getDrawable
-									 * (R.drawable.camera).getConstantState()) {
-									 * showToast("Please Select Owner Image"); }
-									 */ else if (aadhaarYes.isChecked() == true) { // SHOP-->MANAGE-->OWNER
+                                     * else if
+                                     * (aadhaar_ownerImage.getDrawable().
+                                     * getConstantState() ==
+                                     * getResources().getDrawable
+                                     * (R.drawable.camera).getConstantState()) {
+                                     * showToast("Please Select Owner Image"); }
+                                     */ else if (aadhaarYes.isChecked() == true) { // SHOP-->MANAGE-->OWNER
                                         // Aadhaar-->RESP
                                         // Aadhaar
                                         Log.i("COndition : ",
@@ -3417,13 +3433,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .toString().trim().length() == 0) {
                                             showToast("Please Enter Items Found on Encroachment");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * owner_aadhaarMobileNo.requestFocus();
-										 * }
-										 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * owner_aadhaarMobileNo.requestFocus();
+                                         * }
+                                         */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                             showToast("Please Verify OTP Number");
                                         } else {
                                             if (isOnline()) {
@@ -3476,13 +3492,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .toString().trim().length() == 0) {
                                             showToast("Please Enter Items Found on Encroachment");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * owner_aadhaarMobileNo.requestFocus();
-										 * }
-										 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * owner_aadhaarMobileNo.requestFocus();
+                                         * }
+                                         */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                             showToast("Please Verify OTP Number");
                                         } else {
                                             if (isOnline()) {
@@ -3540,15 +3556,15 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .fromHtml("<font color='black'>Please Enter Name</font>"));
                                         owner_aadhaarName.requestFocus();
                                     }/*
-									 * else if
-									 * (owner_aadhaarFatherName.getText()
-									 * .toString().trim().equals("")) {
-									 * owner_aadhaarFatherName
-									 * .setError(Html.fromHtml(
-									 * "<font color='black'>Please Enter Owner Father Number</font>"
-									 * ));
-									 * owner_aadhaarFatherName.requestFocus(); }
-									 */ else if (owner_aadhaarAge.getText()
+                                     * else if
+                                     * (owner_aadhaarFatherName.getText()
+                                     * .toString().trim().equals("")) {
+                                     * owner_aadhaarFatherName
+                                     * .setError(Html.fromHtml(
+                                     * "<font color='black'>Please Enter Owner Father Number</font>"
+                                     * ));
+                                     * owner_aadhaarFatherName.requestFocus(); }
+                                     */ else if (owner_aadhaarAge.getText()
                                             .toString().trim().equals("")) {
                                         owner_aadhaarAge.setError(Html
                                                 .fromHtml("<font color='black'>Please Enter Owner Age</font>"));
@@ -3564,13 +3580,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .fromHtml("<font color='black'>Please Enter Owner Address</font>"));
                                         owner_aadhaarAddress.requestFocus();
                                     }/*
-									 * else if
-									 * (aadhaar_ownerImage.getDrawable().
-									 * getConstantState() ==
-									 * getResources().getDrawable
-									 * (R.drawable.camera).getConstantState()) {
-									 * showToast("Please Select Owner Image"); }
-									 */ else if (aadhaarYes.isChecked() == true) { // SHOP-->MANAGE-->OWNER
+                                     * else if
+                                     * (aadhaar_ownerImage.getDrawable().
+                                     * getConstantState() ==
+                                     * getResources().getDrawable
+                                     * (R.drawable.camera).getConstantState()) {
+                                     * showToast("Please Select Owner Image"); }
+                                     */ else if (aadhaarYes.isChecked() == true) { // SHOP-->MANAGE-->OWNER
                                         // Aadhaar-->RESP
                                         // Aadhaar
                                         Log.i("COndition : ",
@@ -3636,13 +3652,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .toString().trim().length() == 0) {
                                             showToast("Please Enter Items Found on Encroachment");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * owner_aadhaarMobileNo.requestFocus();
-										 * }
-										 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * owner_aadhaarMobileNo.requestFocus();
+                                         * }
+                                         */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                             showToast("Please Verify OTP Number");
                                         } else {
                                             if (isOnline()) {
@@ -3695,13 +3711,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .toString().trim().length() == 0) {
                                             showToast("Please Enter Items Found on Encroachment");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * owner_aadhaarMobileNo.requestFocus();
-										 * }
-										 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * owner_aadhaarMobileNo.requestFocus();
+                                         * }
+                                         */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                             showToast("Please Verify OTP Number");
                                         } else {
                                             if (isOnline()) {
@@ -3718,15 +3734,15 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .fromHtml("<font color='black'>Please Enter Name</font>"));
                                         owner_aadhaarName.requestFocus();
                                     }/*
-									 * else if
-									 * (owner_aadhaarFatherName.getText()
-									 * .toString().trim().equals("")) {
-									 * owner_aadhaarFatherName
-									 * .setError(Html.fromHtml(
-									 * "<font color='black'>Please Enter Owner Father Number</font>"
-									 * ));
-									 * owner_aadhaarFatherName.requestFocus(); }
-									 */ else if (owner_aadhaarAge.getText()
+                                     * else if
+                                     * (owner_aadhaarFatherName.getText()
+                                     * .toString().trim().equals("")) {
+                                     * owner_aadhaarFatherName
+                                     * .setError(Html.fromHtml(
+                                     * "<font color='black'>Please Enter Owner Father Number</font>"
+                                     * ));
+                                     * owner_aadhaarFatherName.requestFocus(); }
+                                     */ else if (owner_aadhaarAge.getText()
                                             .toString().trim().equals("")) {
                                         owner_aadhaarAge.setError(Html
                                                 .fromHtml("<font color='black'>Please Enter Owner Age</font>"));
@@ -3742,13 +3758,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .fromHtml("<font color='black'>Please Enter Owner Address</font>"));
                                         owner_aadhaarAddress.requestFocus();
                                     }/*
-									 * else if
-									 * (aadhaar_ownerImage.getDrawable().
-									 * getConstantState() ==
-									 * getResources().getDrawable
-									 * (R.drawable.camera).getConstantState()) {
-									 * showToast("Please Select Owner Image"); }
-									 */ else if (aadhaarYes.isChecked() == true) { // SHOP-->MANAGE-->OWNER
+                                     * else if
+                                     * (aadhaar_ownerImage.getDrawable().
+                                     * getConstantState() ==
+                                     * getResources().getDrawable
+                                     * (R.drawable.camera).getConstantState()) {
+                                     * showToast("Please Select Owner Image"); }
+                                     */ else if (aadhaarYes.isChecked() == true) { // SHOP-->MANAGE-->OWNER
                                         // Aadhaar-->RESP
                                         // Aadhaar
                                         Log.i("COndition : ",
@@ -3814,13 +3830,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .toString().trim().length() == 0) {
                                             showToast("Please Enter Items Found on Encroachment");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * owner_aadhaarMobileNo.requestFocus();
-										 * }
-										 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * owner_aadhaarMobileNo.requestFocus();
+                                         * }
+                                         */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                             showToast("Please Verify OTP Number");
                                         } else {
                                             if (isOnline()) {
@@ -3873,14 +3889,14 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                                 .toString().trim().length() == 0) {
                                             showToast("Please Enter Items Found on Encroachment");
                                         }/*
-										 * else if
-										 * (otp_verify_status.equals("N")) {
-										 * showToast
-										 * ("Please Verify OTP Number");
-										 * owner_aadhaarMobileNo.requestFocus();
-										 * }
+                                         * else if
+                                         * (otp_verify_status.equals("N")) {
+                                         * showToast
+                                         * ("Please Verify OTP Number");
+                                         * owner_aadhaarMobileNo.requestFocus();
+                                         * }
 
-										  */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                                         */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                             showToast("Please Verify OTP Number");
                                         } else {
                                             if (isOnline()) {
@@ -3960,10 +3976,10 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                     .length() == 0) {
                                 showToast("Please Enter Items Found on Encroachment");
                             }/*
-							 * else if (otp_verify_status.equals("N")) {
-							 * showToast("Please Verify OTP Number");
-							 * owner_aadhaarMobileNo.requestFocus(); }
-							 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                             * else if (otp_verify_status.equals("N")) {
+                             * showToast("Please Verify OTP Number");
+                             * owner_aadhaarMobileNo.requestFocus(); }
+                             */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                 showToast("Please Verify OTP Number");
                             } else {
                                 if (isOnline()) {
@@ -4012,10 +4028,10 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                                     .length() == 0) {
                                 showToast("Please Enter Items Found on Encroachment");
                             }/*
-							 * else if (otp_verify_status.equals("N")) {
-							 * showToast("Please Verify OTP Number");
-							 * owner_aadhaarMobileNo.requestFocus(); }
-							 */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
+                             * else if (otp_verify_status.equals("N")) {
+                             * showToast("Please Verify OTP Number");
+                             * owner_aadhaarMobileNo.requestFocus(); }
+                             */ else if ("Y".equals(Dashboard.OtpStatus.trim()) && otp_verify_status.equals("N")) {
                                 showToast("Please Verify OTP Number");
                             } else {
 
@@ -4031,550 +4047,550 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
 
                 }
 
-				/*
-				 * else{ if (shop_based.isChecked()==true &&
-				 * "SHOP".equals(based_on)) { if (owner_based.isChecked()==true
-				 * && "OWNER".equals(run_By)) { if (tin_yes.isChecked()==true) {
-				 * if (et_tin_no.getText().toString().trim().equals("")) {
-				 * et_tin_no.requestFocus(); //et_tin_no.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Trade Licence Number</font>"
-				 * )); showToast("Please Enter Tin No"); } }else if
-				 * (tin_no.isChecked()==true) { if
-				 * (et_shop_name.getText().toString().trim().equals("")) {
-				 * et_shop_name.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Shop Name</font>"));
-				 * et_shop_name.requestFocus(); }else if
-				 * (et_firm_owner_name.getText().toString().trim().equals("")) {
-				 * et_firm_owner_name.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Shop Owner Name</font>"));
-				 * et_firm_owner_name.requestFocus(); }else if
-				 * (et_firm_address.getText().toString().trim().equals("")) {
-				 * et_firm_address.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Shop Owner Address</font>"
-				 * )); et_firm_address.requestFocus(); } }else if
-				 * (owner_aadhaar_yes.isChecked()==true) { if
-				 * (owner_aadhaarNo.getText().toString().trim().equals("")) {
-				 * owner_aadhaarNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Aadhaar Number</font>"));
-				 * owner_aadhaarNo.requestFocus(); }else if
-				 * (owner_aadhaarNo.getText().toString().trim().length()>1 &&
-				 * owner_aadhaarNo.getText().toString().trim().length() != 12) {
-				 * owner_aadhaarNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
-				 * owner_aadhaarNo.requestFocus(); } else if
-				 * (owner_aadhaarNo.getText().toString().trim().length()>1 &&
-				 * owner_aadhaarNo.getText().toString().trim().length() == 12 &&
-				 * !ver.isValid(owner_aadhaarNo.getText().toString().trim())) {
-				 * owner_aadhaarNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
-				 * owner_aadhaarNo.requestFocus(); }else if
-				 * (owner_aadhaarName.getText().toString().trim().equals("")) {
-				 * owner_aadhaarName.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Name</font>"));
-				 * owner_aadhaarName.requestFocus(); }else if
-				 * (owner_aadhaarFatherName
-				 * .getText().toString().trim().equals("")) {
-				 * owner_aadhaarFatherName.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Father Number</font>"
-				 * )); owner_aadhaarFatherName.requestFocus(); }else if
-				 * (owner_aadhaarAge.getText().toString().trim().equals("")) {
-				 * owner_aadhaarAge.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Age</font>"));
-				 * owner_aadhaarAge.requestFocus(); }else if
-				 * (owner_aadhaarMobileNo
-				 * .getText().toString().trim().equals("")) {
-				 * owner_aadhaarMobileNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Age</font>"));
-				 * owner_aadhaarMobileNo.requestFocus(); }else if
-				 * (owner_aadhaarAddress.getText().toString().trim().equals(""))
-				 * { owner_aadhaarAddress.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Address</font>"));
-				 * owner_aadhaarAddress.requestFocus(); }else if
-				 * (aadhaar_ownerImage.getDrawable().getConstantState() ==
-				 * getResources
-				 * ().getDrawable(R.drawable.camera).getConstantState()) {
-				 * showToast("Please Select Image"); }else if
-				 * (otp_verify_status.equals("N")) {
-				 * showToast("Please Verify OTP Number");
-				 * owner_aadhaarMobileNo.requestFocus(); }else if
-				 * (Sections.checkedList.isEmpty()) {
-				 * showToast("Please Select atleast one Section"); }else { new
-				 * Async_PreviewDetails().execute();
-				 *
-				 * } }else if (owner_aadhaar_no.isChecked()==true) { if
-				 * (owner_aadhaarName.getText().toString().trim().equals("")) {
-				 * owner_aadhaarName.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Name</font>"));
-				 * owner_aadhaarName.requestFocus(); }else if
-				 * (owner_aadhaarFatherName
-				 * .getText().toString().trim().equals("")) {
-				 * owner_aadhaarFatherName.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Father Number</font>"
-				 * )); owner_aadhaarFatherName.requestFocus(); }else if
-				 * (owner_aadhaarAge.getText().toString().trim().equals("")) {
-				 * owner_aadhaarAge.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Age</font>"));
-				 * owner_aadhaarAge.requestFocus(); }else if
-				 * (owner_aadhaarMobileNo
-				 * .getText().toString().trim().equals("")) {
-				 * owner_aadhaarMobileNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Age</font>"));
-				 * owner_aadhaarMobileNo.requestFocus(); }else if
-				 * (owner_aadhaarAddress.getText().toString().trim().equals(""))
-				 * { owner_aadhaarAddress.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Address</font>"));
-				 * owner_aadhaarAddress.requestFocus(); }else if
-				 * (aadhaar_ownerImage.getDrawable().getConstantState() ==
-				 * getResources
-				 * ().getDrawable(R.drawable.camera).getConstantState()) {
-				 * showToast("Please Select Image"); }else if
-				 * (otp_verify_status.equals("N")) {
-				 * showToast("Please Verify OTP Number");
-				 * owner_aadhaarMobileNo.requestFocus(); }else if
-				 * (Sections.checkedList.isEmpty()) {
-				 * showToast("Please Select atleast one Section"); }else { new
-				 * Async_PreviewDetails().execute();
-				 *
-				 * } } }else if (manager_based.isChecked()==true &&
-				 * "MANAGER".equals(run_By)) { if (tin_yes.isChecked()==true) {
-				 * if (et_tin_no.getText().toString().trim().equals("")) {
-				 * //et_tin_no.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Trade Licence Number</font>"
-				 * )); et_tin_no.requestFocus(); } }else if
-				 * (tin_no.isChecked()==true) { if
-				 * (et_shop_name.getText().toString().trim().equals("")) {
-				 * et_shop_name.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Shop Name</font>"));
-				 * et_shop_name.requestFocus(); }else if
-				 * (et_firm_owner_name.getText().toString().trim().equals("")) {
-				 * et_firm_owner_name.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Shop Owner Name</font>"));
-				 * et_firm_owner_name.requestFocus(); }else if
-				 * (et_firm_address.getText().toString().trim().equals("")) {
-				 * et_firm_address.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Shop Owner Address</font>"
-				 * )); et_firm_address.requestFocus(); } }
-				 *
-				 * // Owner Aadhaar Details if
-				 * (owner_aadhaar_yes.isChecked()==true) { if
-				 * (owner_aadhaarNo.getText().toString().trim().equals("")) {
-				 * owner_aadhaarNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Aadhaar Number</font>"));
-				 * owner_aadhaarNo.requestFocus(); }else if
-				 * (owner_aadhaarNo.getText().toString().trim().length()>1 &&
-				 * owner_aadhaarNo.getText().toString().trim().length() != 12) {
-				 * owner_aadhaarNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
-				 * owner_aadhaarNo.requestFocus(); } else if
-				 * (owner_aadhaarNo.getText().toString().trim().length()>1 &&
-				 * owner_aadhaarNo.getText().toString().trim().length() == 12 &&
-				 * !ver.isValid(owner_aadhaarNo.getText().toString().trim())) {
-				 * owner_aadhaarNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
-				 * owner_aadhaarNo.requestFocus(); }else if
-				 * (owner_aadhaarName.getText().toString().trim().equals("")) {
-				 * owner_aadhaarName.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Name</font>"));
-				 * owner_aadhaarName.requestFocus(); }else if
-				 * (owner_aadhaarFatherName
-				 * .getText().toString().trim().equals("")) {
-				 * owner_aadhaarFatherName.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Father Number</font>"
-				 * )); owner_aadhaarFatherName.requestFocus(); }else if
-				 * (owner_aadhaarAge.getText().toString().trim().equals("")) {
-				 * owner_aadhaarAge.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Age</font>"));
-				 * owner_aadhaarAge.requestFocus(); }else if
-				 * (owner_aadhaarMobileNo
-				 * .getText().toString().trim().equals("")) {
-				 * owner_aadhaarMobileNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Age</font>"));
-				 * owner_aadhaarMobileNo.requestFocus(); }else if
-				 * (owner_aadhaarAddress.getText().toString().trim().equals(""))
-				 * { owner_aadhaarAddress.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Address</font>"));
-				 * owner_aadhaarAddress.requestFocus(); }else if
-				 * (aadhaar_ownerImage.getDrawable().getConstantState() ==
-				 * getResources
-				 * ().getDrawable(R.drawable.camera).getConstantState()) {
-				 * showToast("Please Select Image"); }else if
-				 * (otp_verify_status.equals("N")) {
-				 * showToast("Please Verify OTP Number");
-				 * owner_aadhaarMobileNo.requestFocus(); } }else if
-				 * (owner_aadhaar_no.isChecked()==true) { if
-				 * (owner_aadhaarName.getText().toString().trim().equals("")) {
-				 * owner_aadhaarName.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Name</font>"));
-				 * owner_aadhaarName.requestFocus(); }else if
-				 * (owner_aadhaarFatherName
-				 * .getText().toString().trim().equals("")) {
-				 * owner_aadhaarFatherName.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Father Number</font>"
-				 * )); owner_aadhaarFatherName.requestFocus(); }else if
-				 * (owner_aadhaarAge.getText().toString().trim().equals("")) {
-				 * owner_aadhaarAge.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Age</font>"));
-				 * owner_aadhaarAge.requestFocus(); }else if
-				 * (owner_aadhaarMobileNo
-				 * .getText().toString().trim().equals("")) {
-				 * owner_aadhaarMobileNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Age</font>"));
-				 * owner_aadhaarMobileNo.requestFocus(); }else if
-				 * (owner_aadhaarAddress.getText().toString().trim().equals(""))
-				 * { owner_aadhaarAddress.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Address</font>"));
-				 * owner_aadhaarAddress.requestFocus(); }else if
-				 * (aadhaar_ownerImage.getDrawable().getConstantState() ==
-				 * getResources
-				 * ().getDrawable(R.drawable.camera).getConstantState()) {
-				 * showToast("Please Select Image"); }else if
-				 * (otp_verify_status.equals("N")) {
-				 * showToast("Please Verify OTP Number");
-				 * owner_aadhaarMobileNo.requestFocus(); } }else if
-				 * (aadhaarYes.isChecked()==true) { if
-				 * (aadhaar_no.getText().toString().trim().equals("")) {
-				 * aadhaar_no.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
-				 * aadhaar_no.requestFocus(); } else if
-				 * (aadhaar_no.getText().toString().trim().length()>1 &&
-				 * aadhaar_no.getText().toString().trim().length() != 12) {
-				 * aadhaar_no.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
-				 * aadhaar_no.requestFocus(); } else if
-				 * (aadhaar_no.getText().toString().trim().length()>1 &&
-				 * aadhaar_no.getText().toString().trim().length() == 12 &&
-				 * !ver.isValid(aadhaar_no.getText().toString().trim())) {
-				 * aadhaar_no.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
-				 * aadhaar_no.requestFocus(); }else if
-				 * (et_name.getText().toString().trim().equals("")) {
-				 * et_name.setError
-				 * (Html.fromHtml("<font color='black'>Please Enter Name</font>"
-				 * )); et_name.requestFocus(); }else if
-				 * (et_father_name.getText().toString().trim().equals("")) {
-				 * et_father_name.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Father Number</font>"));
-				 * et_father_name.requestFocus(); }else if
-				 * (et_age.getText().toString().trim().equals("")) {
-				 * et_age.setError
-				 * (Html.fromHtml("<font color='black'>Please Enter Age</font>"
-				 * )); et_age.requestFocus(); }else if
-				 * (et_mobileNo.getText().toString().trim().equals("")) {
-				 * et_mobileNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Age</font>"));
-				 * et_mobileNo.requestFocus(); }else if
-				 * (et_address.getText().toString().trim().equals("")) {
-				 * et_address.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Address</font>"));
-				 * et_address.requestFocus(); }else if
-				 * (aadhaar_image.getDrawable().getConstantState() ==
-				 * getResources
-				 * ().getDrawable(R.drawable.camera).getConstantState()) {
-				 * showToast("Please Select Image"); }else if
-				 * (otp_verify_status.equals("N")) {
-				 * showToast("Please Verify OTP Number");
-				 * et_mobileNo.requestFocus(); } }else if
-				 * (aadhaarNo.isChecked()==true) { if
-				 * (et_name.getText().toString().trim().equals("")) {
-				 * et_name.setError
-				 * (Html.fromHtml("<font color='black'>Please Enter Name</font>"
-				 * )); et_name.requestFocus(); }else if
-				 * (et_father_name.getText().toString().trim().equals("")) {
-				 * et_father_name.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Father Number</font>"));
-				 * et_father_name.requestFocus(); }else if
-				 * (et_age.getText().toString().trim().equals("")) {
-				 * et_age.setError
-				 * (Html.fromHtml("<font color='black'>Please Enter Age</font>"
-				 * )); et_age.requestFocus(); }else if
-				 * (et_mobileNo.getText().toString().trim().equals("")) {
-				 * et_mobileNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Age</font>"));
-				 * et_mobileNo.requestFocus(); }else if
-				 * (et_address.getText().toString().trim().equals("")) {
-				 * et_address.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Address</font>"));
-				 * et_address.requestFocus(); }else if
-				 * (aadhaar_image.getDrawable().getConstantState() ==
-				 * getResources
-				 * ().getDrawable(R.drawable.camera).getConstantState()) {
-				 * showToast("Please Select Image"); }else if
-				 * (otp_verify_status.equals("N")) {
-				 * showToast("Please Verify OTP Number");
-				 * et_mobileNo.requestFocus(); } }else if
-				 * (Sections.checkedList.isEmpty()) {
-				 * showToast("Please Select atleast one Section"); }else { new
-				 * Async_PreviewDetails().execute();
-				 *
-				 * } }else if (shopkeeper_based.isChecked()==true &&
-				 * "SHOPKEEPER".equals(run_By)) { if (tin_yes.isChecked()==true)
-				 * { if (et_tin_no.getText().toString().trim().equals("")) {
-				 * //et_tin_no.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Trade Licence Number</font>"
-				 * )); et_tin_no.requestFocus(); }
-				 *
-				 * }else if (tin_no.isChecked()==true) { if
-				 * (et_shop_name.getText().toString().trim().equals("")) {
-				 * et_shop_name.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Shop Name</font>"));
-				 * et_shop_name.requestFocus(); }else if
-				 * (et_firm_owner_name.getText().toString().trim().equals("")) {
-				 * et_firm_owner_name.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Shop Owner Name</font>"));
-				 * et_firm_owner_name.requestFocus(); }else if
-				 * (et_firm_address.getText().toString().trim().equals("")) {
-				 * et_firm_address.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Shop Owner Address</font>"
-				 * )); et_firm_address.requestFocus(); } }else if
-				 * (owner_aadhaar_yes.isChecked()==true) { if
-				 * (owner_aadhaarNo.getText().toString().trim().equals("")) {
-				 * owner_aadhaarNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Aadhaar Number</font>"));
-				 * owner_aadhaarNo.requestFocus(); }else if
-				 * (owner_aadhaarNo.getText().toString().trim().length()!=12) {
-				 * owner_aadhaarNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Valid Aadhaar Number</font>"
-				 * )); owner_aadhaarNo.requestFocus(); }else if
-				 * (owner_aadhaarNo.getText().toString().trim().length()>1 &&
-				 * owner_aadhaarNo.getText().toString().trim().length() == 12 &&
-				 * !ver.isValid(owner_aadhaarNo.getText().toString().trim())) {
-				 * owner_aadhaarNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Valid Aadhaar Number</font>"
-				 * )); owner_aadhaarNo.requestFocus(); }else if
-				 * (owner_aadhaarName.getText().toString().trim().equals("")) {
-				 * owner_aadhaarName.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Name</font>"));
-				 * owner_aadhaarName.requestFocus(); }else if
-				 * (owner_aadhaarFatherName
-				 * .getText().toString().trim().equals("")) {
-				 * owner_aadhaarFatherName.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Father Number</font>"
-				 * )); owner_aadhaarFatherName.requestFocus(); }else if
-				 * (owner_aadhaarAge.getText().toString().trim().equals("")) {
-				 * owner_aadhaarAge.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Age</font>"));
-				 * owner_aadhaarAge.requestFocus(); }else if
-				 * (owner_aadhaarMobileNo
-				 * .getText().toString().trim().equals("")) {
-				 * owner_aadhaarMobileNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Age</font>"));
-				 * owner_aadhaarMobileNo.requestFocus(); }else if
-				 * (owner_aadhaarAddress.getText().toString().trim().equals(""))
-				 * { owner_aadhaarAddress.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Address</font>"));
-				 * owner_aadhaarAddress.requestFocus(); }else if
-				 * (aadhaar_ownerImage.getDrawable().getConstantState() ==
-				 * getResources
-				 * ().getDrawable(R.drawable.camera).getConstantState()) {
-				 * showToast("Please Select Image"); }else if
-				 * (owner_otp_verify_status.equals("N")) {
-				 * showToast("Please Verify OTP Number");
-				 * owner_aadhaarMobileNo.requestFocus(); } }else if
-				 * (owner_aadhaar_no.isChecked()==true) { if
-				 * (owner_aadhaarName.getText().toString().trim().equals("")) {
-				 * owner_aadhaarName.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Name</font>"));
-				 * owner_aadhaarName.requestFocus(); }else if
-				 * (owner_aadhaarFatherName
-				 * .getText().toString().trim().equals("")) {
-				 * owner_aadhaarFatherName.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Father Number</font>"
-				 * )); owner_aadhaarFatherName.requestFocus(); }else if
-				 * (owner_aadhaarAge.getText().toString().trim().equals("")) {
-				 * owner_aadhaarAge.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Age</font>"));
-				 * owner_aadhaarAge.requestFocus(); }else if
-				 * (owner_aadhaarMobileNo
-				 * .getText().toString().trim().equals("")) {
-				 * owner_aadhaarMobileNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Age</font>"));
-				 * owner_aadhaarMobileNo.requestFocus(); }else if
-				 * (owner_aadhaarAddress.getText().toString().trim().equals(""))
-				 * { owner_aadhaarAddress.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Owner Address</font>"));
-				 * owner_aadhaarAddress.requestFocus(); }else if
-				 * (aadhaar_ownerImage.getDrawable().getConstantState() ==
-				 * getResources
-				 * ().getDrawable(R.drawable.camera).getConstantState()) {
-				 * showToast("Please Select Image"); }else if
-				 * (owner_otp_verify_status.equals("N")) {
-				 * showToast("Please Verify OTP Number");
-				 * owner_aadhaarMobileNo.requestFocus(); } }else if
-				 * (aadhaarYes.isChecked()==true) { if
-				 * (aadhaar_no.getText().toString().trim().equals("")) {
-				 * aadhaar_no.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
-				 * aadhaar_no.requestFocus(); } else if
-				 * (aadhaar_no.getText().toString().trim().length()>1 &&
-				 * aadhaar_no.getText().toString().trim().length() != 12) {
-				 * aadhaar_no.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
-				 * aadhaar_no.requestFocus(); } else if
-				 * (aadhaar_no.getText().toString().trim().length()>1 &&
-				 * aadhaar_no.getText().toString().trim().length() == 12 &&
-				 * !ver.isValid(aadhaar_no.getText().toString().trim())) {
-				 * aadhaar_no.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
-				 * aadhaar_no.requestFocus(); }else if
-				 * (et_name.getText().toString().trim().equals("")) {
-				 * et_name.setError
-				 * (Html.fromHtml("<font color='black'>Please Enter Name</font>"
-				 * )); et_name.requestFocus(); }else if
-				 * (et_father_name.getText().toString().trim().equals("")) {
-				 * et_father_name.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Father Number</font>"));
-				 * et_father_name.requestFocus(); }else if
-				 * (et_age.getText().toString().trim().equals("")) {
-				 * et_age.setError
-				 * (Html.fromHtml("<font color='black'>Please Enter Age</font>"
-				 * )); et_age.requestFocus(); }else if
-				 * (et_mobileNo.getText().toString().trim().equals("")) {
-				 * et_mobileNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Age</font>"));
-				 * et_mobileNo.requestFocus(); }else if
-				 * (et_address.getText().toString().trim().equals("")) {
-				 * et_address.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Address</font>"));
-				 * et_address.requestFocus(); }else if
-				 * (aadhaar_image.getDrawable().getConstantState() ==
-				 * getResources
-				 * ().getDrawable(R.drawable.camera).getConstantState()) {
-				 * showToast("Please Select Image"); }else if
-				 * (otp_verify_status.equals("N")) {
-				 * showToast("Please Verify OTP Number");
-				 * et_mobileNo.requestFocus(); } }else if
-				 * (aadhaarNo.isChecked()==true) { if
-				 * (et_name.getText().toString().trim().equals("")) {
-				 * et_name.setError
-				 * (Html.fromHtml("<font color='black'>Please Enter Name</font>"
-				 * )); et_name.requestFocus(); }else if
-				 * (et_father_name.getText().toString().trim().equals("")) {
-				 * et_father_name.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Father Number</font>"));
-				 * et_father_name.requestFocus(); }else if
-				 * (et_age.getText().toString().trim().equals("")) {
-				 * et_age.setError
-				 * (Html.fromHtml("<font color='black'>Please Enter Age</font>"
-				 * )); et_age.requestFocus(); }else if
-				 * (et_mobileNo.getText().toString().trim().equals("")) {
-				 * et_mobileNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Age</font>"));
-				 * et_mobileNo.requestFocus(); }else if
-				 * (et_address.getText().toString().trim().equals("")) {
-				 * et_address.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Address</font>"));
-				 * et_address.requestFocus(); }else if
-				 * (aadhaar_image.getDrawable().getConstantState() ==
-				 * getResources
-				 * ().getDrawable(R.drawable.camera).getConstantState()) {
-				 * showToast("Please Select Image"); }else if
-				 * (otp_verify_status.equals("N")) {
-				 * showToast("Please Verify OTP Number");
-				 * et_mobileNo.requestFocus(); }else if
-				 * (Sections.checkedList.isEmpty()) {
-				 * showToast("Please Select atleast one Section"); }else { new
-				 * Async_PreviewDetails().execute();
-				 *
-				 * } }else if (Sections.checkedList.isEmpty()) {
-				 * showToast("Please Select atleast one Section"); }else { new
-				 * Async_PreviewDetails().execute();
-				 *
-				 * } }
-				 *
-				 *
-				 *
-				 * }else if (person_based.isChecked()==true &&
-				 * "PERSON".equals(based_on)) {
-				 * Log.i("Person Based Condition ::::", "Entered"); if
-				 * (aadhaarYes.isChecked()==true) { if
-				 * (aadhaar_no.getText().toString().trim().equals("")) {
-				 * aadhaar_no.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
-				 * aadhaar_no.requestFocus(); } else if
-				 * (aadhaar_no.getText().toString().trim().length()>1 &&
-				 * aadhaar_no.getText().toString().trim().length() != 12) {
-				 * aadhaar_no.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
-				 * aadhaar_no.requestFocus(); } else if
-				 * (aadhaar_no.getText().toString().trim().length()>1 &&
-				 * aadhaar_no.getText().toString().trim().length() == 12 &&
-				 * !ver.isValid(aadhaar_no.getText().toString().trim())) {
-				 * aadhaar_no.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
-				 * aadhaar_no.requestFocus(); }else if
-				 * (et_name.getText().toString().trim().equals("")) {
-				 * et_name.setError
-				 * (Html.fromHtml("<font color='black'>Please Enter Name</font>"
-				 * )); et_name.requestFocus(); }else if
-				 * (et_father_name.getText().toString().trim().equals("")) {
-				 * et_father_name.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Father Number</font>"));
-				 * et_father_name.requestFocus(); }else if
-				 * (et_age.getText().toString().trim().equals("")) {
-				 * et_age.setError
-				 * (Html.fromHtml("<font color='black'>Please Enter Age</font>"
-				 * )); et_age.requestFocus(); }else if
-				 * (et_mobileNo.getText().toString().trim().equals("")) {
-				 * et_mobileNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Age</font>"));
-				 * et_mobileNo.requestFocus(); }else if
-				 * (et_address.getText().toString().trim().equals("")) {
-				 * et_address.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Address</font>"));
-				 * et_address.requestFocus(); }else if
-				 * (aadhaar_image.getDrawable().getConstantState() ==
-				 * getResources
-				 * ().getDrawable(R.drawable.camera).getConstantState()) {
-				 * showToast("Please Select Image"); }else if
-				 * (otp_verify_status.equals("N")) {
-				 * showToast("Please Verify OTP Number");
-				 * et_mobileNo.requestFocus(); } else if
-				 * (Sections.checkedList.isEmpty()) {
-				 * showToast("Please Select atleast one Section"); }else {
-				 *
-				 * new Async_PreviewDetails().execute(); //new
-				 * Async_Submit().execute();
-				 *
-				 * }
-				 *
-				 * }else if (aadhaarNo.isChecked()==true) { if
-				 * (et_name.getText().toString().trim().equals("")) {
-				 * et_name.setError
-				 * (Html.fromHtml("<font color='black'>Please Enter Name</font>"
-				 * )); et_name.requestFocus(); }else if
-				 * (et_father_name.getText().toString().trim().equals("")) {
-				 * et_father_name.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Father Number</font>"));
-				 * et_father_name.requestFocus(); }else if
-				 * (et_age.getText().toString().trim().equals("")) {
-				 * et_age.setError
-				 * (Html.fromHtml("<font color='black'>Please Enter Age</font>"
-				 * )); et_age.requestFocus(); }else if
-				 * (et_mobileNo.getText().toString().trim().equals("")) {
-				 * et_mobileNo.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Age</font>"));
-				 * et_mobileNo.requestFocus(); }else if
-				 * (et_address.getText().toString().trim().equals("")) {
-				 * et_address.setError(Html.fromHtml(
-				 * "<font color='black'>Please Enter Address</font>"));
-				 * et_address.requestFocus(); }else if
-				 * (aadhaar_image.getDrawable().getConstantState() ==
-				 * getResources
-				 * ().getDrawable(R.drawable.camera).getConstantState()) {
-				 * showToast("Please Select Image"); }else if
-				 * (otp_verify_status.equals("N")) {
-				 * showToast("Please Verify OTP Number");
-				 * et_mobileNo.requestFocus(); }else if
-				 * (Sections.checkedList.isEmpty()) {
-				 * showToast("Please Select atleast one Section"); }else {
-				 *
-				 * new Async_PreviewDetails().execute(); //new
-				 * Async_Submit().execute();
-				 *
-				 * }
-				 *
-				 * } } }
-				 */
+                /*
+                 * else{ if (shop_based.isChecked()==true &&
+                 * "SHOP".equals(based_on)) { if (owner_based.isChecked()==true
+                 * && "OWNER".equals(run_By)) { if (tin_yes.isChecked()==true) {
+                 * if (et_tin_no.getText().toString().trim().equals("")) {
+                 * et_tin_no.requestFocus(); //et_tin_no.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Trade Licence Number</font>"
+                 * )); showToast("Please Enter Tin No"); } }else if
+                 * (tin_no.isChecked()==true) { if
+                 * (et_shop_name.getText().toString().trim().equals("")) {
+                 * et_shop_name.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Shop Name</font>"));
+                 * et_shop_name.requestFocus(); }else if
+                 * (et_firm_owner_name.getText().toString().trim().equals("")) {
+                 * et_firm_owner_name.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Shop Owner Name</font>"));
+                 * et_firm_owner_name.requestFocus(); }else if
+                 * (et_firm_address.getText().toString().trim().equals("")) {
+                 * et_firm_address.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Shop Owner Address</font>"
+                 * )); et_firm_address.requestFocus(); } }else if
+                 * (owner_aadhaar_yes.isChecked()==true) { if
+                 * (owner_aadhaarNo.getText().toString().trim().equals("")) {
+                 * owner_aadhaarNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Aadhaar Number</font>"));
+                 * owner_aadhaarNo.requestFocus(); }else if
+                 * (owner_aadhaarNo.getText().toString().trim().length()>1 &&
+                 * owner_aadhaarNo.getText().toString().trim().length() != 12) {
+                 * owner_aadhaarNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
+                 * owner_aadhaarNo.requestFocus(); } else if
+                 * (owner_aadhaarNo.getText().toString().trim().length()>1 &&
+                 * owner_aadhaarNo.getText().toString().trim().length() == 12 &&
+                 * !ver.isValid(owner_aadhaarNo.getText().toString().trim())) {
+                 * owner_aadhaarNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
+                 * owner_aadhaarNo.requestFocus(); }else if
+                 * (owner_aadhaarName.getText().toString().trim().equals("")) {
+                 * owner_aadhaarName.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Name</font>"));
+                 * owner_aadhaarName.requestFocus(); }else if
+                 * (owner_aadhaarFatherName
+                 * .getText().toString().trim().equals("")) {
+                 * owner_aadhaarFatherName.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Father Number</font>"
+                 * )); owner_aadhaarFatherName.requestFocus(); }else if
+                 * (owner_aadhaarAge.getText().toString().trim().equals("")) {
+                 * owner_aadhaarAge.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Age</font>"));
+                 * owner_aadhaarAge.requestFocus(); }else if
+                 * (owner_aadhaarMobileNo
+                 * .getText().toString().trim().equals("")) {
+                 * owner_aadhaarMobileNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Age</font>"));
+                 * owner_aadhaarMobileNo.requestFocus(); }else if
+                 * (owner_aadhaarAddress.getText().toString().trim().equals(""))
+                 * { owner_aadhaarAddress.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Address</font>"));
+                 * owner_aadhaarAddress.requestFocus(); }else if
+                 * (aadhaar_ownerImage.getDrawable().getConstantState() ==
+                 * getResources
+                 * ().getDrawable(R.drawable.camera).getConstantState()) {
+                 * showToast("Please Select Image"); }else if
+                 * (otp_verify_status.equals("N")) {
+                 * showToast("Please Verify OTP Number");
+                 * owner_aadhaarMobileNo.requestFocus(); }else if
+                 * (Sections.checkedList.isEmpty()) {
+                 * showToast("Please Select atleast one Section"); }else { new
+                 * Async_PreviewDetails().execute();
+                 *
+                 * } }else if (owner_aadhaar_no.isChecked()==true) { if
+                 * (owner_aadhaarName.getText().toString().trim().equals("")) {
+                 * owner_aadhaarName.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Name</font>"));
+                 * owner_aadhaarName.requestFocus(); }else if
+                 * (owner_aadhaarFatherName
+                 * .getText().toString().trim().equals("")) {
+                 * owner_aadhaarFatherName.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Father Number</font>"
+                 * )); owner_aadhaarFatherName.requestFocus(); }else if
+                 * (owner_aadhaarAge.getText().toString().trim().equals("")) {
+                 * owner_aadhaarAge.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Age</font>"));
+                 * owner_aadhaarAge.requestFocus(); }else if
+                 * (owner_aadhaarMobileNo
+                 * .getText().toString().trim().equals("")) {
+                 * owner_aadhaarMobileNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Age</font>"));
+                 * owner_aadhaarMobileNo.requestFocus(); }else if
+                 * (owner_aadhaarAddress.getText().toString().trim().equals(""))
+                 * { owner_aadhaarAddress.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Address</font>"));
+                 * owner_aadhaarAddress.requestFocus(); }else if
+                 * (aadhaar_ownerImage.getDrawable().getConstantState() ==
+                 * getResources
+                 * ().getDrawable(R.drawable.camera).getConstantState()) {
+                 * showToast("Please Select Image"); }else if
+                 * (otp_verify_status.equals("N")) {
+                 * showToast("Please Verify OTP Number");
+                 * owner_aadhaarMobileNo.requestFocus(); }else if
+                 * (Sections.checkedList.isEmpty()) {
+                 * showToast("Please Select atleast one Section"); }else { new
+                 * Async_PreviewDetails().execute();
+                 *
+                 * } } }else if (manager_based.isChecked()==true &&
+                 * "MANAGER".equals(run_By)) { if (tin_yes.isChecked()==true) {
+                 * if (et_tin_no.getText().toString().trim().equals("")) {
+                 * //et_tin_no.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Trade Licence Number</font>"
+                 * )); et_tin_no.requestFocus(); } }else if
+                 * (tin_no.isChecked()==true) { if
+                 * (et_shop_name.getText().toString().trim().equals("")) {
+                 * et_shop_name.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Shop Name</font>"));
+                 * et_shop_name.requestFocus(); }else if
+                 * (et_firm_owner_name.getText().toString().trim().equals("")) {
+                 * et_firm_owner_name.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Shop Owner Name</font>"));
+                 * et_firm_owner_name.requestFocus(); }else if
+                 * (et_firm_address.getText().toString().trim().equals("")) {
+                 * et_firm_address.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Shop Owner Address</font>"
+                 * )); et_firm_address.requestFocus(); } }
+                 *
+                 * // Owner Aadhaar Details if
+                 * (owner_aadhaar_yes.isChecked()==true) { if
+                 * (owner_aadhaarNo.getText().toString().trim().equals("")) {
+                 * owner_aadhaarNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Aadhaar Number</font>"));
+                 * owner_aadhaarNo.requestFocus(); }else if
+                 * (owner_aadhaarNo.getText().toString().trim().length()>1 &&
+                 * owner_aadhaarNo.getText().toString().trim().length() != 12) {
+                 * owner_aadhaarNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
+                 * owner_aadhaarNo.requestFocus(); } else if
+                 * (owner_aadhaarNo.getText().toString().trim().length()>1 &&
+                 * owner_aadhaarNo.getText().toString().trim().length() == 12 &&
+                 * !ver.isValid(owner_aadhaarNo.getText().toString().trim())) {
+                 * owner_aadhaarNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
+                 * owner_aadhaarNo.requestFocus(); }else if
+                 * (owner_aadhaarName.getText().toString().trim().equals("")) {
+                 * owner_aadhaarName.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Name</font>"));
+                 * owner_aadhaarName.requestFocus(); }else if
+                 * (owner_aadhaarFatherName
+                 * .getText().toString().trim().equals("")) {
+                 * owner_aadhaarFatherName.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Father Number</font>"
+                 * )); owner_aadhaarFatherName.requestFocus(); }else if
+                 * (owner_aadhaarAge.getText().toString().trim().equals("")) {
+                 * owner_aadhaarAge.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Age</font>"));
+                 * owner_aadhaarAge.requestFocus(); }else if
+                 * (owner_aadhaarMobileNo
+                 * .getText().toString().trim().equals("")) {
+                 * owner_aadhaarMobileNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Age</font>"));
+                 * owner_aadhaarMobileNo.requestFocus(); }else if
+                 * (owner_aadhaarAddress.getText().toString().trim().equals(""))
+                 * { owner_aadhaarAddress.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Address</font>"));
+                 * owner_aadhaarAddress.requestFocus(); }else if
+                 * (aadhaar_ownerImage.getDrawable().getConstantState() ==
+                 * getResources
+                 * ().getDrawable(R.drawable.camera).getConstantState()) {
+                 * showToast("Please Select Image"); }else if
+                 * (otp_verify_status.equals("N")) {
+                 * showToast("Please Verify OTP Number");
+                 * owner_aadhaarMobileNo.requestFocus(); } }else if
+                 * (owner_aadhaar_no.isChecked()==true) { if
+                 * (owner_aadhaarName.getText().toString().trim().equals("")) {
+                 * owner_aadhaarName.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Name</font>"));
+                 * owner_aadhaarName.requestFocus(); }else if
+                 * (owner_aadhaarFatherName
+                 * .getText().toString().trim().equals("")) {
+                 * owner_aadhaarFatherName.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Father Number</font>"
+                 * )); owner_aadhaarFatherName.requestFocus(); }else if
+                 * (owner_aadhaarAge.getText().toString().trim().equals("")) {
+                 * owner_aadhaarAge.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Age</font>"));
+                 * owner_aadhaarAge.requestFocus(); }else if
+                 * (owner_aadhaarMobileNo
+                 * .getText().toString().trim().equals("")) {
+                 * owner_aadhaarMobileNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Age</font>"));
+                 * owner_aadhaarMobileNo.requestFocus(); }else if
+                 * (owner_aadhaarAddress.getText().toString().trim().equals(""))
+                 * { owner_aadhaarAddress.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Address</font>"));
+                 * owner_aadhaarAddress.requestFocus(); }else if
+                 * (aadhaar_ownerImage.getDrawable().getConstantState() ==
+                 * getResources
+                 * ().getDrawable(R.drawable.camera).getConstantState()) {
+                 * showToast("Please Select Image"); }else if
+                 * (otp_verify_status.equals("N")) {
+                 * showToast("Please Verify OTP Number");
+                 * owner_aadhaarMobileNo.requestFocus(); } }else if
+                 * (aadhaarYes.isChecked()==true) { if
+                 * (aadhaar_no.getText().toString().trim().equals("")) {
+                 * aadhaar_no.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
+                 * aadhaar_no.requestFocus(); } else if
+                 * (aadhaar_no.getText().toString().trim().length()>1 &&
+                 * aadhaar_no.getText().toString().trim().length() != 12) {
+                 * aadhaar_no.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
+                 * aadhaar_no.requestFocus(); } else if
+                 * (aadhaar_no.getText().toString().trim().length()>1 &&
+                 * aadhaar_no.getText().toString().trim().length() == 12 &&
+                 * !ver.isValid(aadhaar_no.getText().toString().trim())) {
+                 * aadhaar_no.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
+                 * aadhaar_no.requestFocus(); }else if
+                 * (et_name.getText().toString().trim().equals("")) {
+                 * et_name.setError
+                 * (Html.fromHtml("<font color='black'>Please Enter Name</font>"
+                 * )); et_name.requestFocus(); }else if
+                 * (et_father_name.getText().toString().trim().equals("")) {
+                 * et_father_name.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Father Number</font>"));
+                 * et_father_name.requestFocus(); }else if
+                 * (et_age.getText().toString().trim().equals("")) {
+                 * et_age.setError
+                 * (Html.fromHtml("<font color='black'>Please Enter Age</font>"
+                 * )); et_age.requestFocus(); }else if
+                 * (et_mobileNo.getText().toString().trim().equals("")) {
+                 * et_mobileNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Age</font>"));
+                 * et_mobileNo.requestFocus(); }else if
+                 * (et_address.getText().toString().trim().equals("")) {
+                 * et_address.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Address</font>"));
+                 * et_address.requestFocus(); }else if
+                 * (aadhaar_image.getDrawable().getConstantState() ==
+                 * getResources
+                 * ().getDrawable(R.drawable.camera).getConstantState()) {
+                 * showToast("Please Select Image"); }else if
+                 * (otp_verify_status.equals("N")) {
+                 * showToast("Please Verify OTP Number");
+                 * et_mobileNo.requestFocus(); } }else if
+                 * (aadhaarNo.isChecked()==true) { if
+                 * (et_name.getText().toString().trim().equals("")) {
+                 * et_name.setError
+                 * (Html.fromHtml("<font color='black'>Please Enter Name</font>"
+                 * )); et_name.requestFocus(); }else if
+                 * (et_father_name.getText().toString().trim().equals("")) {
+                 * et_father_name.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Father Number</font>"));
+                 * et_father_name.requestFocus(); }else if
+                 * (et_age.getText().toString().trim().equals("")) {
+                 * et_age.setError
+                 * (Html.fromHtml("<font color='black'>Please Enter Age</font>"
+                 * )); et_age.requestFocus(); }else if
+                 * (et_mobileNo.getText().toString().trim().equals("")) {
+                 * et_mobileNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Age</font>"));
+                 * et_mobileNo.requestFocus(); }else if
+                 * (et_address.getText().toString().trim().equals("")) {
+                 * et_address.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Address</font>"));
+                 * et_address.requestFocus(); }else if
+                 * (aadhaar_image.getDrawable().getConstantState() ==
+                 * getResources
+                 * ().getDrawable(R.drawable.camera).getConstantState()) {
+                 * showToast("Please Select Image"); }else if
+                 * (otp_verify_status.equals("N")) {
+                 * showToast("Please Verify OTP Number");
+                 * et_mobileNo.requestFocus(); } }else if
+                 * (Sections.checkedList.isEmpty()) {
+                 * showToast("Please Select atleast one Section"); }else { new
+                 * Async_PreviewDetails().execute();
+                 *
+                 * } }else if (shopkeeper_based.isChecked()==true &&
+                 * "SHOPKEEPER".equals(run_By)) { if (tin_yes.isChecked()==true)
+                 * { if (et_tin_no.getText().toString().trim().equals("")) {
+                 * //et_tin_no.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Trade Licence Number</font>"
+                 * )); et_tin_no.requestFocus(); }
+                 *
+                 * }else if (tin_no.isChecked()==true) { if
+                 * (et_shop_name.getText().toString().trim().equals("")) {
+                 * et_shop_name.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Shop Name</font>"));
+                 * et_shop_name.requestFocus(); }else if
+                 * (et_firm_owner_name.getText().toString().trim().equals("")) {
+                 * et_firm_owner_name.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Shop Owner Name</font>"));
+                 * et_firm_owner_name.requestFocus(); }else if
+                 * (et_firm_address.getText().toString().trim().equals("")) {
+                 * et_firm_address.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Shop Owner Address</font>"
+                 * )); et_firm_address.requestFocus(); } }else if
+                 * (owner_aadhaar_yes.isChecked()==true) { if
+                 * (owner_aadhaarNo.getText().toString().trim().equals("")) {
+                 * owner_aadhaarNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Aadhaar Number</font>"));
+                 * owner_aadhaarNo.requestFocus(); }else if
+                 * (owner_aadhaarNo.getText().toString().trim().length()!=12) {
+                 * owner_aadhaarNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Valid Aadhaar Number</font>"
+                 * )); owner_aadhaarNo.requestFocus(); }else if
+                 * (owner_aadhaarNo.getText().toString().trim().length()>1 &&
+                 * owner_aadhaarNo.getText().toString().trim().length() == 12 &&
+                 * !ver.isValid(owner_aadhaarNo.getText().toString().trim())) {
+                 * owner_aadhaarNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Valid Aadhaar Number</font>"
+                 * )); owner_aadhaarNo.requestFocus(); }else if
+                 * (owner_aadhaarName.getText().toString().trim().equals("")) {
+                 * owner_aadhaarName.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Name</font>"));
+                 * owner_aadhaarName.requestFocus(); }else if
+                 * (owner_aadhaarFatherName
+                 * .getText().toString().trim().equals("")) {
+                 * owner_aadhaarFatherName.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Father Number</font>"
+                 * )); owner_aadhaarFatherName.requestFocus(); }else if
+                 * (owner_aadhaarAge.getText().toString().trim().equals("")) {
+                 * owner_aadhaarAge.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Age</font>"));
+                 * owner_aadhaarAge.requestFocus(); }else if
+                 * (owner_aadhaarMobileNo
+                 * .getText().toString().trim().equals("")) {
+                 * owner_aadhaarMobileNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Age</font>"));
+                 * owner_aadhaarMobileNo.requestFocus(); }else if
+                 * (owner_aadhaarAddress.getText().toString().trim().equals(""))
+                 * { owner_aadhaarAddress.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Address</font>"));
+                 * owner_aadhaarAddress.requestFocus(); }else if
+                 * (aadhaar_ownerImage.getDrawable().getConstantState() ==
+                 * getResources
+                 * ().getDrawable(R.drawable.camera).getConstantState()) {
+                 * showToast("Please Select Image"); }else if
+                 * (owner_otp_verify_status.equals("N")) {
+                 * showToast("Please Verify OTP Number");
+                 * owner_aadhaarMobileNo.requestFocus(); } }else if
+                 * (owner_aadhaar_no.isChecked()==true) { if
+                 * (owner_aadhaarName.getText().toString().trim().equals("")) {
+                 * owner_aadhaarName.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Name</font>"));
+                 * owner_aadhaarName.requestFocus(); }else if
+                 * (owner_aadhaarFatherName
+                 * .getText().toString().trim().equals("")) {
+                 * owner_aadhaarFatherName.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Father Number</font>"
+                 * )); owner_aadhaarFatherName.requestFocus(); }else if
+                 * (owner_aadhaarAge.getText().toString().trim().equals("")) {
+                 * owner_aadhaarAge.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Age</font>"));
+                 * owner_aadhaarAge.requestFocus(); }else if
+                 * (owner_aadhaarMobileNo
+                 * .getText().toString().trim().equals("")) {
+                 * owner_aadhaarMobileNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Age</font>"));
+                 * owner_aadhaarMobileNo.requestFocus(); }else if
+                 * (owner_aadhaarAddress.getText().toString().trim().equals(""))
+                 * { owner_aadhaarAddress.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Owner Address</font>"));
+                 * owner_aadhaarAddress.requestFocus(); }else if
+                 * (aadhaar_ownerImage.getDrawable().getConstantState() ==
+                 * getResources
+                 * ().getDrawable(R.drawable.camera).getConstantState()) {
+                 * showToast("Please Select Image"); }else if
+                 * (owner_otp_verify_status.equals("N")) {
+                 * showToast("Please Verify OTP Number");
+                 * owner_aadhaarMobileNo.requestFocus(); } }else if
+                 * (aadhaarYes.isChecked()==true) { if
+                 * (aadhaar_no.getText().toString().trim().equals("")) {
+                 * aadhaar_no.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
+                 * aadhaar_no.requestFocus(); } else if
+                 * (aadhaar_no.getText().toString().trim().length()>1 &&
+                 * aadhaar_no.getText().toString().trim().length() != 12) {
+                 * aadhaar_no.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
+                 * aadhaar_no.requestFocus(); } else if
+                 * (aadhaar_no.getText().toString().trim().length()>1 &&
+                 * aadhaar_no.getText().toString().trim().length() == 12 &&
+                 * !ver.isValid(aadhaar_no.getText().toString().trim())) {
+                 * aadhaar_no.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
+                 * aadhaar_no.requestFocus(); }else if
+                 * (et_name.getText().toString().trim().equals("")) {
+                 * et_name.setError
+                 * (Html.fromHtml("<font color='black'>Please Enter Name</font>"
+                 * )); et_name.requestFocus(); }else if
+                 * (et_father_name.getText().toString().trim().equals("")) {
+                 * et_father_name.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Father Number</font>"));
+                 * et_father_name.requestFocus(); }else if
+                 * (et_age.getText().toString().trim().equals("")) {
+                 * et_age.setError
+                 * (Html.fromHtml("<font color='black'>Please Enter Age</font>"
+                 * )); et_age.requestFocus(); }else if
+                 * (et_mobileNo.getText().toString().trim().equals("")) {
+                 * et_mobileNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Age</font>"));
+                 * et_mobileNo.requestFocus(); }else if
+                 * (et_address.getText().toString().trim().equals("")) {
+                 * et_address.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Address</font>"));
+                 * et_address.requestFocus(); }else if
+                 * (aadhaar_image.getDrawable().getConstantState() ==
+                 * getResources
+                 * ().getDrawable(R.drawable.camera).getConstantState()) {
+                 * showToast("Please Select Image"); }else if
+                 * (otp_verify_status.equals("N")) {
+                 * showToast("Please Verify OTP Number");
+                 * et_mobileNo.requestFocus(); } }else if
+                 * (aadhaarNo.isChecked()==true) { if
+                 * (et_name.getText().toString().trim().equals("")) {
+                 * et_name.setError
+                 * (Html.fromHtml("<font color='black'>Please Enter Name</font>"
+                 * )); et_name.requestFocus(); }else if
+                 * (et_father_name.getText().toString().trim().equals("")) {
+                 * et_father_name.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Father Number</font>"));
+                 * et_father_name.requestFocus(); }else if
+                 * (et_age.getText().toString().trim().equals("")) {
+                 * et_age.setError
+                 * (Html.fromHtml("<font color='black'>Please Enter Age</font>"
+                 * )); et_age.requestFocus(); }else if
+                 * (et_mobileNo.getText().toString().trim().equals("")) {
+                 * et_mobileNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Age</font>"));
+                 * et_mobileNo.requestFocus(); }else if
+                 * (et_address.getText().toString().trim().equals("")) {
+                 * et_address.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Address</font>"));
+                 * et_address.requestFocus(); }else if
+                 * (aadhaar_image.getDrawable().getConstantState() ==
+                 * getResources
+                 * ().getDrawable(R.drawable.camera).getConstantState()) {
+                 * showToast("Please Select Image"); }else if
+                 * (otp_verify_status.equals("N")) {
+                 * showToast("Please Verify OTP Number");
+                 * et_mobileNo.requestFocus(); }else if
+                 * (Sections.checkedList.isEmpty()) {
+                 * showToast("Please Select atleast one Section"); }else { new
+                 * Async_PreviewDetails().execute();
+                 *
+                 * } }else if (Sections.checkedList.isEmpty()) {
+                 * showToast("Please Select atleast one Section"); }else { new
+                 * Async_PreviewDetails().execute();
+                 *
+                 * } }
+                 *
+                 *
+                 *
+                 * }else if (person_based.isChecked()==true &&
+                 * "PERSON".equals(based_on)) {
+                 * Log.i("Person Based Condition ::::", "Entered"); if
+                 * (aadhaarYes.isChecked()==true) { if
+                 * (aadhaar_no.getText().toString().trim().equals("")) {
+                 * aadhaar_no.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
+                 * aadhaar_no.requestFocus(); } else if
+                 * (aadhaar_no.getText().toString().trim().length()>1 &&
+                 * aadhaar_no.getText().toString().trim().length() != 12) {
+                 * aadhaar_no.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
+                 * aadhaar_no.requestFocus(); } else if
+                 * (aadhaar_no.getText().toString().trim().length()>1 &&
+                 * aadhaar_no.getText().toString().trim().length() == 12 &&
+                 * !ver.isValid(aadhaar_no.getText().toString().trim())) {
+                 * aadhaar_no.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Valid Aadhaar</font>"));
+                 * aadhaar_no.requestFocus(); }else if
+                 * (et_name.getText().toString().trim().equals("")) {
+                 * et_name.setError
+                 * (Html.fromHtml("<font color='black'>Please Enter Name</font>"
+                 * )); et_name.requestFocus(); }else if
+                 * (et_father_name.getText().toString().trim().equals("")) {
+                 * et_father_name.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Father Number</font>"));
+                 * et_father_name.requestFocus(); }else if
+                 * (et_age.getText().toString().trim().equals("")) {
+                 * et_age.setError
+                 * (Html.fromHtml("<font color='black'>Please Enter Age</font>"
+                 * )); et_age.requestFocus(); }else if
+                 * (et_mobileNo.getText().toString().trim().equals("")) {
+                 * et_mobileNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Age</font>"));
+                 * et_mobileNo.requestFocus(); }else if
+                 * (et_address.getText().toString().trim().equals("")) {
+                 * et_address.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Address</font>"));
+                 * et_address.requestFocus(); }else if
+                 * (aadhaar_image.getDrawable().getConstantState() ==
+                 * getResources
+                 * ().getDrawable(R.drawable.camera).getConstantState()) {
+                 * showToast("Please Select Image"); }else if
+                 * (otp_verify_status.equals("N")) {
+                 * showToast("Please Verify OTP Number");
+                 * et_mobileNo.requestFocus(); } else if
+                 * (Sections.checkedList.isEmpty()) {
+                 * showToast("Please Select atleast one Section"); }else {
+                 *
+                 * new Async_PreviewDetails().execute(); //new
+                 * Async_Submit().execute();
+                 *
+                 * }
+                 *
+                 * }else if (aadhaarNo.isChecked()==true) { if
+                 * (et_name.getText().toString().trim().equals("")) {
+                 * et_name.setError
+                 * (Html.fromHtml("<font color='black'>Please Enter Name</font>"
+                 * )); et_name.requestFocus(); }else if
+                 * (et_father_name.getText().toString().trim().equals("")) {
+                 * et_father_name.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Father Number</font>"));
+                 * et_father_name.requestFocus(); }else if
+                 * (et_age.getText().toString().trim().equals("")) {
+                 * et_age.setError
+                 * (Html.fromHtml("<font color='black'>Please Enter Age</font>"
+                 * )); et_age.requestFocus(); }else if
+                 * (et_mobileNo.getText().toString().trim().equals("")) {
+                 * et_mobileNo.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Age</font>"));
+                 * et_mobileNo.requestFocus(); }else if
+                 * (et_address.getText().toString().trim().equals("")) {
+                 * et_address.setError(Html.fromHtml(
+                 * "<font color='black'>Please Enter Address</font>"));
+                 * et_address.requestFocus(); }else if
+                 * (aadhaar_image.getDrawable().getConstantState() ==
+                 * getResources
+                 * ().getDrawable(R.drawable.camera).getConstantState()) {
+                 * showToast("Please Select Image"); }else if
+                 * (otp_verify_status.equals("N")) {
+                 * showToast("Please Verify OTP Number");
+                 * et_mobileNo.requestFocus(); }else if
+                 * (Sections.checkedList.isEmpty()) {
+                 * showToast("Please Select atleast one Section"); }else {
+                 *
+                 * new Async_PreviewDetails().execute(); //new
+                 * Async_Submit().execute();
+                 *
+                 * }
+                 *
+                 * } } }
+                 */
             }
         });
 
@@ -4865,13 +4881,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                 ServiceHelper.get_ghmchistry_owner("", "", iD_No_Details,
                         gps_Latitude, gps_Longitude);
 
-				/*
-				 * ServiceHelper.get39Bhistry_owner(firmRegn_No, shop_Name,
-				 * iD_No_Details, gps_Latitude, gps_Longitude);
-				 *
-				 * ServiceHelper.get_ghmchistry_owner(firmRegn_No, shop_Name,
-				 * iD_No_Details, gps_Latitude, gps_Longitude);
-				 */
+                /*
+                 * ServiceHelper.get39Bhistry_owner(firmRegn_No, shop_Name,
+                 * iD_No_Details, gps_Latitude, gps_Longitude);
+                 *
+                 * ServiceHelper.get_ghmchistry_owner(firmRegn_No, shop_Name,
+                 * iD_No_Details, gps_Latitude, gps_Longitude);
+                 */
 
                 if ("Y".equals(AADHAAR_DATA_FLAG)) {
                     ServiceHelper.getAadhaar(iD_No_Details, iD_No_Details);
@@ -5095,12 +5111,12 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                 String gps_Latitude = "" + latitude;
                 String gps_Longitude = "" + longitude;
 
-				/*
-				 * ServiceHelper.get39Bhistry(firmRegn_No, shop_Name,
-				 * iD_Details, gps_Latitude, gps_Longitude);
-				 * ServiceHelper.get_ghmchistry(firmRegn_No, shop_Name,
-				 * iD_Details, gps_Latitude, gps_Longitude);
-				 */
+                /*
+                 * ServiceHelper.get39Bhistry(firmRegn_No, shop_Name,
+                 * iD_Details, gps_Latitude, gps_Longitude);
+                 * ServiceHelper.get_ghmchistry(firmRegn_No, shop_Name,
+                 * iD_Details, gps_Latitude, gps_Longitude);
+                 */
                 ServiceHelper.get39Bhistry("", "", iD_Details, gps_Latitude,
                         gps_Longitude);
                 ServiceHelper.get_ghmchistry("", "", iD_Details, gps_Latitude,
@@ -5576,40 +5592,40 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                             latitude = location.getLatitude();
                             longitude = location.getLongitude();
 
-							/*
-							 * runOnUiThread(new Runnable() {
-							 *
-							 * @Override public void run() { // TODO
-							 * Auto-generated method stub Geocoder geocoder;
-							 * List<Address> addresses; geocoder = new
-							 * Geocoder(GenerateCase.this, Locale.getDefault());
-							 *
-							 * try { addresses =
-							 * geocoder.getFromLocation(latitude, longitude, 1);
-							 *
-							 * String address =
-							 * addresses.get(0).getAddressLine(0); // If any
-							 * additional address line present than only, check
-							 * with max available address lines by
-							 * getMaxAddressLineIndex() String city =
-							 * addresses.get(0).getLocality(); String state =
-							 * addresses.get(0).getAdminArea(); String country =
-							 * addresses.get(0).getCountryName(); String
-							 * postalCode = addresses.get(0).getPostalCode();
-							 * String knownName =
-							 * addresses.get(0).getFeatureName();
-							 *
-							 * get_curent_Address =
-							 * ""+address+","+city+","+state ; Log.i("address",
-							 * ""+address+","+city+","+state); } catch
-							 * (IOException e) { // TODO Auto-generated catch
-							 * block e.printStackTrace(); } // Here 1 represent
-							 * max location result to returned, by documents it
-							 * recommended 1 to 5
-							 *
-							 *
-							 * } });
-							 */
+                            /*
+                             * runOnUiThread(new Runnable() {
+                             *
+                             * @Override public void run() { // TODO
+                             * Auto-generated method stub Geocoder geocoder;
+                             * List<Address> addresses; geocoder = new
+                             * Geocoder(GenerateCase.this, Locale.getDefault());
+                             *
+                             * try { addresses =
+                             * geocoder.getFromLocation(latitude, longitude, 1);
+                             *
+                             * String address =
+                             * addresses.get(0).getAddressLine(0); // If any
+                             * additional address line present than only, check
+                             * with max available address lines by
+                             * getMaxAddressLineIndex() String city =
+                             * addresses.get(0).getLocality(); String state =
+                             * addresses.get(0).getAdminArea(); String country =
+                             * addresses.get(0).getCountryName(); String
+                             * postalCode = addresses.get(0).getPostalCode();
+                             * String knownName =
+                             * addresses.get(0).getFeatureName();
+                             *
+                             * get_curent_Address =
+                             * ""+address+","+city+","+state ; Log.i("address",
+                             * ""+address+","+city+","+state); } catch
+                             * (IOException e) { // TODO Auto-generated catch
+                             * block e.printStackTrace(); } // Here 1 represent
+                             * max location result to returned, by documents it
+                             * recommended 1 to 5
+                             *
+                             *
+                             * } });
+                             */
                         } else {
                             latitude = 0.0;
                             longitude = 0.0;
@@ -6115,7 +6131,7 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
 
                     select_point_name.setText("Select Point Name");
 
-                    Log.i("Settings Async_getPointNameByPsName", ""
+                    Log.i("eeByName", ""
                             + ServiceHelper.PointNamesBypsNames_master.length);
                     pointNameBYpsname_name_code_arr = new String[0][0];
                     pointNameBYpsname_name_code_arr = new String[ServiceHelper.PointNamesBypsNames_master.length][2];
@@ -6175,7 +6191,7 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                 title.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.traffic_small, 0, R.drawable.ghmc_small, 0);
                 title.setPadding(10, 0, 10, 0);
-                title.setHeight(70);
+                title.setHeight(80);
 
                 AlertDialog.Builder builderSingle = new AlertDialog.Builder(GenerateCase.this);
                 builderSingle.setCustomTitle(title);
@@ -6204,7 +6220,7 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                 title2.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.traffic_small, 0, R.drawable.ghmc_small, 0);
                 title2.setPadding(10, 0, 10, 0);
-                title2.setHeight(70);
+                title2.setHeight(80);
 
                 AlertDialog.Builder builderSingle2 = new AlertDialog.Builder(
                         GenerateCase.this);
@@ -6238,7 +6254,7 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                 ward_title.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.traffic_small, 0, R.drawable.ghmc_small, 0);
                 ward_title.setPadding(10, 0, 10, 0);
-                ward_title.setHeight(70);
+                ward_title.setHeight(80);
 
                 AlertDialog.Builder ward_code = new AlertDialog.Builder(this,
                         AlertDialog.THEME_HOLO_LIGHT);
@@ -6291,7 +6307,7 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                 location_title.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.traffic_small, 0, R.drawable.ghmc_small, 0);
                 location_title.setPadding(10, 0, 10, 0);
-                location_title.setHeight(70);
+                location_title.setHeight(80);
 
                 AlertDialog.Builder location_code = new AlertDialog.Builder(this,
                         AlertDialog.THEME_HOLO_LIGHT);
@@ -6346,7 +6362,7 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                 title4.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.traffic_small, 0, R.drawable.ghmc_small, 0);
                 title4.setPadding(10, 0, 10, 0);
-                title4.setHeight(70);
+                title4.setHeight(80);
 
                 AlertDialog.Builder alertDialog_Builder = new AlertDialog.Builder(
                         this, AlertDialog.THEME_HOLO_LIGHT);
@@ -6393,7 +6409,7 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                 wlr_title.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.traffic_small, 0, R.drawable.ghmc_small, 0);
                 wlr_title.setPadding(10, 0, 10, 0);
-                wlr_title.setHeight(70);
+                wlr_title.setHeight(80);
 
                 AlertDialog.Builder ad_whle_code_name = new AlertDialog.Builder(
                         this, AlertDialog.THEME_HOLO_LIGHT);
@@ -6430,7 +6446,7 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                 title3.setCompoundDrawablesWithIntrinsicBounds(
                         R.drawable.traffic_small, 0, R.drawable.ghmc_small, 0);
                 title3.setPadding(10, 0, 10, 0);
-                title3.setHeight(70);
+                title3.setHeight(80);
 
                 AlertDialog.Builder ad_subsec_code = new AlertDialog.Builder(this,
                         AlertDialog.THEME_HOLO_LIGHT);
@@ -6532,49 +6548,49 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                 startActivity(section);
             }
 
-			/*
-			 * if (ServiceHelper.sub_section_details_master!=null) {
-			 * showDialog(SUB_SECTION_CODE);
-			 *
-			 * Log.i("SUB SECTION 0 ::::",
-			 * ""+ServiceHelper.sub_section_details_master[0]);
-			 * Log.i("SUB SECTION 1 ::::",
-			 * ""+ServiceHelper.sub_section_details_master[1]);
-			 *
-			 * if(ServiceHelper.sub_section_details_master[1]!=null &&
-			 * !"NA".equals(ServiceHelper.sub_section_details_master[1])){
-			 *
-			 * add_sub_section.setText(""+ServiceHelper.sub_section_details_master
-			 * [1]); Log.i("SUB SECTION ::::",
-			 * ""+ServiceHelper.sub_section_details_master[1]);
-			 *
-			 * subSecNameBy_secName_arr.clear();// point name for second dialog
-			 * subSecNameBy_secName_code_arr.clear();;// point code for second
-			 *
-			 * add_sub_section.setText("Select Sub Section");
-			 *
-			 * //Log.i("Settings Async_getPointNameByPsName", "" +
-			 * ServiceHelper.PointNamesBypsNames_master.length);
-			 * subSecNameBysecName_code_arr = new String[0][0];
-			 * subSecNameBysecName_code_arr = new
-			 * String[ServiceHelper.sub_section_details_master.length][2];
-			 *
-			 * for (int i = 0; i <
-			 * ServiceHelper.sub_section_details_master.length; i++) {
-			 * subSecNameBysecName_code_arr[i] =
-			 * ServiceHelper.sub_section_details_master
-			 * [i].toString().trim().split("\\:");
-			 * Log.i("**SUB SECTION DETAILS**", ""+
-			 * subSecNameBysecName_code_arr[i][1].toString().trim());
-			 *
-			 * }
-			 *
-			 * Intent section = new Intent(GenerateCase.this, Sections.class);
-			 * startActivity(section);
-			 *
-			 * }else { showToast("No Section Avialable for Selected Category");
-			 * } }
-			 */
+            /*
+             * if (ServiceHelper.sub_section_details_master!=null) {
+             * showDialog(SUB_SECTION_CODE);
+             *
+             * Log.i("SUB SECTION 0 ::::",
+             * ""+ServiceHelper.sub_section_details_master[0]);
+             * Log.i("SUB SECTION 1 ::::",
+             * ""+ServiceHelper.sub_section_details_master[1]);
+             *
+             * if(ServiceHelper.sub_section_details_master[1]!=null &&
+             * !"NA".equals(ServiceHelper.sub_section_details_master[1])){
+             *
+             * add_sub_section.setText(""+ServiceHelper.sub_section_details_master
+             * [1]); Log.i("SUB SECTION ::::",
+             * ""+ServiceHelper.sub_section_details_master[1]);
+             *
+             * subSecNameBy_secName_arr.clear();// point name for second dialog
+             * subSecNameBy_secName_code_arr.clear();;// point code for second
+             *
+             * add_sub_section.setText("Select Sub Section");
+             *
+             * //Log.i("Settings Async_getPointNameByPsName", "" +
+             * ServiceHelper.PointNamesBypsNames_master.length);
+             * subSecNameBysecName_code_arr = new String[0][0];
+             * subSecNameBysecName_code_arr = new
+             * String[ServiceHelper.sub_section_details_master.length][2];
+             *
+             * for (int i = 0; i <
+             * ServiceHelper.sub_section_details_master.length; i++) {
+             * subSecNameBysecName_code_arr[i] =
+             * ServiceHelper.sub_section_details_master
+             * [i].toString().trim().split("\\:");
+             * Log.i("**SUB SECTION DETAILS**", ""+
+             * subSecNameBysecName_code_arr[i][1].toString().trim());
+             *
+             * }
+             *
+             * Intent section = new Intent(GenerateCase.this, Sections.class);
+             * startActivity(section);
+             *
+             * }else { showToast("No Section Avialable for Selected Category");
+             * } }
+             */
         }
     }
 
@@ -6704,12 +6720,11 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
 
     protected void selectImage() {
         // TODO Auto-generated method stub
-        final CharSequence[] options =
-                {
-                        "Open Camera",
-                        "Choose from Gallery",
-                        "Cancel"
-                };
+        final CharSequence[] options = {
+                "Open Camera",
+                "Choose from Gallery",
+                "Cancel"
+        };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(GenerateCase.this);
         builder.setTitle("Add Photo!");
@@ -6718,7 +6733,6 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Open Camera")) {
-
 
                     if (Build.VERSION.SDK_INT <= 23) {
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -6796,7 +6810,7 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                         int xPos = (canvas.getWidth() / 2);
                         int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2));
 
-                        canvas.save();
+                        /*canvas.save();
                         canvas.rotate(270f, xPos, yPos);
                         canvas.drawText("Date & Time: " + Current_Date, xPos, yPos + 300, paint);
                         canvas.restore();
@@ -6812,7 +6826,24 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                         canvas.rotate(90);
                         canvas.restore();
 
-                        mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 10, outFile);
+                        mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 10, outFile);*/
+
+                        canvas.save();
+                        canvas.rotate(270f, xPos, yPos);
+                        canvas.drawText("Date & Time: " + Current_Date, xPos, yPos + 300, paint);
+                        canvas.drawText("Lat :" + latitude, xPos, yPos + 400, paint);
+                        canvas.drawText("Long :" + longitude, xPos, yPos + 500, paint);
+                        canvas.restore();
+
+                        Display d = getWindowManager().getDefaultDisplay();
+                        int x = d.getWidth();
+                        int y = d.getHeight();
+                        Bitmap scaledBitmap = Bitmap.createScaledBitmap(mutableBitmap, y, x, true);
+                        Matrix matrix = new Matrix();
+                        matrix.postRotate(90);
+                        mutableBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+                        mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 20, outFile);
+
                         outFile.flush();
                         outFile.close();
                         new SingleMediaScanner(this, file);
@@ -6835,8 +6866,10 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                         paint.setColor(Color.RED);
                         paint.setTextSize(80);
                         paint.setTextAlign(Paint.Align.CENTER);
+
                         int xPos = (canvas.getWidth() / 2);
                         int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2));
+
                         canvas.save();
                         canvas.rotate(270f, xPos, yPos);
                         canvas.drawText("Date & Time: " + Current_Date, xPos, yPos + 300, paint);
@@ -6850,12 +6883,13 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                         canvas.save();
                         canvas.rotate(270f, xPos, yPos);
                         canvas.drawText("Long :" + longitude, xPos, yPos + 500, paint);
-                        canvas.rotate(90);
                         canvas.restore();
 
-                        image1.setImageBitmap(mutableBitmap);
+                        canvas.rotate(90);
 
-                        image1.setRotation(image1.getRotation() + 90);
+                        image1.setImageBitmap(mutableBitmap);
+                        image1.setRotation(0);
+                        image1.setRotation(90);
 
 
                         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -6881,6 +6915,7 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                         paint.setColor(Color.RED);
                         paint.setTextSize(80);
                         paint.setTextAlign(Paint.Align.CENTER);
+
                         int xPos = (canvas.getWidth() / 2);
                         int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2));
 
@@ -6901,7 +6936,11 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                         canvas.restore();
 
                         image2.setImageBitmap(mutableBitmap);
-                        image2.setRotation(image2.getRotation() + 90);
+
+                        image2.setRotation(0);
+                        image2.setRotation(90);
+
+
                         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                         mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 10, bytes);
                         byteArray = bytes.toByteArray();
@@ -6920,10 +6959,15 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                         // Base64.NO_WRAP);
 
                         new SingleMediaScanner(this, file);
+
                     } else if ("3".equals(GenerateCase.SelPicId) && bitmap != null) {
                         Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
 
                         aadhaar_image.setImageBitmap(mutableBitmap);
+
+                        aadhaar_image.setRotation(0.0f);
+                        aadhaar_image.setRotation(aadhaar_image.getRotation() + 90);
+
 
                         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                         mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 10, bytes);
@@ -6945,6 +6989,10 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                         Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
 
                         aadhaar_ownerImage.setImageBitmap(mutableBitmap);
+
+                        aadhaar_ownerImage.setRotation(0.0f);
+                        aadhaar_ownerImage.setRotation(aadhaar_ownerImage.getRotation() + 90);
+
 
                         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                         mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 10, bytes);
@@ -6987,14 +7035,14 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
                     paint.setTextSize(100);
                     paint.setTextAlign(Paint.Align.CENTER);
 
-
                     int xPos = (canvas.getWidth() / 2);
                     int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2));
 
-
                     image1.setImageBitmap(mutableBitmap);
-                    //	image1.setRotation(image1.getRotation() + 90);
-                    // picture1.setRotation(90);
+                    //image1.setRotation(0.0f);
+                    //image1.setRotation(image1.getRotation() + 90);
+
+
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                     mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 10, bytes);
 
@@ -7027,8 +7075,12 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
 
 
                     image2.setImageBitmap(mutableBitmap);
+                    //image2.setRotation(0.0f);
                     //image2.setRotation(image2.getRotation() + 90);
-                    // picture2.setRotation(90);
+
+                    //image2.setRotation(0f);
+                    //image2.setRotation(image2.getRotation() + 90);
+
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                     mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 10, bytes);
 
@@ -7046,7 +7098,11 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
 
                 } else if ("3".equals(GenerateCase.SelPicId) && thumbnail != null) {
                     Bitmap mutableBitmap = thumbnail.copy(Bitmap.Config.ARGB_8888, true);
+
                     aadhaar_image.setImageBitmap(mutableBitmap);
+                    //aadhaar_image.setRotation(0.0f);
+                    //aadhaar_image.setRotation(aadhaar_image.getRotation() + 90);
+
 
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                     mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 10, bytes);
@@ -7067,7 +7123,11 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
 
                 } else if ("4".equals(GenerateCase.SelPicId) && thumbnail != null) {
                     Bitmap mutableBitmap = thumbnail.copy(Bitmap.Config.ARGB_8888, true);
+
                     aadhaar_ownerImage.setImageBitmap(mutableBitmap);
+                    //aadhaar_ownerImage.setRotation(0.0f);
+                    //aadhaar_ownerImage.setRotation(aadhaar_ownerImage.getRotation() + 90);
+
 
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                     mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 10, bytes);
@@ -7093,20 +7153,16 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
             if (resultCode == RESULT_OK) {
                 // video successfully recorded
                 // preview the recorded video
-
                 if (videoPrevwFLG) {
                     previewVideo();
-
-                    if(null!=fileUri){
+                    if (null != fileUri) {
                         video_file = getRealVideoPathFromURI(fileUri);
-                    }else{
+                    } else {
                         video_file = "";
                     }
                 } else {
                     videoPreview.stopPlayback();
                 }
-
-
             } else if (resultCode == RESULT_CANCELED) {
                 // user cancelled recording
                 Toast.makeText(getApplicationContext(), "User cancelled video recording", Toast.LENGTH_SHORT).show();
@@ -7265,7 +7321,6 @@ public class GenerateCase extends Activity implements OnItemSelectedListener,
 
         return mediaFile;
     }
-
 
 
     private String getRealVideoPathFromURI(Uri contentURI) {

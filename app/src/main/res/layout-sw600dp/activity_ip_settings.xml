@@ -5,50 +5,67 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_screen" >
 
-    <!-- Header aligned to top -->
-
     <RelativeLayout
         android:id="@+id/header"
+        style="@style/header_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:gravity="center" >
+        android:layout_centerHorizontal="true"
+        android:padding="10dp">
 
         <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:id="@+id/img_logo"
+            style="@style/header_images_style_left"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:contentDescription="@null"
-            android:scaleType="fitXY"
-            android:src="@drawable/header" />
-    </RelativeLayout>
+            android:src="@drawable/exit_logo"
+            android:visibility="visible" />
 
-    <!-- Footer aligned to bottom -->
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/header_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="@string/header_txt"
+            android:textSize="22sp" />
 
-    <RelativeLayout
-        android:id="@+id/footer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center" >
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_below="@+id/textView1"
+            style="@style/cust_text_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/app_version"
+            android:textSize="15sp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="fill_parent"
-            android:layout_height="42dp"
+            style="@style/header_images_style_right"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:contentDescription="@null"
-            android:scaleType="fitXY"
-            android:src="@drawable/footer" />
-    </RelativeLayout>
+            android:visibility="visible" />
 
-    <!-- Scrollable Content below header and above footer -->
+    </RelativeLayout>
 
     <ScrollView
         android:id="@+id/container"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@id/footer"
         android:layout_below="@id/header"
+        android:layout_above="@id/footer"
         android:background="@drawable/background_screen" >
 
         <LinearLayout
@@ -108,10 +125,13 @@
                 android:layout_height="80dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/edittextstyle"
-                android:gravity="center"
                 android:hint="@string/server_url_hint"
-                android:paddingLeft="15dp"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingRight="0dp"
+                android:paddingEnd="0dp"
                 android:text=""
+                android:singleLine="true"
                 android:textColor="@color/text_color"
                 android:textSize="32sp" >
             </EditText>
@@ -122,7 +142,11 @@
                 android:layout_height="80dp"
                 android:layout_marginTop="35dp"
                 android:background="@drawable/edittextstyle"
-                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:paddingRight="0dp"
+                android:paddingEnd="0dp"
+                android:singleLine="true"
                 android:hint="Enter FTP URL"
                 android:inputType="text"
                 android:text="192.168.11.9:99"
@@ -155,13 +179,20 @@
                     android:layout_width="fill_parent"
                     android:layout_height="80dp"
                     android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
                     android:layout_weight="0.5"
                     android:text="@string/save"
                     android:textColor="#ffffff"
                     android:textSize="33sp"
                     android:textStyle="bold" />
             </LinearLayout>
+
         </LinearLayout>
+
     </ScrollView>
+
+    <include
+        android:id="@+id/footer"
+        layout="@layout/footer_layout" />
 
 </RelativeLayout>

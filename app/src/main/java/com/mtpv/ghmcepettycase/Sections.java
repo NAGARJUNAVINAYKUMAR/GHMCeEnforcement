@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -69,6 +71,16 @@ public class Sections extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_sections);
+
+		SharedPreferences prefs1 = getSharedPreferences("loginValues", MODE_PRIVATE);
+		String psName = prefs1.getString("PS_NAME", "");
+		String officer_Name1 = prefs1.getString("PID_NAME", "");
+		TextView officer_PS = (TextView)findViewById(R.id.officer_PS);
+		TextView officer_Name = (TextView)findViewById(R.id.officer_Name);
+		TextView companyName = (TextView) findViewById(R.id.CompanyName);
+		companyName.startAnimation(AnimationUtils.loadAnimation(this, R.anim.marquee));
+		officer_PS.setText(psName);
+		officer_Name.setText(officer_Name1);
 
 		section_txt = (TextView) findViewById(R.id.section_text);
 

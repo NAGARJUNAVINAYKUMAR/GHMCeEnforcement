@@ -11,7 +11,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.animation.AnimationUtils;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.mtpv.ghmcenforcement.R;
 
@@ -30,8 +32,17 @@ public class DeviceListActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		setContentView(R.layout.activity_paired_devices);
+
+		SharedPreferences prefs1 = getSharedPreferences("loginValues", MODE_PRIVATE);
+		String psName = prefs1.getString("PS_NAME", "");
+		String officer_Name1 = prefs1.getString("PID_NAME", "");
+		TextView officer_PS = (TextView)findViewById(R.id.officer_PS);
+		TextView officer_Name = (TextView)findViewById(R.id.officer_Name);
+		TextView companyName = (TextView) findViewById(R.id.CompanyName);
+		companyName.startAnimation(AnimationUtils.loadAnimation(this, R.anim.marquee));
+		officer_PS.setText(psName);
+		officer_Name.setText(officer_Name1);
 		
 		mDeviceList		= getIntent().getExtras().getParcelableArrayList("device.list");
 		

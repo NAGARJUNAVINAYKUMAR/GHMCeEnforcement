@@ -6,7 +6,7 @@
   android:background="@drawable/background_screen" >
 
   <!-- Header aligned to top -->
-  <RelativeLayout
+  <!--<RelativeLayout
     android:id="@+id/header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,10 +20,18 @@
         android:src="@drawable/header"
         android:contentDescription="@null"
         android:scaleType="fitXY" />
-  </RelativeLayout>
+  </RelativeLayout>-->
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/header_layout" />
+
+    <include
+        android:id="@+id/footer"
+        layout="@layout/footer_layout" />
 
   <!-- Footer aligned to bottom -->
-  <RelativeLayout
+  <!--<RelativeLayout
     android:id="@+id/footer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -37,7 +45,7 @@
         android:src="@drawable/footer" 
         android:contentDescription="@null"
         android:scaleType="fitXY" />
-  </RelativeLayout>
+  </RelativeLayout>-->
 
   <!-- Scrollable Content below header and above footer -->
   <ScrollView

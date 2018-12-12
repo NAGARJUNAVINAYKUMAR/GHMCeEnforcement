@@ -13,8 +13,7 @@
         android:text="asdd"
         android:textColor="@color/text_color_all"
         android:paddingBottom="10dp" />
-    
-    
+
     <CheckBox 
         android:id="@+id/checkbox"
         android:layout_width="wrap_content"

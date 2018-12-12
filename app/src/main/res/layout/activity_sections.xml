@@ -1,105 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:background="@drawable/background_screen" >
-
-  <!-- Header aligned to top -->
-  <RelativeLayout
-    android:id="@+id/header"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:gravity="center" >
+    android:layout_height="match_parent"
+    android:background="@drawable/background_screen" >
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:src="@drawable/header"
-        android:contentDescription="@null" 
-        android:scaleType="fitXY"/>
-  </RelativeLayout>
+    <!-- Header aligned to top -->
 
-  <!-- Footer aligned to bottom -->
-  <RelativeLayout
-    android:id="@+id/footer"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:gravity="center" >
+   <!-- <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center" >
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="fill_parent"
-        android:layout_height="34dp"
-        android:contentDescription="@null"
-        android:src="@drawable/footer"
-        android:scaleType="fitXY" />
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:contentDescription="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/header" />
+    </RelativeLayout>-->
 
-  </RelativeLayout>
+    <include
+        android:id="@+id/header"
+        layout="@layout/header_layout" />
 
-  <!-- Scrollable Content below header and above footer -->
-<!--   <ScrollView
+    <include
+        android:id="@+id/footer"
+        layout="@layout/footer_layout" />
+
+    <!-- Footer aligned to bottom -->
+
+   <!-- <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center" >
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="fill_parent"
+            android:layout_height="34dp"
+            android:contentDescription="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/footer" />
+    </RelativeLayout>-->
+
+    <!-- Scrollable Content below header and above footer -->
+    <!--
+       <ScrollView
     android:id="@+id/container"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/background_screen"
     android:layout_above="@id/footer"
-    android:layout_below="@id/header" > -->
+    android:layout_below="@id/header" >
+    -->
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/footer"
+        android:layout_below="@id/header"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:layout_marginTop="20dp"
-        android:orientation="vertical" 
         android:background="@drawable/background_screen"
-	    android:layout_above="@id/footer"
-	    android:layout_below="@id/header">
-    
-        <LinearLayout 
+        android:orientation="vertical" >
+
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            
-            <TextView 
+            android:orientation="horizontal" >
+
+            <TextView
                 android:id="@+id/section_text"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Section Code"
                 android:textColor="@color/text_color_all"
                 android:textSize="22sp"
-                android:textStyle="bold"/>
-            
-            
+                android:textStyle="bold" />
         </LinearLayout>
-        
-        <ListView
- 	    android:id="@+id/mylist"
- 	    android:layout_width="fill_parent"
- 	    android:layout_height="wrap_content"
- 	    android:layout_marginTop="10dp"
- 	    android:fadeScrollbars="false"
- 	    android:textColor="#fff" >
 
-</ListView>
-        
-        
-        <Button 
+        <ListView
+            android:id="@+id/mylist"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fadeScrollbars="false"
+            android:textColor="#fff" >
+        </ListView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:text="*** Please Click on Section Name to Select Section ***"
+            android:textColor="#FF0000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
             android:id="@+id/save_btn"
+            style="@style/naviblue_custom_style"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:text="Save"
-            style="@style/naviblue_custom_style"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
             android:layout_gravity="center"
-            android:textSize="25sp"/>
-        
-   <!--  <LinearLayout
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Save"
+            android:textSize="25sp" />
+
+        <Button
+            android:id="@+id/back_btn"
+            style="@style/naviblue_custom_style"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Back"
+            android:textSize="25sp" />
+
+        <!--
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="39dp"
         android:gravity="center_vertical" >
@@ -126,9 +155,10 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/white" /> -->
-        </LinearLayout>
+        android:background="@android:color/white" />
+        -->
+    </LinearLayout>
 
-<!--   </ScrollView> -->
+    <!-- </ScrollView> -->
 
 </RelativeLayout>

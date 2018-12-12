@@ -19,7 +19,7 @@
     
     <style name="header_style">
         <item name="android:padding">5dp</item>
-        <item name="android:background">@drawable/header</item>
+        <item name="android:background">@drawable/header_bg</item>
     </style>
     
     <style name="button_style">
@@ -33,24 +33,47 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 	<style name="green_custom_style" parent="text_style">
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/login_blue_btn_style</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
     
-     <style name="naviblue_custom_style" parent="green_custom_style">
+    <style name="naviblue_custom_style" parent="green_custom_style">
          <item name="android:background">@drawable/navi_blue_btn_style</item>
     </style>
-    
-     
-     
+
      <style name="dd_custom_blue_btn_style">
         <item name="android:background">@drawable/spinner_style</item>
         <item name="android:drawableRight">@drawable/down</item>
         <item name="android:layout_weight">1</item>
         <item name="android:paddingRight">5dp</item>
         <item name="android:textColor">@color/text_color_all</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="header_images_style_left">
+        <item name="android:layout_width">@dimen/header_img__layout_width</item>
+        <item name="android:layout_height">@dimen/header_img_layout_height</item>
+        <item name="android:src">@drawable/ghmc_small</item>
+    </style>
+
+    <!-- HEADER SIDE IMAGES LOGO RIGHT -->
+    <style name="header_images_style_right" parent="header_images_style_left">
+        <item name="android:src">@drawable/ghmc_small</item>
+    </style>
+
+    <style name="header_text_style" parent="text_style">
+        <item name="android:textSize">@dimen/header_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="cust_text_style" parent="text_style">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="cust_text_style_Label" parent="text_style">
+        <item name="android:textSize">8sp</item>
+        <item name="android:textColor">#ffffff</item>
     </style>
 </resources>

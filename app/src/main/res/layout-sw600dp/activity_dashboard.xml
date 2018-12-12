@@ -1,58 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_screen" >
+    android:background="@drawable/background_screen">
 
-    <!-- Header aligned to top -->
-
-    <RelativeLayout
+    <include
         android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:gravity="center" >
-
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/header_height"
-            android:contentDescription="@null"
-            android:scaleType="fitXY"
-            android:src="@drawable/header" />
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageView1"
-            android:layout_centerHorizontal="true"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:text="@string/app_version"
-            android:textColor="#ffffff"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-    </RelativeLayout>
-
-    <!-- Footer aligned to bottom -->
-
-    <RelativeLayout
-        android:id="@+id/footer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center" >
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/footer_height"
-            android:contentDescription="@null"
-            android:scaleType="fitXY"
-            android:src="@drawable/footer" />
-    </RelativeLayout>
-
-    <!-- Scrollable Content below header and above footer -->
+        layout="@layout/header_layout" />
 
     <ScrollView
         android:id="@+id/container"
@@ -60,28 +14,28 @@
         android:layout_height="fill_parent"
         android:layout_above="@id/footer"
         android:layout_below="@id/header"
-        android:background="@drawable/background_screen" >
+        android:background="@drawable/background_screen">
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="@dimen/dash_complete_margin_top"
             android:gravity="center"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:orientation="horizontal" >
+                android:gravity="end"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:orientation="horizontal" >
+                    android:visibility="invisible"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -89,16 +43,19 @@
                         android:text="@string/dashoboard_psName"
                         android:textColor="@color/red_txt_color"
                         android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="invisible"/>
 
                     <TextView
                         android:id="@+id/psname"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:text=""
                         android:textColor="@color/red_txt_color"
                         android:textSize="18sp"
+                        android:visibility="invisible"
                         android:textStyle="bold" />
 
                     <TextView
@@ -107,6 +64,7 @@
                         android:text="@string/dashboard_offName"
                         android:textColor="@color/red_txt_color"
                         android:textSize="16sp"
+                        android:visibility="invisible"
                         android:textStyle="bold" />
 
                     <TextView
@@ -114,7 +72,9 @@
                         android:layout_width="140dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:text=""
+                        android:visibility="invisible"
                         android:textColor="#FF0000"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -126,6 +86,7 @@
                     android:layout_height="@dimen/margins_sixty"
                     android:contentDescription="@null"
                     android:src="@drawable/logout" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -134,14 +95,14 @@
                 android:layout_marginTop="@dimen/margins_five"
                 android:baselineAligned="false"
                 android:orientation="horizontal"
-                android:weightSum="1" >
+                android:weightSum="1">
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:gravity="center"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/genereatCase"
@@ -167,7 +128,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/prev_history"
@@ -188,6 +149,7 @@
                         android:textSize="@dimen/txt_size_two_five"
                         android:textStyle="bold" />
                 </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -195,13 +157,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margins_ten"
                 android:orientation="horizontal"
-                android:weightSum="1" >
+                android:weightSum="1">
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/duplicate_print"
@@ -227,7 +189,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/reports"
@@ -248,6 +210,7 @@
                         android:textSize="@dimen/txt_size_two_five"
                         android:textStyle="bold" />
                 </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -255,13 +218,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margins_ten"
                 android:orientation="horizontal"
-                android:weightSum="1" >
+                android:weightSum="1">
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/download_masters"
@@ -287,7 +250,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/settings"
@@ -308,6 +271,7 @@
                         android:textSize="@dimen/txt_size_two_five"
                         android:textStyle="bold" />
                 </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -315,13 +279,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margins_ten"
                 android:orientation="horizontal"
-                android:weightSum="1" >
+                android:weightSum="1">
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/capture_images"
@@ -347,7 +311,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/capture_videos"
@@ -368,8 +332,15 @@
                         android:textSize="@dimen/txt_size_two_five"
                         android:textStyle="bold" />
                 </LinearLayout>
+
             </LinearLayout>
+
         </LinearLayout>
+
     </ScrollView>
+
+    <include
+        android:id="@+id/footer"
+        layout="@layout/footer_layout" />
 
 </RelativeLayout>

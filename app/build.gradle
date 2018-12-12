@@ -1,48 +1,49 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
+    /*signingConfigs {
         config {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
             storeFile file('C:/Users/Srinivas/.android/DEBUG/debug.keystore')
             storePassword 'android'
         }
-    }
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    }*/
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.mtpv.ghmcenforcement"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 28
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
-        debug {
+        /*debug {
             signingConfig signingConfigs.config
-        }
+        }*/
     }
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:25.3.1'
-    compile files('libs/AnalogicsVersa3TBTPrinterAPI.jar')
-    compile files('libs/common-lang3.jar')
-    compile files('libs/commons-net-3.5.jar')
-    compile files('libs/commons-net-examples-3.5.jar')
-    compile files('libs/commons-validator-1.4.0.jar')
-    compile files('libs/ftp4j-1.6.jar')
-    compile files('libs/ImageSupport-V1.4.jar')
-    compile files('libs/ksoap2-android-assembly-2.4-jar-with-dependencies.jar')
-    compile files('libs/LeopardProwessSdkV-1.0.5.jar')
-    compile files('libs/MorphoSmart_SDK_6.6.6.0-3.1.jar')
-    compile files('libs/N5PrinterAPI.jar')
-    compile files('libs/opencv_library-2.4.3.jar')
-    compile files('libs/org-apache-commons-codec.jar')
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile files('libs/sun.misc.BASE64Decoder.jar')
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation files('libs/AnalogicsVersa3TBTPrinterAPI.jar')
+    implementation files('libs/common-lang3.jar')
+    implementation files('libs/commons-net-3.5.jar')
+    implementation files('libs/commons-net-examples-3.5.jar')
+    implementation files('libs/commons-validator-1.4.0.jar')
+    implementation files('libs/ftp4j-1.6.jar')
+    implementation files('libs/ImageSupport-V1.4.jar')
+    implementation files('libs/ksoap2-android-assembly-2.4-jar-with-dependencies.jar')
+    implementation files('libs/LeopardProwessSdkV-1.0.5.jar')
+    implementation files('libs/MorphoSmart_SDK_6.6.6.0-3.1.jar')
+    implementation files('libs/N5PrinterAPI.jar')
+    implementation files('libs/opencv_library-2.4.3.jar')
+    implementation files('libs/org-apache-commons-codec.jar')
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    implementation files('libs/sun.misc.BASE64Decoder.jar')
+    implementation 'com.intuit.sdp:sdp-android:1.0.5'
 }

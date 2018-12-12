@@ -1,89 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:background="@drawable/background_screen" >
-
-  <!-- Header aligned to top -->
-  <RelativeLayout
-    android:id="@+id/header"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:gravity="center" >
+    android:layout_height="match_parent"
+    android:background="@drawable/background_screen">
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:src="@drawable/header"
-        android:contentDescription="@null"
-        android:scaleType="fitXY" />
-  </RelativeLayout>
+    <!-- Header aligned to top -->
+    <!--<RelativeLayout
+      android:id="@+id/header"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:gravity="center" >
 
-  <!-- Footer aligned to bottom -->
-  <RelativeLayout
-    android:id="@+id/footer"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:gravity="center" >
+      <ImageView
+          android:id="@+id/imageView1"
+          android:layout_width="wrap_content"
+          android:layout_height="100dp"
+          android:src="@drawable/header"
+          android:contentDescription="@null"
+          android:scaleType="fitXY" />
+    </RelativeLayout>-->
 
-    <ImageView
-        android:id="@+id/imageView2"
+    <include
+        android:id="@+id/header"
+        layout="@layout/header_layout" />
+
+    <include
+        android:id="@+id/footer"
+        layout="@layout/footer_layout" />
+
+    <!-- Footer aligned to bottom -->
+    <!--<RelativeLayout
+      android:id="@+id/footer"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:gravity="center" >
+
+      <ImageView
+          android:id="@+id/imageView2"
+          android:layout_width="fill_parent"
+          android:layout_height="42dp"
+          android:src="@drawable/footer"
+          android:contentDescription="@null"
+          android:scaleType="fitXY" />
+    </RelativeLayout>-->
+
+    <!-- Scrollable Content below header and above footer -->
+    <ScrollView
+        android:id="@+id/container"
         android:layout_width="fill_parent"
-        android:layout_height="42dp"
-        android:src="@drawable/footer" 
-        android:contentDescription="@null"
-        android:scaleType="fitXY" />
-  </RelativeLayout>
+        android:layout_height="fill_parent"
+        android:layout_above="@id/footer"
+        android:layout_below="@id/header"
+        android:background="@drawable/background_screen">
 
-  <!-- Scrollable Content below header and above footer -->
-  <ScrollView
-    android:id="@+id/container"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/background_screen"
-    android:layout_above="@id/footer"
-    android:layout_below="@id/header" >
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="15dp"
-        android:gravity="center"
-        android:orientation="vertical" >
-        
-        <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_gravity="center"
-                     android:text="Challan Print Display"
-                     android:textColor="@color/text_color"
-                     android:textStyle="bold"
-                     android:textSize="30sp" />
-      
         <LinearLayout
-                 android:id="@+id/h1"
-                 android:layout_width="fill_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_gravity="center"
-                 android:layout_margin="5dp"
-                 android:orientation="vertical" >
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
-                 <TextView
-                     android:id="@+id/printTv"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_gravity="center"
-                     android:text="Print Display"
-                     android:textColor="@color/text_color"
-                     android:textSize="25sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Challan Print Display"
+                android:textColor="@color/text_color"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/h1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/printTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Print Display"
+                    android:textColor="@color/text_color"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
 
 
             <LinearLayout
@@ -91,15 +99,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="20dp"
                 android:layout_margin="5dp"
-                android:orientation="horizontal" >
-            </LinearLayout>
+                android:orientation="horizontal"></LinearLayout>
 
             <LinearLayout
                 android:id="@+id/a10"
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
                 android:layout_margin="5dp"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/back_Btn"
@@ -130,42 +137,38 @@
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
                 android:layout_margin="5dp"
-                android:orientation="horizontal" >
-            </LinearLayout>
+                android:orientation="horizontal"></LinearLayout>
 
             <LinearLayout
                 android:id="@+id/a12"
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
                 android:layout_margin="5dp"
-                android:orientation="horizontal" >
-            </LinearLayout>
+                android:orientation="horizontal"></LinearLayout>
 
             <LinearLayout
                 android:id="@+id/a104"
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
                 android:layout_margin="5dp"
-                android:orientation="horizontal" >
-            </LinearLayout>
-            
+                android:orientation="horizontal"></LinearLayout>
+
             <LinearLayout
                 android:id="@+id/a105"
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
                 android:layout_margin="5dp"
-                android:orientation="horizontal" >
-            </LinearLayout>
-             <LinearLayout
+                android:orientation="horizontal"></LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/a106"
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
                 android:layout_margin="5dp"
-                android:orientation="horizontal" >
-            </LinearLayout>
-    
-    </LinearLayout>
+                android:orientation="horizontal"></LinearLayout>
 
-  </ScrollView>
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

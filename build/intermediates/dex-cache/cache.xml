@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="D:\Android\GHMCeEnforcement\app\libs\ksoap2-android-assembly-2.4-jar-with-dependencies.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="e8796346a9191a019e936210a2dc50662c57594b">
+        <dex dex="D:\Android\GHMCeEnforcement\app\build\intermediates\pre-dexed\debug\ksoap2-android-assembly-2.4-jar-with-dependencies_4accf79ed1d2ee7247efef301afdda199291ae60.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\GHMCeEnforcement\app\libs\org-apache-commons-codec.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="d9c6412a9f19fc03760ca0cf4708bca50f57a80c">
+        <dex dex="D:\Android\GHMCeEnforcement\app\build\intermediates\pre-dexed\debug\org-apache-commons-codec_4c287ec5049218fa3b90a1f04c472f0b5d445435.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\GHMCeEnforcement\app\libs\ftp4j-1.6.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="5587b19a4527cf8e0e53a58aff649e06dbd869d9">
+        <dex dex="D:\Android\GHMCeEnforcement\app\build\intermediates\pre-dexed\debug\ftp4j-1.6_665da2ac7bfcc7863d16ba37de4119ee7e6c5c13.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\GHMCeEnforcement\app\libs\commons-net-3.5.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="342fc284019f590e1308056990fdb24a08f06318">
+        <dex dex="D:\Android\GHMCeEnforcement\app\build\intermediates\pre-dexed\debug\commons-net-3.5_33dbb01bc0229a2e846671516894e7f7c2fdd9af.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\GHMCeEnforcement\app\libs\sun.misc.BASE64Decoder.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="acd93e3727886196f9b8434279ff445ba8611186">
+        <dex dex="D:\Android\GHMCeEnforcement\app\build\intermediates\pre-dexed\debug\sun.misc.BASE64Decoder_430608596c70fc259c3664990c3afb8811af2947.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\GHMCeEnforcement\app\libs\MorphoSmart_SDK_6.6.6.0-3.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="f0cd7fdbf0cd60311fc7055e873c4031451f6031">
+        <dex dex="D:\Android\GHMCeEnforcement\app\build\intermediates\pre-dexed\debug\MorphoSmart_SDK_6.6.6.0-3.1_916070ca5d99396522fb91dd98f3ab83e556dc6f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\GHMCeEnforcement\app\libs\AnalogicsVersa3TBTPrinterAPI.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="8f335fd581184b2160164d065f0ecd3c4f2b7df0">
+        <dex dex="D:\Android\GHMCeEnforcement\app\build\intermediates\pre-dexed\debug\AnalogicsVersa3TBTPrinterAPI_39e8b713fa2804586313658a5a4c5c41ab3d9415.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\GHMCeEnforcement\app\libs\ImageSupport-V1.4.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="08516e576efeabc9c34ce7264d3568cdd34beae9">
+        <dex dex="D:\Android\GHMCeEnforcement\app\build\intermediates\pre-dexed\debug\ImageSupport-V1.4_9eaf9d2feaafdff786d458d0330e64b3da0b1607.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\GHMCeEnforcement\app\libs\commons-net-examples-3.5.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="6272d80e897347c3c5f3691c8d76eae5deb764e1">
+        <dex dex="D:\Android\GHMCeEnforcement\app\build\intermediates\pre-dexed\debug\commons-net-examples-3.5_ec94eb96bf8fe99f687d93801c55333c4d6c5ac6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\GHMCeEnforcement\app\libs\N5PrinterAPI.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="7e9fa058a16f29aa147d8fa85eabf2da197456a5">
+        <dex dex="D:\Android\GHMCeEnforcement\app\build\intermediates\pre-dexed\debug\N5PrinterAPI_9bef2fda9b698866a855b90c5487f6dacce1bcd8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\GHMCeEnforcement\app\libs\LeopardProwessSdkV-1.0.5.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="53c61e8b5b5cffe6fc8e93f570aba6e8d46bc6f2">
+        <dex dex="D:\Android\GHMCeEnforcement\app\build\intermediates\pre-dexed\debug\LeopardProwessSdkV-1.0.5_de88db82d596a67a5f3f941159bbe4af73dfb2cb.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\GHMCeEnforcement\app\libs\opencv_library-2.4.3.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="e92dfaeacc97afc46002172e0d0d55b33838715b">
+        <dex dex="D:\Android\GHMCeEnforcement\app\build\intermediates\pre-dexed\debug\opencv_library-2.4.3_d8d971fa3723f763295ef0e5396c21ff0632b6f9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\GHMCeEnforcement\app\libs\commons-validator-1.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="42fa1046955ade59f5354a1876cfc523cea33815">
+        <dex dex="D:\Android\GHMCeEnforcement\app\build\intermediates\pre-dexed\debug\commons-validator-1.4.0_205f5a47f6ca780fae3bcede2c200ca789537db4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\GHMCeEnforcement\app\libs\common-lang3.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="70d0d4ddef60cfa67f28fd3382fc631119380030">
+        <dex dex="D:\Android\GHMCeEnforcement\app\build\intermediates\pre-dexed\debug\common-lang3_1f224fd65fcfa8be48e94ead9b160b2435bc78bc.jar" />
+    </item>
+
+</items>
