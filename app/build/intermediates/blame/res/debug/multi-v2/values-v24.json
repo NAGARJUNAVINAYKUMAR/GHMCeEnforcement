@@ -4,7 +4,17 @@
             "outputFile": "E:\\Android\\Workspace\\GHMCeEnforcement\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v24\\values-v24.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\VINAY\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-28.0.0.aar\\1095685eb8a00832a64f4b7ebcbc7228\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\VINAY\\.gradle\\caches\\transforms-2\\files-2.1\\9084420d80748d0e90b256e841d10684\\res\\values-v24\\values-v24.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,212",
+                        "endColumns": "156,134",
+                        "endOffsets": "207,342"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\VINAY\\.gradle\\caches\\transforms-2\\files-2.1\\2d36a4e2488649815ec50c4d54a4ea1d\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",
@@ -18,16 +28,6 @@
                         "startOffsets": "347,413,474,540",
                         "endColumns": "65,60,65,66",
                         "endOffsets": "408,469,535,602"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\VINAY\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-28.0.0.aar\\b32f1858c3866a2263285c4bc4367e32\\res\\values-v24\\values-v24.xml",
-                    "from": {
-                        "startLines": "2,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,212",
-                        "endColumns": "156,134",
-                        "endOffsets": "207,342"
                     }
                 }
             ]
